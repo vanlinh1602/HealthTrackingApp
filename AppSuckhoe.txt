@@ -12,7 +12,6 @@ Deadline: 14/3/2022
 - Bảng thông tin người dùng (tên dn + mk)
 - Lưu nhật ký mỗi ngày
 - chỉ số
-- Sở thích
 ...
 
 //Làm ppt (Gia Hy) Thuyết trình vào ngày 14
@@ -27,9 +26,10 @@ Deadline: 10/3/2022
 5/ tính năng 
 	- Đăng nhập
 	- Nhật ký hằng ngày
-	- Nhắc nhở ( nước, ngủ)
+	- Nhắc nhở (nước, ngủ) => Gợi ý một số việc trước khi thông báo lịch (ăn, ngủ).
 	- Chỉ số cân nặng chiều cao
 	- Thống kê tuần, tháng
-	- Sở thích
+	- Nghe nhạc, xem video trước khi đi ngủ
 	- ....
 //6/ Hướng phát triển tương lai
+	
