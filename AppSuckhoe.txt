@@ -1,0 +1,35 @@
+Chủ đề : App theo dõi sức khỏe
+Công nghệ : React Native
+
+Tìm nội dung: Làm việc trên git
+
+//Thiết kế giao diện (Khó nhất => học kiến thức mới Figma)
+Deadline: 14/3/2022
+1. Làm hết => code sẽ ít việc hơn (Khánh)
+
+
+//Thiết kế csdl (firebase) (làm lược đồ csdl quan hệ) (Văn Linh)
+- Bảng thông tin người dùng (tên dn + mk)
+- Lưu nhật ký mỗi ngày
+- chỉ số
+- Sở thích
+...
+
+//Làm ppt (Gia Hy) Thuyết trình vào ngày 14
+Deadline: 10/3/2022
+1/ Lịch sử phát triển
+2/ Ứng dụng 
+3/ Các công cũ hỗ trợ khác
+	- Github
+	- Figma
+	- Firebase
+4/ Giới thiệu App, lý do chọn đề tài
+5/ tính năng 
+	- Đăng nhập
+	- Nhật ký hằng ngày
+	- Nhắc nhở ( nước, ngủ)
+	- Chỉ số cân nặng chiều cao
+	- Thống kê tuần, tháng
+	- Sở thích
+	- ....
+//6/ Hướng phát triển tương lai
