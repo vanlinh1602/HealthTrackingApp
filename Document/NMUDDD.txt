@@ -1,0 +1,35 @@
+Hồng Gia Hy - 20520561
+Trần Nam Khánh - 20520577 
+Nguyễn Văn Linh -	20520613
+
+Công nghệ java
+
+
+1. Đồ án qua môn
++ Theo dõi sức khỏe
+	* Đăng nhập (Database) (SQLite)
+	* Chỉ số, cân nặng, chiều cao.
+	* Nhật ký hằng ngày
+	* Nhắc nhở ngủ, uống nước hẹn giờ (thông báo)
+	* Theo dõi tâm lí
+	* Thời tiết
+	* Chế độ ăn uống
+	* Thống kê số liệu hằng ngày, tháng: ăn uống, giảm cân
+	//* Cuộc gọi khẩn.
+	//* Chứng nhận phòn chống covid
+	* Chăm sóc sắc đẹp
+	* Điểm danh hằng ngày nhận thưởng
+	* Sở thích -> chọn vào hiện thông tin sở thích đó
+	* Cảm xúc mỗi ngày
+	* ......
+2. Bài thuyết trình về công nghệ sử dụng
+
+- Java : https://www.howkteam.vn/course/khoa-hoc-lap-trinh-android-co-ban-3
+- React (js) : https://fullstack.edu.vn/courses/reactjs
+- Xamarin (c#) : https://www.youtube.com/watch?v=zvp7wvbyceo
+- Flutter (js) : https://www.youtube.com/playlist?list=PL4cUxeGkcC9jLYyp2Aoh6hcWuxFDX6PBJ
+- VueJs : https://www.youtube.com/watch?v=mQ4zmFy4d7Y
+
+3. Thiết kế giao diện (UI)
+- Figma
+- Photoshop 
