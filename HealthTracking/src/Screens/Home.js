@@ -20,7 +20,11 @@ export default function Home({navigation}) {
     }
     function MoveToSetting(){
         navigation.navigate('Setting')
+<<<<<<< Updated upstream
   }
+=======
+    }
+>>>>>>> Stashed changes
     return (
       <View>
           <CustomButton
@@ -51,7 +55,12 @@ const style = StyleSheet.create({
         marginLeft: 50,
     },
     SettingStyle:{
+<<<<<<< Updated upstream
       marginLeft:100,
       marginTop:60,
+=======
+        marginTop: 10,
+        marginLeft: 50,
+>>>>>>> Stashed changes
     }
 });

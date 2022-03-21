@@ -60,6 +60,7 @@ const styles = StyleSheet.create({
   Status:{
     width : '100%',
     marginTop: 20,
+    
   },
 });
 

@@ -14,6 +14,7 @@ import Home from './Screens/Home';
 =======
 import Statistical from './Screens/Statistical';
 import CalendarScreen from './Screens/CalendarScreen';
+import Setting from './Screens/Setting';
 import Home from './Screens/Home';
 import HeaderBar from './Utils/HeaderBar';
 >>>>>>> master
@@ -59,6 +60,10 @@ const App = () => {
             name = 'Statistical'
             component={Statistical}
 >>>>>>> master
+          />
+          <Stack.Screen
+            name = 'Setting'
+            component={Setting}
           />
         </Stack.Navigator>
       </NavigationContainer>
