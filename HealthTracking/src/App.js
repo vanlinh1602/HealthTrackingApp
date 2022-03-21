@@ -7,31 +7,32 @@ import {
 } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import Calender from './Screens/Calender';
 import Statistical from './Screens/Statistical';
+import CalendarScreen from './Screens/CalendarScreen';
 import Home from './Screens/Home';
+import HeaderBar from './Utils/HeaderBar';
 const Stack = createStackNavigator();
 
 const App = () => {
     return (
       <NavigationContainer>
-        <Stack.Navigator>
+        <Stack.Navigator
+          screenOptions={
+            {
+              header: HeaderBar
+            }}
+        >
           <Stack.Screen
             name = 'Trang chủ'
             component={Home}
-            options={
-              {
-                header: ()=>null
-              }
-            }
           />
           <Stack.Screen
-            name = 'Calender'
-            component={Calender}
+            name = 'Calendar'
+            component={CalendarScreen}
           />
           <Stack.Screen
             name = 'Statistical'
-            component={Calender}
+            component={Statistical}
           />
         </Stack.Navigator>
       </NavigationContainer>
