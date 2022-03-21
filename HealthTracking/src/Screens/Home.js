@@ -9,7 +9,7 @@ import CustomButton from '../Utils/CustomButton';
 
 export default function Home({navigation}) {
     function MoveToCanlender(){
-        navigation.navigate('Calender')
+        navigation.navigate('Calendar')
     }
     function MoveToStatistical(){
         navigation.navigate('Statistical')
