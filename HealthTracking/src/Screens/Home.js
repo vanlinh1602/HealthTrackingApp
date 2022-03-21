@@ -14,6 +14,9 @@ export default function Home({navigation}) {
     function MoveToStatistical(){
         navigation.navigate('Statistical')
     }
+    function MoveToSetting(){
+        navigation.navigate('Setting')
+  }
     return (
       <View>
           <CustomButton
@@ -25,6 +28,11 @@ export default function Home({navigation}) {
             name='Statistical'
             style = {style.StaticticalStyle}
             PressButton = {MoveToStatistical}
+          />
+          <CustomButton
+            name='Setting'
+            style = {style.SettingStyle}
+            PressButton = {MoveToSetting}
           />
       </View>
     );
@@ -38,4 +46,8 @@ const style = StyleSheet.create({
         marginTop: 100,
         marginLeft: 50,
     },
+    SettingStyle:{
+      marginLeft:100,
+      marginTop:60,
+    }
 });
