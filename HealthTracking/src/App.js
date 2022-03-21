@@ -10,6 +10,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Statistical from './Screens/Statistical';
 import CalendarScreen from './Screens/CalendarScreen';
 import Home from './Screens/Home';
+import Account from './Screens/Account'
 import HeaderBar from './Utils/HeaderBar';
 const Stack = createStackNavigator();
 
@@ -33,6 +34,10 @@ const App = () => {
           <Stack.Screen
             name = 'Statistical'
             component={Statistical}
+          />
+          <Stack.Screen
+            name ='Account'
+            component={Account}
           />
         </Stack.Navigator>
       </NavigationContainer>

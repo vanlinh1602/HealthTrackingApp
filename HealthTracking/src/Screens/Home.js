@@ -14,6 +14,9 @@ export default function Home({navigation}) {
     function MoveToStatistical(){
         navigation.navigate('Statistical')
     }
+    function MoveToAccount(){
+        navigation.navigate('Account')
+    }
     return (
       <View>
           <CustomButton
@@ -26,6 +29,11 @@ export default function Home({navigation}) {
             style = {style.StaticticalStyle}
             PressButton = {MoveToStatistical}
           />
+          <CustomButton
+            name="Account"
+            style={style.AccountStyle}
+            PressButton={MoveToAccount}
+          />
       </View>
     );
 };
@@ -37,5 +45,9 @@ const style = StyleSheet.create({
     CalenderStyle:{
         marginTop: 100,
         marginLeft: 50,
+    },
+    AccountStyle:{
+        marginBottom: 100,
+        alignItems:'center',
     },
 });
