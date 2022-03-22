@@ -1,28 +1,135 @@
 import { StackView } from '@react-navigation/stack';
-import React from 'react';
+import React, {useState,setState,state} from 'react';
 import { 
   StyleSheet, 
   Text, 
   View, 
   Pressable,
   Image,
+  Alert
 } from 'react-native';
 import { Directions, TouchableOpacity } from 'react-native-gesture-handler';
 import CustomSmallButton from '../Utils/CustomSmallButton';
+import { render } from 'react-native/Libraries/Renderer/implementations/ReactNativeRenderer-prod';
+import Dialog, {DialogContent,DialogFooter,DialogButton,ScaleAnimation} from 'react-native-popup-dialog';
+const ImagePicker = require('react-native-image-picker');
 
 export default function Account() {
-    return (
+  const [imageSource, setImageSource] = useState(null);
+  const [visible, setVisible] = useState('false');
+  function getBoolean(value){
+    switch(value){
+      case 'true':return true
+      case 'fasle':return false
+    }
+  }
+  function _PermissionAndTakeImage(){ 
+    requestCameraPermission = async () => {
+         try {
+             const granted = await PermissionsAndroid.request(
+                 PermissionsAndroid.PERMISSIONS.CAMERA,
+                 {
+                     title: 'Truventorm Camera Permission',
+                     message:
+                         'Truventorm needs access to your camera ' +
+                         'to set profile picture.',
+                     buttonNeutral: 'Ask Me Later',
+                     buttonNegative: 'Cancel',
+                     buttonPositive: 'OK',
+                 },
+             );
+             if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+                 console.log('You can use the camera');
+                 this._takeImage();
+             } else {
+                 console.log('Camera permission denied');
+             }
+         } catch (err) {
+             console.warn(err);
+         }
+     }
+ }
+ 
+  function _takeImage (){
+      let options = {
+        title: 'You can choose one image',
+        maxWidth: 256,
+        maxHeight: 256,
+        noData: true,
+        mediaType: 'photo',
+        storageOptions: {
+        skipBackup: true
+        }
+      };
+
+      ImagePicker.launchCamera(options, (response) => {
+        if (response.didCancel) {
+          console.log('User cancelled image picker');
+        } else if (response.error) {
+          console.log('ImagePicker Error: ', response.error);
+        } else if (response.customButton) {
+          console.log('User tapped custom button: ', response.customButton);
+          alert(response.customButton);
+        } else {
+          let source = { uri: response.uri };
+          setImageSource(source.uri);
+        }
+      });
+
+  };
+  function _pickImage() {
+    let options = {
+      title: 'You can choose one image',
+      maxWidth: 256,
+      maxHeight: 256,
+      noData: true,
+      mediaType: 'photo',
+      storageOptions: {
+       skipBackup: true
+      }
+     };
+   
+     ImagePicker.launchImageLibrary(options, response => {
+      if (response.didCancel) {
+       //console.log('User cancelled photo picker');
+       Alert.alert('You did not select any image');
+      } else if (response.error) {
+       //console.log('ImagePicker Error: ', response.error);
+      } else if (response.customButton) {
+       //console.log('User tapped custom button: ', response.customButton);
+      } else {
+       let source = { uri: response.uri };
+   
+       // ADD THIS
+       setImageSource(source.uri);
+      }
+     });
+  };
+  return (
       <View style={styles.AccountBackground}>
-          <View style={styles.ImageContainer}>
-            <Image style={{
-              borderRadius:20,
-              resizeMode:"contain",
-              height:100,
-              width:100
-            }}
-            source={require('../Image/PersonImage.png')}           
-            />     
-            <TouchableOpacity style={styles.CameraButton} onPress={()=>{alert('CLICKED')}}>             
+          <View style={styles.Container}>
+            {imageSource === null ? (
+            <Image
+              source={require('../Image/PersonImage.png')}
+              style={{borderRadius:20,
+                resizeMode:"contain",
+                height:100,
+                width:100}}
+              resizeMode='contain'
+            />
+            ) : (
+            <Image
+              source={{ uri: imageSource }}
+              style={{borderRadius:20,
+                resizeMode:"contain",
+                height:100,
+                width:100}}
+              resizeMode='contain'
+            />
+            )}     
+            <TouchableOpacity style={styles.CameraButton} onPress={() => {
+                setVisible('true');
+              }}>             
               <Image style={{
                 resizeMode:"contain",
                 height:30,
@@ -30,8 +137,34 @@ export default function Account() {
               }}
               source={require('../Image/camera.png')}
               />                  
-            </TouchableOpacity> 
-            <View style={styles.InfomationBox}>
+            </TouchableOpacity>
+            <Dialog 
+            visible={getBoolean(visible)}
+            dialogAnimation={new ScaleAnimation}
+            onTouchOutside={()=>{
+              setVisible('false');
+            }}
+            footer={
+              <DialogFooter>
+                <DialogButton
+                  text='Camera'
+                  onPress={_PermissionAndTakeImage}
+                />
+                <DialogButton
+                  text='Library'
+                  onPress={_pickImage}
+                />
+              </DialogFooter>
+            }
+            >
+              <DialogContent>
+                <Text>
+                  Mời bạn chọn nguồn ảnh
+                </Text>
+              </DialogContent>
+              </Dialog>   
+
+              <View style={styles.InfomationBox}>
               <View style={{flex:2}}>
                 <Text style={styles.TextStyle}>
                   Họ tên: Trần Nam Khánh
@@ -64,7 +197,8 @@ export default function Account() {
                   source={require('../Image/Line.png')}
                 />
               </View>
-            </View>
+            </View>   
+
             <View>
               <CustomSmallButton
                 name='Đổi mật khẩu'
@@ -76,8 +210,11 @@ export default function Account() {
               />
             </View>  
           </View>
+
       </View>
     );
+            
+          
 };
 
 const styles = StyleSheet.create({
@@ -86,7 +223,7 @@ const styles = StyleSheet.create({
         backgroundColor:'#FDE7E7',
         alignItems: 'center',
     },
-    ImageContainer:{
+    Container:{
       flex:1,
       height:100,
       marginTop:25,
@@ -106,7 +243,7 @@ const styles = StyleSheet.create({
       width:'90%',
       padding:10,
       borderRadius:20,
-      marginTop:20,
+      marginTop:10,
       justifyContent:'space-around',
       flexDirection:'column'
     },
