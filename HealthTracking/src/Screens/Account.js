@@ -10,8 +10,7 @@ import {
 } from 'react-native';
 import { Directions, TouchableOpacity } from 'react-native-gesture-handler';
 import CustomSmallButton from '../Utils/CustomSmallButton';
-import { render } from 'react-native/Libraries/Renderer/implementations/ReactNativeRenderer-prod';
-import Dialog, {DialogContent,DialogFooter,DialogButton,ScaleAnimation} from 'react-native-popup-dialog';
+
 const ImagePicker = require('react-native-image-picker');
 
 export default function Account() {
@@ -23,60 +22,7 @@ export default function Account() {
       case 'fasle':return false
     }
   }
-  function _PermissionAndTakeImage(){ 
-    requestCameraPermission = async () => {
-         try {
-             const granted = await PermissionsAndroid.request(
-                 PermissionsAndroid.PERMISSIONS.CAMERA,
-                 {
-                     title: 'Truventorm Camera Permission',
-                     message:
-                         'Truventorm needs access to your camera ' +
-                         'to set profile picture.',
-                     buttonNeutral: 'Ask Me Later',
-                     buttonNegative: 'Cancel',
-                     buttonPositive: 'OK',
-                 },
-             );
-             if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-                 console.log('You can use the camera');
-                 this._takeImage();
-             } else {
-                 console.log('Camera permission denied');
-             }
-         } catch (err) {
-             console.warn(err);
-         }
-     }
- }
- 
-  function _takeImage (){
-      let options = {
-        title: 'You can choose one image',
-        maxWidth: 256,
-        maxHeight: 256,
-        noData: true,
-        mediaType: 'photo',
-        storageOptions: {
-        skipBackup: true
-        }
-      };
-
-      ImagePicker.launchCamera(options, (response) => {
-        if (response.didCancel) {
-          console.log('User cancelled image picker');
-        } else if (response.error) {
-          console.log('ImagePicker Error: ', response.error);
-        } else if (response.customButton) {
-          console.log('User tapped custom button: ', response.customButton);
-          alert(response.customButton);
-        } else {
-          let source = { uri: response.uri };
-          setImageSource(source.uri);
-        }
-      });
-
-  };
+  
   function _pickImage() {
     let options = {
       title: 'You can choose one image',
@@ -92,7 +38,7 @@ export default function Account() {
      ImagePicker.launchImageLibrary(options, response => {
       if (response.didCancel) {
        //console.log('User cancelled photo picker');
-       Alert.alert('You did not select any image');
+       Alert.alert('Bạn chưa chọn ảnh');
       } else if (response.error) {
        //console.log('ImagePicker Error: ', response.error);
       } else if (response.customButton) {
@@ -127,9 +73,7 @@ export default function Account() {
               resizeMode='contain'
             />
             )}     
-            <TouchableOpacity style={styles.CameraButton} onPress={() => {
-                setVisible('true');
-              }}>             
+            <TouchableOpacity style={styles.CameraButton} onPress={_pickImage}>             
               <Image style={{
                 resizeMode:"contain",
                 height:30,
@@ -138,31 +82,6 @@ export default function Account() {
               source={require('../Image/camera.png')}
               />                  
             </TouchableOpacity>
-            <Dialog 
-            visible={getBoolean(visible)}
-            dialogAnimation={new ScaleAnimation}
-            onTouchOutside={()=>{
-              setVisible('false');
-            }}
-            footer={
-              <DialogFooter>
-                <DialogButton
-                  text='Camera'
-                  onPress={_PermissionAndTakeImage}
-                />
-                <DialogButton
-                  text='Library'
-                  onPress={_pickImage}
-                />
-              </DialogFooter>
-            }
-            >
-              <DialogContent>
-                <Text>
-                  Mời bạn chọn nguồn ảnh
-                </Text>
-              </DialogContent>
-              </Dialog>   
 
               <View style={styles.InfomationBox}>
               <View style={{flex:2}}>

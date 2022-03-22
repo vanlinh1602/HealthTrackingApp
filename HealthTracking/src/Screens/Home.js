@@ -15,6 +15,9 @@ export default function Home({ navigation }) {
   function MoveToStatistical() {
     navigation.navigate('Statistical')
   }
+  function MoveToAccount(){
+    navigation.navigate('Account')
+  }
   return (
     <View style={styles.container}>
       <ImageBackground
@@ -41,9 +44,9 @@ export default function Home({ navigation }) {
           srcImage={require('../Image/ScaleIcon.png')}
         />
         <CustomButton
-          name='Tài khoảng'
+          name='Tài khoản'
           style={styles.AccountStyle}
-          PressButton={MoveToStatistical}
+          PressButton={MoveToAccount}
           srcImage={require('../Image/AccountIcon.png')}
         />
         <CustomButton
