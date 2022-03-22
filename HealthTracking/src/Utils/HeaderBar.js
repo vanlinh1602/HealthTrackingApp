@@ -10,7 +10,9 @@ export default function HeaderBar({navigation}) {
     function GoBackSreen(){
         navigation.goBack()
     }
+    var isGoback = true;
     return (
+        <View style={{backgroundColor: '#FDE7E7'}}>
         <View style={styles.viewHeader}> 
             <View style = {{alignItems: 'center'}}>
                 <Image
@@ -18,15 +20,21 @@ export default function HeaderBar({navigation}) {
                     source={require('../Image/Love_Heart_symbol.svg.png')}
                 />
             </View>
-            <Pressable
+            {isGoback ? (
+                <Pressable
                 style={styles.BackButton}
                 onPress={GoBackSreen}
-            >
+                >
                 <Image
                     style={styles.BackImage}
                     source={require('../Image/icons8-back-50.png')}
                 />
-            </Pressable>
+                </Pressable>
+            ): (null)
+
+            }
+            
+        </View>
         </View>
     );
 
