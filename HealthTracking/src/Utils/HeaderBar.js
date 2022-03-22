@@ -6,7 +6,33 @@ import {
     Pressable,
     Image
 } from 'react-native';
+export default function HeaderBar({navigation}) {
+    function GoBackSreen(){
+        navigation.goBack()
+    }
+    var isGoback = true;
+    return (
+        <View style={{backgroundColor: '#FDE7E7'}}>
+        <View style={styles.viewHeader}> 
+            <View style = {{alignItems: 'center'}}>
+                <Image
+                    style={styles.image}
+                    source={require('../Image/Love_Heart_symbol.svg.png')}
+                />
+            </View>
+            {isGoback ? (
+                <Pressable
+                style={styles.BackButton}
+                onPress={GoBackSreen}
+                >
+                <Image
+                    style={styles.BackImage}
+                    source={require('../Image/icons8-back-50.png')}
+                />
+                </Pressable>
+            ): (null)
 
+<<<<<<< HEAD
 export default function HeaderBar({navigation}) {
     function GoBackSreen(){
         navigation.goBack()
@@ -28,6 +54,11 @@ export default function HeaderBar({navigation}) {
                     source={require('../Image/icons8-back-50.png')}
                 />
             </Pressable>
+=======
+            }
+            
+        </View>
+>>>>>>> master
         </View>
     );
 

@@ -3,18 +3,23 @@ import {
     StyleSheet, 
     Text, 
     View, 
-    Pressable
+    Pressable,
+    Image
   } from 'react-native';
   
   export default function CustomButton(props) {
       return (
-        <View style = {props.style}>
+        <View style = {{...props.style, alignItems: 'center'}}>
             <Pressable 
                 style = {styles.pressaable}
                 onPress = {props.PressButton}
             >
-                <Text style = {styles.text}>{props.name}</Text>
+            <Image
+                style = {{width: 80, height: 80, resizeMode: 'stretch'}}
+                source={props.srcImage} 
+            />
             </Pressable>
+            <Text style = {styles.text}>{props.name}</Text>
         </View>
       );
   };
@@ -22,14 +27,14 @@ import {
 
   const styles = StyleSheet.create({
     pressaable:{
-        width: 150,
-        height: 150,
-        backgroundColor: '#fc8',
+        width: 130,
+        height: 130,
+        backgroundColor: '#FCD0D0',
         alignItems : 'center',
         justifyContent : 'center',
         borderRadius: 100,
     },
     text:{
-        fontSize: 25,
+        fontSize: 20,
     },
   });
