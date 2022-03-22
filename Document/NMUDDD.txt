@@ -32,4 +32,3 @@ Công nghệ java
 
 3. Thiết kế giao diện (UI)
 - Figma
-- Photoshop 
