@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet, Text, View, Pressable, Image} from 'react-native';
 
-const Setting = () => {
+const Scale = () => {
   return (
     <View style={styles.body}>
       <View style={styles.InformationBox}>
@@ -13,12 +13,15 @@ const Setting = () => {
       <View style={styles.InformationBox}>
         <Text style={styles.text}>BMI: 16.3</Text>
       </View>
-      <Image
+      <View style={styles.InformationBox}>
+        <Text style={styles.text}>Water need: 3l</Text>
+      </View>
+      {/* <Image
         style={styles.image}
         source={require('../Image/BMIchart.png')}
         resizeMode="stretch"
         
-      />
+      /> */}
     </View>
   );
 };
@@ -54,4 +57,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Setting;
+export default Scale;

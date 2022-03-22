@@ -9,7 +9,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Statistical from './Screens/Statistical';
 import CalendarScreen from './Screens/CalendarScreen';
-import Setting from './Screens/Setting';
+import Scale from './Screens/Scale';
 import Home from './Screens/Home';
 import HeaderBar from './Utils/HeaderBar';
 const Stack = createStackNavigator();
@@ -36,8 +36,8 @@ const App = () => {
             component={Statistical}
           />
           <Stack.Screen
-            name = 'Setting'
-            component={Setting}
+            name = 'Scale'
+            component={Scale}
           />
         </Stack.Navigator>
       </NavigationContainer>

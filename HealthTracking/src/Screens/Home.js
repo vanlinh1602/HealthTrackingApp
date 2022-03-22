@@ -15,6 +15,9 @@ export default function Home({ navigation }) {
   function MoveToStatistical() {
     navigation.navigate('Statistical')
   }
+  function MoveToScale() {
+    navigation.navigate('Scale')
+  }
   return (
     <View style={styles.container}>
       <ImageBackground
@@ -37,7 +40,7 @@ export default function Home({ navigation }) {
         <CustomButton
           name='Chỉ số'
           style={styles.ScaleStyle}
-          PressButton={MoveToStatistical}
+          PressButton={MoveToScale}
           srcImage={require('../Image/ScaleIcon.png')}
         />
         <CustomButton
