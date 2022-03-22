@@ -30,35 +30,8 @@ export default function HeaderBar({navigation}) {
                     source={require('../Image/icons8-back-50.png')}
                 />
                 </Pressable>
-            ): (null)
-
-<<<<<<< HEAD
-export default function HeaderBar({navigation}) {
-    function GoBackSreen(){
-        navigation.goBack()
-    }
-    return (
-        <View style={styles.viewHeader}> 
-            <View style = {{alignItems: 'center'}}>
-                <Image
-                    style={styles.image}
-                    source={require('../Image/Love_Heart_symbol.svg.png')}
-                />
+            ): (null)}
             </View>
-            <Pressable
-                style={styles.BackButton}
-                onPress={GoBackSreen}
-            >
-                <Image
-                    style={styles.BackImage}
-                    source={require('../Image/icons8-back-50.png')}
-                />
-            </Pressable>
-=======
-            }
-            
-        </View>
->>>>>>> master
         </View>
     );
 
