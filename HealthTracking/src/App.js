@@ -25,9 +25,6 @@ const App = () => {
           <Stack.Screen
             name = 'Trang chủ'
             component={Home}
-            options = {{
-                header : ()=>null
-            }}
           />
           <Stack.Screen
             name = 'Calendar'
