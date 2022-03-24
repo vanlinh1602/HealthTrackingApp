@@ -15,8 +15,8 @@ export default function Home({ navigation }) {
   function MoveToStatistical() {
     navigation.navigate('Statistical')
   }
-  function MoveToScale() {
-    navigation.navigate('Scale')
+  function MoveToAccount(){
+    navigation.navigate('Account')
   }
   return (
     <View style={styles.container}>
@@ -40,13 +40,13 @@ export default function Home({ navigation }) {
         <CustomButton
           name='Chỉ số'
           style={styles.ScaleStyle}
-          PressButton={MoveToScale}
+          PressButton={MoveToStatistical}
           srcImage={require('../Image/ScaleIcon.png')}
         />
         <CustomButton
-          name='Tài khoảng'
+          name='Tài khoản'
           style={styles.AccountStyle}
-          PressButton={MoveToStatistical}
+          PressButton={MoveToAccount}
           srcImage={require('../Image/AccountIcon.png')}
         />
         <CustomButton

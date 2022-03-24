@@ -30,11 +30,8 @@ export default function HeaderBar({navigation}) {
                     source={require('../Image/icons8-back-50.png')}
                 />
                 </Pressable>
-            ): (null)
-
-            }
-            
-        </View>
+            ): (null)}
+            </View>
         </View>
     );
 
