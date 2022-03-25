@@ -12,6 +12,8 @@ import CalendarScreen from './Screens/CalendarScreen';
 import Home from './Screens/Home';
 import Account from './Screens/Account'
 import HeaderBar from './Utils/HeaderBar';
+import Scale from './Screens/Scale';
+import Setting from './Screens/Setting';
 const Stack = createStackNavigator();
 
 const App = () => {
@@ -38,6 +40,14 @@ const App = () => {
           <Stack.Screen
             name ='Account'
             component={Account}
+          />
+          <Stack.Screen
+            name ='Scale'
+            component={Scale}
+          />
+          <Stack.Screen
+            name ='Setting'
+            component={Setting}
           />
         </Stack.Navigator>
       </NavigationContainer>

@@ -18,6 +18,12 @@ export default function Home({ navigation }) {
   function MoveToAccount(){
     navigation.navigate('Account')
   }
+  function MoveToScale(){
+    navigation.navigate('Scale')
+  }
+  function MoveToSetting(){
+    navigation.navigate('Setting')
+  }
   return (
     <View style={styles.container}>
       <ImageBackground
@@ -40,7 +46,7 @@ export default function Home({ navigation }) {
         <CustomButton
           name='Chỉ số'
           style={styles.ScaleStyle}
-          PressButton={MoveToStatistical}
+          PressButton={MoveToScale}
           srcImage={require('../Image/ScaleIcon.png')}
         />
         <CustomButton
@@ -52,7 +58,7 @@ export default function Home({ navigation }) {
         <CustomButton
           name='Cài đặt'
           style={styles.SettingStyle}
-          PressButton={MoveToStatistical}
+          PressButton={MoveToSetting}
           srcImage={require('../Image/SettingIcon.png')}
         />
       </ImageBackground>
