@@ -1,38 +1,67 @@
-import React from 'react'
+import React , {Component} from 'react'
 import {
     StyleSheet,
     Text,
     View,
-    Pressable,
-    Dimensions,
-    Image
+    SafeAreaView,
   } from 'react-native';
 
-  export default function Setting(){
+  import ListAlarms from '../Utils/components/ListAlarms';
 
+  import TimePicker from '../Utils/components/TimePicker'; 
 
+  // export default function Setting() {
 
-    return(
-    <View style = {styles.body}>
-        <Text style ={styles.text}>
-            this is setting page
-        </Text>
-    </View>
-    )
+  //   return(
+  //   <View style ={styles.mainContainer}>
+  //     <Text style = {styles.heading}>
+  //       Alarm App
+  //     </Text>
+  //     <SafeAreaView style ={styles.listAlarms}>
+  //       <ListAlarms />
+
+  //     </SafeAreaView>
+  //     <View style ={styles.timePicker}> 
+  //       <TimePicker />
+  //     </View>
+  //   </View>
+  //   )
+  // }
+
+  class Setting extends Component {
+    render() {
+      return (
+        <View style={styles.mainContainer}>
+          <Text style={styles.heading}> Alarm App </Text>
+          <SafeAreaView style={styles.listAlarms}>
+            <ListAlarms />
+          </SafeAreaView>
+  
+          <View style={styles.timePicker}>
+            <TimePicker />
+          </View>
+        </View>
+      );
+    }
   }
-
-  const styles = StyleSheet.create({
-    body: {
-        flex: 1,
-        backgroundColor: '#FDE7E7',
-        alignItems: 'center',
-        justifyContend: 'center',
-      },
-      text: {
-        color: '#000000',
-        fontSize: 25,
-        fontStyle: 'italic',
-        
-        margin: 20,
-      },
+  const styles = StyleSheet.create({    
+    mainContainer :{
+      flex :1,
+      alignItems: 'center',
+    },
+    heading: {
+      fontSize: 25,
+      padding: 20,
+    },
+    timePicker:{
+      paddingTop: '10%',
+      width : '50%',
+      bottom: 20,
+    },
+    listAlarms :{
+      flex: 1,
+      width: "100%",
+    }
   });
+
+  export default Setting;

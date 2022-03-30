@@ -16,6 +16,7 @@ import Scale from './Screens/Scale';
 import Setting from './Screens/Setting';
 const Stack = createStackNavigator();
 
+
 const App = () => {
     return (
       <NavigationContainer>
