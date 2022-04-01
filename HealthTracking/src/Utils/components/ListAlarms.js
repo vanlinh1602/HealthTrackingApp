@@ -11,10 +11,8 @@ import { deleteAlarm } from '../actions/alarms';
 
 const ListAlarms=(props) => {
     const keyExtractor = (item,index) => index.toString();
-
     const renderItem = ({item}) => {
-    return(
-        <View>
+        return(
             <ListItem>
                 <ListItem.Content>
                     <ListItem.Title style = {styles.titleStyle}>{item.time.toString()}</ListItem.Title>                    
@@ -26,14 +24,12 @@ const ListAlarms=(props) => {
                     title ="Remove"
                     color="red"
                     Onpress ={() => {
-                        console.log(item);
-                        //props.delete(item.value);
+                        //console.log(item);
+                        props.delete(item.value);
                     }}
                 />
-            </ListItem>
-        </View>
-    );
-
+            </ListItem>       
+        );
     }
     return(
         <FlatList
@@ -48,7 +44,7 @@ const styles = StyleSheet.create({
     // container: {},
     titleStyle: {
         fontWeight: "bold",
-        fontSize: 30,
+        fontSize: 30,           
     }
 })
 

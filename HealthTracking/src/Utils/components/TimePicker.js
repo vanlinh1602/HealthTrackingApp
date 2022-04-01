@@ -1,4 +1,4 @@
-import React , { useState }from 'react';
+import React , { useState } from 'react';
 import{
     Button,
     Alert,   
@@ -7,15 +7,16 @@ import { connect } from 'react-redux';
 import { addAlarm } from '../actions/alarms';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 
-const TimePicker=(props) => {
-    const[isDateTimePickerVisible,setIsDateTimePickerVisible] = useState(false);
+const TimePicker = (props) => {
+    const [isDateTimePickerVisible,setIsDateTimePickerVisible] = useState(false);
+  
     const makeid = ()=> {
         var length = 5;
         var result = "";
         var characters = "0123456789";
         var charactersLength = characters.length;
         for( var i = 0; i< length; i++){
-            result += characters.charAt(Math.floor(Math.random() * charactersLength));
+            result += characters.charAt(Math.floor(Math.random() + charactersLength));
         }
         return result;
     }
@@ -32,8 +33,8 @@ const TimePicker=(props) => {
     }
 
 
-    const handleDatePicked=(datetime)=>{
-        var currentTime=Date.now();
+    const handleDatePicked = (datetime) => {
+        var currentTime= Date.now();
         if(datetime.getTime() < currentTime){
             Alert.alert("Please choose future time");
             hideDateTimePicker();
