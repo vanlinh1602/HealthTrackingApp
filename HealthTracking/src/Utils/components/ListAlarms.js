@@ -1,4 +1,4 @@
-import React , {Component} from 'react';
+import React  from 'react';
 import{
     StyleSheet,
     FlatList,
@@ -9,25 +9,29 @@ import { ListItem } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { deleteAlarm } from '../actions/alarms';
 
-
-
 const ListAlarms=(props) => {
     const keyExtractor = (item,index) => index.toString();
+
     const renderItem = ({item}) => {
     return(
-        <ListItem>
+        <View>
+            <ListItem>
                 <ListItem.Content>
                     <ListItem.Title style = {styles.titleStyle}>{item.time.toString()}</ListItem.Title>                    
                     <ListItem.Subtitle>{item.date.toString()}</ListItem.Subtitle>
+                    {/* <ListItem.Title style = {styles.titleStyle}>2:32 PM</ListItem.Title>                    
+                    <ListItem.Subtitle>31/3/2022 </ListItem.Subtitle> */}
                 </ListItem.Content>
                 <Button
                     title ="Remove"
                     color="red"
                     Onpress ={() => {
-                        props.delete(item.value);
+                        console.log(item);
+                        //props.delete(item.value);
                     }}
                 />
-        </ListItem>
+            </ListItem>
+        </View>
     );
 
     }
@@ -38,9 +42,10 @@ const ListAlarms=(props) => {
             renderItem={renderItem}
         />
     );
-}
+ }
 
 const styles = StyleSheet.create({
+    // container: {},
     titleStyle: {
         fontWeight: "bold",
         fontSize: 30,
@@ -62,4 +67,4 @@ const mapDispatchToProps = dispatch => {
 
 
 export default connect(mapStateToProps,mapDispatchToProps)(ListAlarms);
-
+//export default ListAlarms;

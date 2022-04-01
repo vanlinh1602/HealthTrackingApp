@@ -31,6 +31,7 @@ const TimePicker=(props) => {
         setIsDateTimePickerVisible(false);
     }
 
+
     const handleDatePicked=(datetime)=>{
         var currentTime=Date.now();
         if(datetime.getTime() < currentTime){
@@ -73,9 +74,7 @@ const TimePicker=(props) => {
                 // Onpress ={() => {
                 //         showDateTimePicker();
                 // }}
-                onPress={showDateTimePicker}
-                   
-            
+                onPress={showDateTimePicker}          
             />
             <DateTimePicker
                 mode = "datetime"
@@ -94,9 +93,9 @@ const mapDispatchToProps = dispatch => {
     return{
         add: alarmNotifObj => {
             dispatch(addAlarm(alarmNotifObj));
-        }
+        },
     };
-}
+};
 
 
 export default connect(mapStateToProps,mapDispatchToProps)(TimePicker);

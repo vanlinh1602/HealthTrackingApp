@@ -1,4 +1,4 @@
-import React , {Component} from 'react'
+import React from 'react'
 import {
     StyleSheet,
     Text,
@@ -10,40 +10,25 @@ import {
 
   import TimePicker from '../Utils/components/TimePicker'; 
 
-  // export default function Setting() {
+  export default function Setting() {
 
-  //   return(
-  //   <View style ={styles.mainContainer}>
-  //     <Text style = {styles.heading}>
-  //       Alarm App
-  //     </Text>
-  //     <SafeAreaView style ={styles.listAlarms}>
-  //       <ListAlarms />
+    return(
+    <View style ={styles.mainContainer}>
+      <Text style = {styles.heading}>
+        Alarm App
+      </Text>
+      <SafeAreaView style ={styles.listAlarms}>
+        <ListAlarms />
 
-  //     </SafeAreaView>
-  //     <View style ={styles.timePicker}> 
-  //       <TimePicker />
-  //     </View>
-  //   </View>
-  //   )
-  // }
-
-  class Setting extends Component {
-    render() {
-      return (
-        <View style={styles.mainContainer}>
-          <Text style={styles.heading}> Alarm App </Text>
-          <SafeAreaView style={styles.listAlarms}>
-            <ListAlarms />
-          </SafeAreaView>
-  
-          <View style={styles.timePicker}>
-            <TimePicker />
-          </View>
-        </View>
-      );
-    }
+      </SafeAreaView>
+      <View style ={styles.timePicker}> 
+        <TimePicker />
+      </View>
+    </View>
+    )
   }
+
+  
   const styles = StyleSheet.create({    
     mainContainer :{
       flex :1,
@@ -64,4 +49,4 @@ import {
     }
   });
 
-  export default Setting;
+  

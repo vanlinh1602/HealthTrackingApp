@@ -10,8 +10,8 @@ const alarmReducer=(state = initialState,action)=>{
             Moment.locate('en');
             console.log("time",state);
             const payload = action.payload;
-            const time = Moment(payload.date.value).format("hh:mm A");
-            const date = Moment(payload.date.value).format("d/m/YY");
+            const time = Moment(payload.date.value).format('hh:mm A');
+            const date = Moment(payload.date.value).format('d/m/YY');
             console.log(time);
             const alarm ={
                 alarmNotifData : payload,
@@ -26,7 +26,7 @@ const alarmReducer=(state = initialState,action)=>{
         case DELETE_ALARM:
             return {
                 ...state,
-                alarms:state.alarms.filter(v=>{
+                alarms:state.alarms.filter( v => {
                     return v.value !== action.payload;
                 }),
             };

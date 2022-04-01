@@ -8,7 +8,6 @@ import {name as appName} from './app.json';
 import { Provider } from 'react-redux';
 import React from 'react';
 import configureStore from './src/Utils/store'
-
 const store = configureStore();
 
 const RNRedux =() => (
