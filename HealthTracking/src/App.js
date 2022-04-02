@@ -12,6 +12,8 @@ import CalendarScreen from './Screens/CalendarScreen';
 import Home from './Screens/Home';
 import Account from './Screens/Account'
 import HeaderBar from './Utils/HeaderBar';
+import GetStarted from './Screens/GetStarted';
+import SignUI from './Screens/SignUI'
 const Stack = createStackNavigator();
 
 const App = () => {
@@ -23,6 +25,14 @@ const App = () => {
               header: HeaderBar
             }}
         >
+          <Stack.Screen
+            name = 'GetStarted'
+            component={GetStarted}
+          />
+          <Stack.Screen
+            name = 'Sign'
+            component={SignUI}
+          />
           <Stack.Screen
             name = 'Trang chủ'
             component={Home}
