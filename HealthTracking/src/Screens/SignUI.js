@@ -48,7 +48,7 @@ function SignUI({ navigation }) {
   if (initializing) return null;
 
   if (user) {
-    navigation.navigate("Trang chủ");
+    navigation.navigate("TestData");
   }
   return (
     <View style={styles.container}>

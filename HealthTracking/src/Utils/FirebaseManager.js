@@ -1,11 +1,39 @@
-import React from 'react';
+import React, { Component } from 'react';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
-import { useState} from "react";
+import { useState } from "react";
 
 export class FirebaseManager {
+    // Data của Nhật ký
+    dataDiary = {
+        userName: "",
+        status: "",
+        image: "",
+        day: "",
+    }
+    // Data của chỉ số sức khỏe
+    dataHealthInfor = {
+        day: "",
+        height: "",
+        weight: "",
+        userName: ""
+    }
+    // Data của thông tin người dùng
+    dataInformation = {
+        mail: "",
+        userName: "",
+        phone: "",
+        name: "",
+    }
+    // Data của bảng thống kê
+    dataStatistical = {
+        userName: "",
+        day: "",
+        status: "",
+        type: "",
+    }
 
-    constructor() {
+    constructor(props) {
 
     }
     // Login with Email and Pass
@@ -32,30 +60,47 @@ export class FirebaseManager {
     SignOut() {
         auth().signOut().then(() => { console.log("Log out succesed") })
     };
-
     // Get data from firebase
     getData(collection, doc) {
-        const [data, setData] = useState(); 
-        //     var getData = firestore()
-        //         .collection(collection)
-        //         .doc(doc)
-        //         .onSnapshot(
-        //             docx => {
-        //                 console.log(docx.data().name)
-        //                   setData(docx.data())
-        //             }
-        //         )
-        //console.log(data);
-        async function getDatabase(){
-            const user = await firestore().collection(collection).doc(doc).get();
-           // return user.data();
-            setData(user.data())
-            return 1;
-        }
-        //setData(getDatabase());
-        //console.log(data)
-        getDatabase();
-        //console.log(data);
-        return data;
+
     };
+    // Thêm dữ liệu lên database với document ngẫu nhiên
+    AddDataRandomDoc(collection, data) {
+        firestore()
+            .collection(collection)
+            .add(data)
+            .then(() => {
+                console.log('User added!');
+            });
+    }
+    //Thêm dữ liệu lên database với document đặt tên
+    AddDataWithDoc(collection, document, data) {
+        firestore()
+            .collection(collection)
+            .doc(document)
+            .set(data)
+            .then(() => {
+                console.log('User added!');
+            });
+    }
+    // Cập nhập dữ liệu lên database
+    UpdateData(collection, document, data) {
+        firestore()
+            .collection(collection)
+            .doc(document)
+            .update(data)
+            .then(() => {
+                console.log('User updated!');
+            });
+    }
+    // Xóa dữ liệu database 
+    RemoveData(collection, document) {
+        firestore()
+            .collection(collection)
+            .doc(document)
+            .delete()
+            .then(() => {
+                console.log('User deleted!');
+            });
+    }
 };
