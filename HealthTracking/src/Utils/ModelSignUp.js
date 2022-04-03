@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
     StyleSheet,
     Text,
@@ -7,9 +7,22 @@ import {
     Pressable,
 } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
+import { FirebaseManager } from './FirebaseManager';
 import SignButton from './SignButton';
 
 export default function ModelSignUp(props) {
+    const manager = new FirebaseManager();
+    const [mail, setMail] = useState();
+    const [pass, setPass] = useState();
+    const [repass, setRepass] = useState();
+    function SignNewAccount(){
+        if (pass == repass){
+            manager.singUp(mail, pass)
+        }
+        else{
+            alert("Mật khẩu không trùng khớp");
+        }
+    }
     return (
         <View style = {{...props.style, justifyContent: 'center'}}>
             <Modal
@@ -27,20 +40,25 @@ export default function ModelSignUp(props) {
                         <TextInput 
                             style={styles.Input}
                             placeholder="Tài khoảng"
+                            onChangeText={value => setMail(value)}
                         />
                         <TextInput 
                             style={styles.Input}
                             placeholder="Mật khẩu"
+                            onChangeText={value => setPass(value)}
+
                         />
                         <TextInput 
                             style={styles.Input}
                             placeholder="Nhập lại mật khẩu"
+                            onChangeText={value => setRepass(value)}
                         />
                         <SignButton
                             content = "Đăng Ký"
                             color = '#F178B6'
                             size = {18}
                             style = {{marginBottom: 20}}
+                            onPress = {SignNewAccount}
                         />
                     </View>    
                 </View>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState,  useEffect  } from "react";
 import {
   ImageBackground,
   StyleSheet,
@@ -7,15 +7,19 @@ import {
   Pressable,
 } from "react-native";
 import SignButton from "../Utils/SignButton";
+import auth from '@react-native-firebase/auth';
+import { FirebaseManager } from "../Utils/FirebaseManager";
 
-const image = require('../Image/Background.png');
-
+  
 function GetStarted({navigation}){
-
+  const manager = new FirebaseManager();
+  const image = require('../Image/Background.png');
   function PressGetStarted(){
     navigation.navigate("Sign");
   }
-
+  if(manager.checkLogin()){
+    navigation.navigate('Trang chủ')
+  }
   return (
   <View style={styles.container}>
     <ImageBackground source={image} resizeMode="cover" style={styles.image}>
@@ -53,6 +57,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     backgroundColor: '#FDE7E7',
     color: '#000',
+    fontFamily: 'Playball-Regular',
   },
   button: {
     marginTop: 450,

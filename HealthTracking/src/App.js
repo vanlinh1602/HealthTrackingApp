@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -15,9 +15,11 @@ import HeaderBar from './Utils/HeaderBar';
 import GetStarted from './Screens/GetStarted';
 import SignUI from './Screens/SignUI'
 import TestDatabase from './Screens/TestDatabase';
+
 const Stack = createStackNavigator();
 
 const App = () => {
+  const [screenFirst, setScreenFirst] = useState('GetStarted')
   return (
     <NavigationContainer>
       <Stack.Navigator
@@ -25,6 +27,7 @@ const App = () => {
           {
             header: HeaderBar
           }}
+        initialRouteName = {screenFirst}
       >
         <Stack.Screen
           options={{

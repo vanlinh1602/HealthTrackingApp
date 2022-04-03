@@ -8,47 +8,26 @@ import {
   ImageBackground
 } from "react-native";
 import { FirebaseManager } from "../Utils/FirebaseManager";
-import auth from '@react-native-firebase/auth';
 import ModelSignIn from "../Utils/ModelSignIn";
 import ModelSignUp from "../Utils/ModelSignUp";
 import SignButton from "../Utils/SignButton";
+import auth from '@react-native-firebase/auth';
 
-const image = require('../Image/Background.png')
+
 function SignUI({ navigation }) {
+  const image = require('../Image/Background.png')
   const [isSignIn, setIsSignIn] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
-  const [initializing, setInitializing] = useState(true);
-  const [user, setUser] = useState();
   const manager = new FirebaseManager();
-
-  const changeScreen = () => { 
-    navigation.navigate("MainUI");
-  }
-
   function PressSignIn() {
     setIsSignIn(true);
-    
   }
 
   function PressSignUp() {
-    //setIsSignUp(true);
-    manager.SignOut();
+    setIsSignUp(true);
   }
-
-  function onAuthStateChanged(user) {
-    setUser(user);
-    if (initializing) setInitializing(false);
-  }
-
-  useEffect(() => {
-    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-    return subscriber; // unsubscribe on unmount
-  }, []);
-
-  if (initializing) return null;
-
-  if (user) {
-    navigation.navigate("TestData");
+  if (manager.checkLogin()){
+    navigation.navigate('Trang chủ')
   }
   return (
     <View style={styles.container}>
@@ -77,8 +56,6 @@ function SignUI({ navigation }) {
             style={styles.buttonSignUp}
             onPress={PressSignUp}
           />
-
-
         </View>
       </ImageBackground>
     </View>

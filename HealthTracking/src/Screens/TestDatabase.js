@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect  } from "react";
 import {
     StyleSheet,
     Text,
@@ -28,7 +28,6 @@ export default function TestDatabase(props) {
         //console.log(manager.dataDiary)
     }
     return (
-        <View style={{ ...props.style, justifyContent: 'center' }}>
             <View style={styles.container}>
                 <View style={styles.view}>
                     <View style={styles.header}>
@@ -48,15 +47,21 @@ export default function TestDatabase(props) {
                     />
                     <Text style={styles.forgotPass}>Quên mật khẩu?</Text>
                     <SignButton
-                        content="Đăng nhập"
+                        content="Oke"
                         color='#F178B6'
                         size={18}
                         style={{ margin: 20 }}
                         onPress = {uploadData}
                     />
+                    <SignButton
+                        content="Đăng xuất"
+                        color='#F178B6'
+                        size={18}
+                        style={{ margin: 20 }}
+                        onPress = {()=>{manager.SignOut()}}
+                    />
                 </View>
             </View>
-        </View>
     )
 };
 

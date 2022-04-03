@@ -1,7 +1,6 @@
-import React, { Component, useEffect } from 'react';
+import React, { Component, useEffect, useState } from 'react';
 import auth, { firebase } from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
-import { useState } from "react";
 import { getActionFromState } from '@react-navigation/native';
 
 export class FirebaseManager extends Component {
@@ -37,6 +36,24 @@ export class FirebaseManager extends Component {
 
     constructor(props) {
         super(props)
+    }
+
+    checkLogin() {
+        const [initializing, setInitializing] = useState(true);
+        const [user, setUser] = useState();
+        function onAuthStateChanged(user) {
+            setUser(user);
+            if (initializing) setInitializing(false);
+        }
+
+        useEffect(() => {
+            const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+            return subscriber; // unsubscribe on unmount
+        }, []);
+
+        if (initializing) return null;
+
+        return user;
     }
     // Login with Email and Pass
     signIn(mail, pass) {
