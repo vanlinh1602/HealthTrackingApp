@@ -1,58 +1,23 @@
-import { StackView } from '@react-navigation/stack';
-import React, {useState,setState,state} from 'react';
+import React, {useState, useRef} from 'react';
 import { 
   StyleSheet, 
   Text, 
   View, 
   Pressable,
   Image,
-  Alert
 } from 'react-native';
 import { Directions, TouchableOpacity } from 'react-native-gesture-handler';
 import CustomSmallButton from '../Utils/CustomSmallButton';
+import CameraFunc from '../Utils/CameraFunc';
+import auth from '@react-native-firebase/auth';
 
-const ImagePicker = require('react-native-image-picker');
-
-export default function Account() {
+const Account = () => {
+  const CamRef=useRef();
   const [imageSource, setImageSource] = useState(null);
-  const [visible, setVisible] = useState('false');
-  function getBoolean(value){
-    switch(value){
-      case 'true':return true
-      case 'fasle':return false
-    }
-  }
-  
-  function _pickImage() {
-    let options = {
-      title: 'You can choose one image',
-      maxWidth: 256,
-      maxHeight: 256,
-      noData: true,
-      mediaType: 'photo',
-      storageOptions: {
-       skipBackup: true
-      }
-     };
-   
-     ImagePicker.launchImageLibrary(options, response => {
-      if (response.didCancel) {
-       //console.log('User cancelled photo picker');
-       Alert.alert('Bạn chưa chọn ảnh');
-      } else if (response.error) {
-       //console.log('ImagePicker Error: ', response.error);
-      } else if (response.customButton) {
-       //console.log('User tapped custom button: ', response.customButton);
-      } else {
-       let source = { uri: response.uri };
-   
-       // ADD THIS
-       setImageSource(source.uri);
-      }
-     });
-  };
+
   return (
       <View style={styles.AccountBackground}>
+        <CameraFunc ref={CamRef}/>
           <View style={styles.Container}>
             {imageSource === null ? (
             <Image
@@ -73,7 +38,9 @@ export default function Account() {
               resizeMode='contain'
             />
             )}     
-            <TouchableOpacity style={styles.CameraButton} onPress={_pickImage}>             
+            <TouchableOpacity style={styles.CameraButton} onPress={()=>{
+              CamRef.current._pickImage()
+            }}>             
               <Image style={{
                 resizeMode:"contain",
                 height:30,
@@ -126,14 +93,13 @@ export default function Account() {
               <CustomSmallButton
                 name='Đăng xuất'
                 style={styles.ButtonStyle}
+                PressButton={signOut}
               />
             </View>  
           </View>
 
       </View>
-    );
-            
-          
+    );                    
 };
 
 const styles = StyleSheet.create({
@@ -180,3 +146,18 @@ const styles = StyleSheet.create({
       padding:10
     }
 });
+
+const getBoolean=(value)=>{
+  switch(value){
+    case 'true':return true
+    case 'fasle':return false
+  }
+};
+
+const signOut=()=>{
+  auth()
+  .signOut()
+  .then(() => console.log('User signed out!'));
+}
+
+export default Account;
