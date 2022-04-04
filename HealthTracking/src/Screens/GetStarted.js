@@ -9,11 +9,25 @@ import {
 import SignButton from "../Utils/SignButton";
 import auth from '@react-native-firebase/auth';
 import { FirebaseManager } from "../Utils/FirebaseManager";
-
+import PushNotification  from "react-native-push-notification";
   
 function GetStarted({navigation}){
   const manager = new FirebaseManager();
   const image = require('../Image/Background.png');
+  
+  useEffect(() => {
+    createChanels();
+  }, [] );
+
+  const createChanels = () => {
+    PushNotification.createChannel(
+      {
+        channelId: "test-channel",
+        channelName: "Test Channel"
+      }
+    )
+  }
+
   function PressGetStarted(){
     navigation.navigate("Sign");
   }

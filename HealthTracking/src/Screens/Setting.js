@@ -4,11 +4,14 @@ import {
     Text,
     View,
     SafeAreaView,
+    TouchableOpacity,
   } from 'react-native';
 
   import ListAlarms from '../Utils/components/ListAlarms';
 
   import TimePicker from '../Utils/components/TimePicker'; 
+
+  
 
   export default function Setting() {
 
@@ -18,8 +21,7 @@ import {
         Alarm App
       </Text>
       <SafeAreaView style ={styles.listAlarms}>
-        <ListAlarms />
-
+          <ListAlarms />          
       </SafeAreaView>
       <View style ={styles.timePicker}> 
         <TimePicker />

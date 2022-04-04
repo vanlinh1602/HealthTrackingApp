@@ -4,16 +4,20 @@ import{
     FlatList,
     View,
     Button,
+    TouchableOpacity,
 }from 'react-native';
 import { ListItem } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { deleteAlarm } from '../actions/alarms';
+import PushNotification  from "react-native-push-notification";
 
 const ListAlarms=(props) => {
     const keyExtractor = (item,index) => index.toString();
     const renderItem = ({item}) => {
         return(
             <ListItem>
+                <TouchableOpacity>
+                    onPress = {()=> {handleNotification()}}
                 <ListItem.Content>
                     <ListItem.Title style = {styles.titleStyle}>{item.time.toString()}</ListItem.Title>                    
                     <ListItem.Subtitle>{item.date.toString()}</ListItem.Subtitle>
@@ -28,8 +32,17 @@ const ListAlarms=(props) => {
                         props.delete(item.value);
                     }}
                 />
+                </TouchableOpacity>
             </ListItem>       
         );
+    }
+
+    const handleNotification = (item) => {
+        PushNotification.localNotification({
+            channelId: "test-channel",
+            title: " You clicked on" + item.time,
+            message: item.date,
+        });
     }
     return(
         <FlatList
@@ -38,7 +51,10 @@ const ListAlarms=(props) => {
             renderItem={renderItem}
         />
     );
+
  }
+
+
 
 const styles = StyleSheet.create({
     // container: {},
@@ -53,6 +69,7 @@ const mapStateToProps = state => {
         alarms:state.alarms.alarms,
     };
 }
+
 const mapDispatchToProps = dispatch => {
     return{
         delete: value => {

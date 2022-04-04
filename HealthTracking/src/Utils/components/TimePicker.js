@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import { addAlarm } from '../actions/alarms';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 
+
 const TimePicker = (props) => {
     const [isDateTimePickerVisible,setIsDateTimePickerVisible] = useState(false);
   
@@ -26,7 +27,6 @@ const TimePicker = (props) => {
         setIsDateTimePickerVisible(true);
     }
     
-
     
     const hideDateTimePicker =() =>{
         setIsDateTimePickerVisible(false);
@@ -77,6 +77,7 @@ const TimePicker = (props) => {
                 // }}
                 onPress={showDateTimePicker}          
             />
+
             <DateTimePicker
                 mode = "datetime"
                 isVisible={isDateTimePickerVisible}
