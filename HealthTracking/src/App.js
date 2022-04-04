@@ -45,10 +45,6 @@ const App = () => {
           component={SignUI}
         />
         <Stack.Screen
-          name='TestData'
-          component={TestDatabase}
-        />
-        <Stack.Screen
         options={{
           header: HeaderBar
         }}
