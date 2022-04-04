@@ -15,6 +15,7 @@ import HeaderBar from './Utils/HeaderBar';
 import GetStarted from './Screens/GetStarted';
 import SignUI from './Screens/SignUI'
 import TestDatabase from './Screens/TestDatabase';
+import Scale from './Screens/Scale';
 
 const Stack = createStackNavigator();
 
@@ -48,6 +49,9 @@ const App = () => {
           component={TestDatabase}
         />
         <Stack.Screen
+        options={{
+          header: HeaderBar
+        }}
           name='Trang chủ'
           component={Home}
         />
@@ -62,6 +66,10 @@ const App = () => {
         <Stack.Screen
           name='Account'
           component={Account}
+        />
+        <Stack.Screen
+          name='Scale'
+          component={Scale}
         />
       </Stack.Navigator>
     </NavigationContainer>

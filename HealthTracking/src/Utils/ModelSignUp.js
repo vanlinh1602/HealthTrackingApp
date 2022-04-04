@@ -46,17 +46,18 @@ export default function ModelSignUp(props) {
                             style={styles.Input}
                             placeholder="Mật khẩu"
                             onChangeText={value => setPass(value)}
-
+                            secureTextEntry
                         />
                         <TextInput 
                             style={styles.Input}
                             placeholder="Nhập lại mật khẩu"
                             onChangeText={value => setRepass(value)}
+                            secureTextEntry
                         />
                         <SignButton
                             content = "Đăng Ký"
                             color = '#F178B6'
-                            size = {18}
+                            size = {20}
                             style = {{marginBottom: 20}}
                             onPress = {SignNewAccount}
                         />
@@ -94,9 +95,7 @@ const styles = StyleSheet.create({
         margin: 10,
         fontSize : 25,
         color: '#000000',
-        //backgroundColor : '#FAA1A1'
-        //fontWeight : 'bold',
-
+        fontFamily: 'Mulish-Regular',
     },
     Input:{
         paddingLeft : 20,
@@ -106,6 +105,8 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         borderRadius: 20,
         marginBottom: 15,
+        fontSize: 20,
+        fontFamily: 'Mulish-Regular',
     },
 
 });

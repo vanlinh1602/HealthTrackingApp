@@ -18,18 +18,21 @@ export default function Home({ navigation }) {
   function MoveToAccount(){
     navigation.navigate('Account')
   }
+  function MoveToScale(){
+    navigation.navigate('Scale')
+  }
   return (
     <View style={styles.container}>
       <ImageBackground
-        source={require('../Image/Background.png')}
-        resizeMode="cover"
+        source={require('../Image/BackgroundHome.png')}
+        resizeMode= 'stretch'
         style={styles.background}
       >
         <CustomButton
-          name='Trang chủ'
+          name='Nhật ký'
           style={styles.CalenderStyle}
           PressButton={MoveToCanlender}
-          srcImage={require('../Image/HomeIcon.png')}
+          srcImage={require('../Image/DiaryIcon.png')}
         />
         <CustomButton
           name='Thống kê'
@@ -40,7 +43,7 @@ export default function Home({ navigation }) {
         <CustomButton
           name='Chỉ số'
           style={styles.ScaleStyle}
-          PressButton={MoveToStatistical}
+          PressButton={MoveToScale}
           srcImage={require('../Image/ScaleIcon.png')}
         />
         <CustomButton
@@ -69,23 +72,23 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   CalenderStyle: {
-    marginTop: "15%",
+    marginTop: "10%",
     marginLeft: '-50%',
   },
   StaticticalStyle: {
     marginRight: '-50%',
-    marginTop: '-40%',
+    marginTop: '-45%',
 
   },
   ScaleStyle: {
     marginLeft: '-50%',
-    marginTop: '15%',
+    marginTop: '10%',
   },
   AccountStyle: {
     marginRight: '-50%',
-    marginTop: '-40%',
+    marginTop: '-45%',
   },
   SettingStyle: {
-    marginTop: '15%',
+    marginTop: '10%',
   },
 });

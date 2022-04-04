@@ -1,11 +1,12 @@
 import { PrivateValueStore, validatePathConfig } from "@react-navigation/native";
-import React, { useState, useEffect  } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Text,
   View,
   StyleSheet,
   Slider,
-  ImageBackground
+  ImageBackground,
+  Image,
 } from "react-native";
 import { FirebaseManager } from "../Utils/FirebaseManager";
 import ModelSignIn from "../Utils/ModelSignIn";
@@ -26,27 +27,37 @@ function SignUI({ navigation }) {
   function PressSignUp() {
     setIsSignUp(true);
   }
-  if (manager.checkLogin()){
+  if (manager.checkLogin()) {
     navigation.navigate('Trang chủ')
   }
   return (
     <View style={styles.container}>
       <ModelSignIn
-        visible = {isSignIn}
-        close = {()=>setIsSignIn(false)}
+        visible={isSignIn}
+        close={() => setIsSignIn(false)}
 
       />
       <ModelSignUp
-        visible = {isSignUp}
-        close = {()=>setIsSignUp(false)}
+        visible={isSignUp}
+        close={() => setIsSignUp(false)}
       />
       <ImageBackground source={image} resizeMode="cover" style={styles.image}>
-        <Text style={styles.text}>Bạn đã có tài khoản chưa?</Text>
+        <View style={styles.header}>
+          <Text style={styles.text}>Bạn đã có</Text>
+          <Text style={styles.text}>tài khoản chưa?</Text>
+        </View>
+
         <View style={{ alignItems: 'center' }}>
+          <Image
+            source={require('../Image/LOGO.png')}
+            style={styles.logo}
+            resizeMode='stretch'
+          />
           <SignButton
             content="Đã có"
             color='#FAA1A1'
             style={styles.buttonSignIn}
+            size = {20}
             onPress={PressSignIn}
           />
 
@@ -54,6 +65,7 @@ function SignUI({ navigation }) {
             content="Chưa có"
             color='#0fa4a4'
             style={styles.buttonSignUp}
+            size = {20}
             onPress={PressSignUp}
           />
         </View>
@@ -70,21 +82,29 @@ const styles = StyleSheet.create({
     flex: 1,
     //justifyContent: "center"
   },
+  header: {
+    margin: 50,
+  },
+  logo: {
+    width: 200,
+    height: 200,
+    margin: 30,
+  },
   text: {
-    marginTop: 50,
     color: "white",
-    fontSize: 35,
+    fontSize: 45,
     textAlign: "center",
     backgroundColor: '#FDE7E7',
     color: '#000',
+    fontFamily: 'Playball-Regular',
   },
 
   buttonSignIn: {
-    marginTop: 400,
+    marginTop: '35%',
   },
   buttonSignUp: {
-    marginTop:20,
-    //marginLeft: '50%',
+    marginTop: 20,
+
   },
 
 });
