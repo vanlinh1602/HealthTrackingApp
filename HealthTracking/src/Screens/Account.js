@@ -10,12 +10,18 @@ import {
 } from 'react-native';
 import { Directions, TouchableOpacity } from 'react-native-gesture-handler';
 import CustomSmallButton from '../Utils/CustomSmallButton';
+import { FirebaseManager } from '../Utils/FirebaseManager';
 
 const ImagePicker = require('react-native-image-picker');
 
-export default function Account() {
+export default function Account({navigation}) {
   const [imageSource, setImageSource] = useState(null);
   const [visible, setVisible] = useState('false');
+  const manager = new FirebaseManager()
+  function LogOut(){
+    manager.SignOut();
+    navigation.navigate('GetStarted')
+  }
   function getBoolean(value){
     switch(value){
       case 'true':return true
@@ -24,6 +30,7 @@ export default function Account() {
   }
   
   function _pickImage() {
+
     let options = {
       title: 'You can choose one image',
       maxWidth: 256,
@@ -126,6 +133,7 @@ export default function Account() {
               <CustomSmallButton
                 name='Đăng xuất'
                 style={styles.ButtonStyle}
+                PressButton = {LogOut}
               />
             </View>  
           </View>

@@ -41,13 +41,13 @@ export default function ModelSignIn(props) {
                             style={styles.Input}
                             placeholder="Mật khẩu"
                             onChangeText={value => setPass(value)}
-
+                            secureTextEntry
                         />
                         <Text style = {styles.forgotPass}>Quên mật khẩu?</Text>
                         <SignButton
                             content = "Đăng nhập"
                             color = '#F178B6'
-                            size = {18}
+                            size = {20}
                             style = {{marginBottom: 20}}
                             onPress = {LogIn}
                         />
@@ -85,9 +85,7 @@ const styles = StyleSheet.create({
         margin: 10,
         fontSize : 25,
         color: '#000000',
-        //backgroundColor : '#FAA1A1'
-        //fontWeight : 'bold',
-
+        fontFamily: 'Mulish-Regular',
     },
     Input:{
         paddingLeft : 20,
@@ -97,6 +95,8 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         borderRadius: 20,
         margin: 10,
+        fontSize: 20,
+        fontFamily: 'Mulish-Regular',
     },
     forgotPass:{
         marginBottom: 10,
