@@ -17,7 +17,7 @@ export class FirebaseManager extends Component {
         day: "",
         height: 0,
         weight: 0,
-        userName: ""
+        userName: "",
     }
     // Data của thông tin người dùng
     dataInformation = {
@@ -139,7 +139,7 @@ export class FirebaseManager extends Component {
         const data = await firestore()
             .collectionGroup(collection)
             // Filter results
-            .where('User', '==', user)
+            .where('userName', '==', user)
             .where(field, operators, value)
             .get()
         data.forEach(doc => {

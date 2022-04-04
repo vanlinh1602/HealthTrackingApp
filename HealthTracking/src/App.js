@@ -14,7 +14,6 @@ import Account from './Screens/Account'
 import HeaderBar from './Utils/HeaderBar';
 import GetStarted from './Screens/GetStarted';
 import SignUI from './Screens/SignUI'
-import TestDatabase from './Screens/TestDatabase';
 import Scale from './Screens/Scale';
 
 const Stack = createStackNavigator();
@@ -43,10 +42,6 @@ const App = () => {
           }}
           name='Sign'
           component={SignUI}
-        />
-        <Stack.Screen
-          name='TestData'
-          component={TestDatabase}
         />
         <Stack.Screen
         options={{
