@@ -13,8 +13,7 @@ import Home from './Screens/Home';
 import Account from './Screens/Account'
 import HeaderBar from './Utils/HeaderBar';
 import GetStarted from './Screens/GetStarted';
-import SignUI from './Screens/SignUI'
-import TestDatabase from './Screens/TestDatabase';
+import SignUI from './Screens/SignUI';
 import Scale from './Screens/Scale';
 
 const Stack = createStackNavigator();
