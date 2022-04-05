@@ -11,7 +11,7 @@ import {
 import { FirebaseManager } from "../Utils/FirebaseManager";
 import ModelSignIn from "../Utils/ModelSignIn";
 import ModelSignUp from "../Utils/ModelSignUp";
-import SignButton from "../Utils/SignButton";
+import CustomButton from "../Utils/CustomButton";
 import auth from '@react-native-firebase/auth';
 
 
@@ -53,20 +53,24 @@ function SignUI({ navigation }) {
             style={styles.logo}
             resizeMode='stretch'
           />
-          <SignButton
+          <CustomButton
             content="Đã có"
             color='#FAA1A1'
             style={styles.buttonSignIn}
             size = {20}
             onPress={PressSignIn}
+            width = {150}
+            height = {50}
           />
 
-          <SignButton
+          <CustomButton
             content="Chưa có"
             color='#0fa4a4'
             style={styles.buttonSignUp}
             size = {20}
             onPress={PressSignUp}
+            width = {150}
+            height = {50}
           />
         </View>
       </ImageBackground>

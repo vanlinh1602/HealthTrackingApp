@@ -4,55 +4,54 @@ import {
     Text,
     View,
     Pressable,
-    Image
 } from 'react-native';
-import { BoxShadow } from 'react-native-shadow';
-const shadowOpt = {
-    width: 160,
-    height: 190,
-    color: "#000",
-    border: 5,
-    radius: 40,
-    opacity: 0.2,
-    x: 1,
-    y: 4,
-    style: { marginVertical: 0 }
-}
-export default function CustomButton(props) {
-    return (
-        <View style={{ ...props.style, alignItems: 'center' }}>
+import { BoxShadow } from 'react-native-shadow'
 
+
+export default function CustomButton(props) {
+    const shadowOpt = {
+        width: props.width,
+        height: props.height,
+        color: "#000",
+        border: 2,
+        radius: 20,
+        opacity: 0.2,
+        x: 2,
+        y: 4,
+        style: { marginVertical: 0 }
+    }
+    return (
+        <View style={{ ...props.style, justifyContent: 'center' }}>
             <BoxShadow setting={shadowOpt}>
                 <Pressable
-                    style={styles.pressaable}
-                    onPress={props.PressButton}
+                    style={[styles.button, { 
+                        backgroundColor: props.color, 
+                        width: props.width, 
+                        height: props.height, 
+                    }]}
+                    onPress={props.onPress}
                 >
-                    <Image
-                        style={{ width: 100, height: 100, resizeMode: 'stretch' }}
-                        source={props.srcImage}
-                    />
-                    <Text style={styles.text}>{props.name}</Text>
+                    <Text
+                        style={[styles.content, { fontSize: props.size }]}
+                    >
+                        {props.content}
+                    </Text>
                 </Pressable>
-
             </BoxShadow>
         </View>
-    );
+
+    )
 };
 
-
 const styles = StyleSheet.create({
-    pressaable: {
-        width: 160,
-        height: 190,
-        backgroundColor: '#FCD0D0',
+    button: {
         alignItems: 'center',
         justifyContent: 'center',
-        borderRadius: 40,
+        borderRadius: 20,
     },
-    text: {
+    content: {
         fontFamily: 'Mulish-Regular',
-        marginTop : 20,
-        fontSize: 22 ,
-        color: '#000'
+        color : '#000'
     },
 });
+

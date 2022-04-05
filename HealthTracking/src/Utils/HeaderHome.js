@@ -7,11 +7,10 @@ import {
     Image
 } from 'react-native';
 import { BoxShadow } from 'react-native-shadow';
-export default function HeaderBar({ navigation }) {
+export default function HeaderHome({ navigation }) {
     function GoBackSreen() {
         navigation.goBack()
     }
-    var isGoback = true;
     const shadowOpt = {
         width: 434,
         height: 60,
@@ -26,7 +25,6 @@ export default function HeaderBar({ navigation }) {
     return (
         <View style={{ backgroundColor: '#FDE7E7' }}>
             <BoxShadow setting={shadowOpt}>
-
                 <View style={styles.viewHeader}>
                     <View style={{ alignItems: 'center' }}>
                         <Image
@@ -35,24 +33,11 @@ export default function HeaderBar({ navigation }) {
                             resizeMode = "stretch"
                         />
                     </View>
-                    {isGoback ? (
-                        <Pressable
-                            style={styles.BackButton}
-                            onPress={GoBackSreen}
-                        >
-                            <Image
-                                style={styles.BackImage}
-                                source={require('../Image/icons8-back-50.png')}
-                            />
-                        </Pressable>
-                    ) : (null)}
                 </View>
             </BoxShadow>
         </View>
     );
-
 };
-
 
 const styles = StyleSheet.create({
     viewHeader: {
