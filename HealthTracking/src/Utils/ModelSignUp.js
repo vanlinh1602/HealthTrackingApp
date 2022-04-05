@@ -55,13 +55,13 @@ export default function ModelSignUp(props) {
                             secureTextEntry
                         />
                         <CustomButton
-                            content = "Đăng Ký"
-                            color = '#F178B6'
-                            size = {20}
-                            style = {{marginBottom: 20}}
-                            onPress = {SignNewAccount}
-                            width = {150}
-                            height = {50}
+                            content = "Đăng Ký"             // chữ hiện trên button
+                            color = '#F178B6'               // Màu nền
+                            size = {20}                     // Cỡ chữ
+                            style = {{marginBottom: 20}}    // Style bình thường
+                            onPress = {SignNewAccount}      // Event khi nhấn
+                            width = {150}                   // Chiều rộng button
+                            height = {50}                   // Chiều cao button
                         />
                     </View>    
                 </View>
