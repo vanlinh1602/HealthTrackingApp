@@ -8,28 +8,43 @@ import {
 } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import { ScrollView, TextInput } from 'react-native-gesture-handler';
+import { BoxShadow } from 'react-native-shadow';
 import HeaderBar from '../Utils/HeaderBar';
 
 const CalendarScreen = () => {
   const value = 'Ngày 2: Hôm nay rất vui vì đã được đi sở thú'
+  const shadowOpt = {
+    width: 400,
+    height: 320,
+    color: "#000",
+    border: 2,
+    radius: 20,
+    opacity: 0.2,
+    x: -2,
+    y: -2,
+    style: { marginVertical: 20 }
+}
   return (
     <ScrollView style={styles.calendarBackground}>
-      <View style = {{width: '100%'}}>
+      <View style = {{alignItems: 'center'}}>
+
+      <BoxShadow setting = {shadowOpt}>
         <Calendar
-          style={styles.CalendarBackgroud}
+          style={styles.Calendar}
           theme={
             {
-              calendarBackground: '#FCD0D0'
+              calendarBackground: '#FCD0D0',
             }
           }
-        />
+          />
+      </BoxShadow>
       </View>
       <View style = {styles.Status}>
           <TextInput 
             style = {styles.TextInput}
             placeholder = 'Hôm nay của bạn thế nào?'
             multiline = {true}
-            editable = {false}
+            editable = {true}
           />
           <Pressable style = {styles.Enter}>
             <Text style = {{fontSize: 15, color: '#000'}}>Đăng</Text>
@@ -58,13 +73,8 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#FDE7E7',
   },
-  CalendarBackgroud: {
-    marginTop: 20,
-    borderRadius: 15,
-    width: '95%',
-    borderColor: '#F178B6',
-    borderWidth: 1,
-    marginLeft: '2.5%'
+  Calendar:{
+    borderRadius: 20,
   },
   TextInput:{
     width: '90%',
@@ -74,7 +84,10 @@ const styles = StyleSheet.create({
     borderColor : '#F178B6',
     borderRadius: 10,
     borderWidth: 1,  
-    fontSize: 15,
+    fontSize: 20,
+    fontFamily: 'Mulish-Regular',
+    padding : 20,
+    color : '#000',
   },
   Status:{
     width : '100%',

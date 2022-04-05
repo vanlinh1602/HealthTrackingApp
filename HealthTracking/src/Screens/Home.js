@@ -6,7 +6,7 @@ import {
   Pressable,
   ImageBackground,
 } from 'react-native';
-import CustomButton from '../Utils/CustomButton';
+import ButtonHomeUI from '../Utils/ButtonHomeUI';
 
 export default function Home({ navigation }) {
   function MoveToCanlender() {
@@ -28,31 +28,31 @@ export default function Home({ navigation }) {
         resizeMode= 'stretch'
         style={styles.background}
       >
-        <CustomButton
+        <ButtonHomeUI
           name='Nhật ký'
           style={styles.CalenderStyle}
           PressButton={MoveToCanlender}
           srcImage={require('../Image/DiaryIcon.png')}
         />
-        <CustomButton
+        <ButtonHomeUI
           name='Thống kê'
           style={styles.StaticticalStyle}
           PressButton={MoveToStatistical}
           srcImage={require('../Image/StatisticIcon.png')}
         />
-        <CustomButton
+        <ButtonHomeUI
           name='Chỉ số'
           style={styles.ScaleStyle}
           PressButton={MoveToScale}
           srcImage={require('../Image/ScaleIcon.png')}
         />
-        <CustomButton
+        <ButtonHomeUI
           name='Tài khoản'
           style={styles.AccountStyle}
           PressButton={MoveToAccount}
           srcImage={require('../Image/AccountIcon.png')}
         />
-        <CustomButton
+        <ButtonHomeUI
           name='Cài đặt'
           style={styles.SettingStyle}
           PressButton={MoveToStatistical}

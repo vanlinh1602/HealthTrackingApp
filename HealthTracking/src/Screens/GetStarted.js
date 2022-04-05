@@ -7,7 +7,7 @@ import {
   Pressable,
   Image
 } from "react-native";
-import SignButton from "../Utils/SignButton";
+import CustomButton from "../Utils/CustomButton";
 import auth from '@react-native-firebase/auth';
 import { FirebaseManager } from "../Utils/FirebaseManager";
 
@@ -37,12 +37,14 @@ function GetStarted({ navigation }) {
             resizeMode='stretch'
           />
 
-          <SignButton
+          <CustomButton
             content="Bắt đầu"
             color='#FAA1A1'
             style={styles.button}
             onPress={PressGetStarted}
             size={20}
+            width = {150}
+            height = {50}
           />
         </View>
       </ImageBackground>

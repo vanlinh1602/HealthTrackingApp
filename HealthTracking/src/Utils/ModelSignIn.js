@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import { FirebaseManager } from './FirebaseManager';
-import SignButton from './SignButton';
+import CustomButton from './CustomButton';
 
 
 
@@ -44,12 +44,14 @@ export default function ModelSignIn(props) {
                             secureTextEntry
                         />
                         <Text style = {styles.forgotPass}>Quên mật khẩu?</Text>
-                        <SignButton
+                        <CustomButton
                             content = "Đăng nhập"
                             color = '#F178B6'
                             size = {20}
                             style = {{marginBottom: 20}}
                             onPress = {LogIn}
+                            width = {150}
+                            height = {50}
                         />
                     </View>    
                 </View>
