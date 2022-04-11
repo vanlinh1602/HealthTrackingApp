@@ -39,7 +39,7 @@ export default function ModelSignUp(props) {
                     </View>
                         <TextInput 
                             style={styles.Input}
-                            placeholder="Tài khoảng"
+                            placeholder="Tài khoản"
                             onChangeText={value => setMail(value)}
                         />
                         <TextInput 
