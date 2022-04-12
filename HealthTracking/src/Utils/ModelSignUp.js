@@ -12,12 +12,13 @@ import CustomButton from './CustomButton';
 
 export default function ModelSignUp(props) {
     const manager = new FirebaseManager();
+    const [userName, setUserName] = useState();
     const [mail, setMail] = useState();
     const [pass, setPass] = useState();
     const [repass, setRepass] = useState();
     function SignNewAccount(){
         if (pass == repass){
-            manager.singUp(mail, pass)
+            manager.singUp(userName, mail, pass)
         }
         else{
             alert("Mật khẩu không trùng khớp");
@@ -40,6 +41,11 @@ export default function ModelSignUp(props) {
                         <TextInput 
                             style={styles.Input}
                             placeholder="Tài khoảng"
+                            onChangeText={value => setUserName(value)}
+                        />
+                        <TextInput 
+                            style={styles.Input}
+                            placeholder="Mail"
                             onChangeText={value => setMail(value)}
                         />
                         <TextInput 

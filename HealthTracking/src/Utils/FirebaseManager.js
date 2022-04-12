@@ -4,13 +4,14 @@ import firestore from '@react-native-firebase/firestore';
 import { getActionFromState } from '@react-navigation/native';
 
 export class FirebaseManager extends Component {
-
+    userName;
     // Data của Nhật ký
     dataDiary = {
         userName: "",
         status: "",
         image: "",
         day: "",
+        title: "",
     }
     // Data của chỉ số sức khỏe
     dataHealthInfor = {
@@ -36,6 +37,7 @@ export class FirebaseManager extends Component {
 
     constructor(props) {
         super(props)
+        this.userName = this.GetUserName();
     }
 
     checkLogin() {
@@ -52,7 +54,6 @@ export class FirebaseManager extends Component {
         }, []);
 
         if (initializing) return null;
-
         return user;
     }
     // Login with Email and Pass
@@ -75,9 +76,13 @@ export class FirebaseManager extends Component {
             });
     };
     // Đăng kí tài khoảng với mail và pass
-    singUp(mail, pass) {
+    singUp(userName, mail, pass) {
         auth().createUserWithEmailAndPassword(mail, pass)
-            .then(() => {
+            .then((res) => {
+                const user = firebase.auth().currentUser;
+                return user.updateProfile({
+                    displayName: userName
+                })
                 console.log('User account created & signed in!');
             })
             .catch(error => {
@@ -90,6 +95,7 @@ export class FirebaseManager extends Component {
                 }
             })
     }
+
     ChangePassword(mail, oldPassword, newPassword) {
         this.signIn(mail, oldPassword)
         const user = auth().currentUser;
@@ -102,45 +108,36 @@ export class FirebaseManager extends Component {
                 console.log(error)
             })
     }
+    //Lấy user name
+    GetUserName(){
+        const user = auth().currentUser;
+        if(user)
+            return user.displayName;
+    }
     //Log out
     SignOut() {
         auth().signOut().then(() => { console.log("Log out succesed") })
     };
-    // Get data from firebase
-    async getData(collection, document) {
-        let temp = []
-        const data = (await firestore().collection(collection).doc(document).get())
-        switch (collection) {
-            case 'Information': {
-                this.dataInformation = data.data();
-                return this.dataInformation;
-                break;
-            }
-            case 'Diary': {
-                this.dataDiary = data.data();
-                return this.dataDiary;
-                break;
-            }
-            case 'HealthInfor': {
-                this.dataHealthInfor = data.data();
-                return this.dataHealthInfor;
-                break;
-            }
-            case 'Statistical': {
-                this.dataStatistical = data.data();
-                return this.dataStatistical;
-                break;
-            }
-        }
-    };
     // Lấy data với query return List data
-    async getDataWithQuery(collection, user, field, operators, value) {
+    async getDataWithQuery(collection,field, operators, value) {
         let temp = []
         const data = await firestore()
             .collectionGroup(collection)
             // Filter results
-            .where('userName', '==', user)
+            .where('userName', '==', this.userName)
             .where(field, operators, value)
+            .get()
+        data.forEach(doc => {
+            temp.push(doc.data())
+        })
+        return temp;
+    }
+    // Lấy data với collection
+    async getDataWithCollection(collection) {
+        let temp = []
+        const data = await firestore()
+            .collection(collection)
+            .where('userName', '==', this.userName)
             .get()
         data.forEach(doc => {
             temp.push(doc.data())
@@ -149,19 +146,10 @@ export class FirebaseManager extends Component {
     }
     // Thêm dữ liệu lên database với document ngẫu nhiên
     AddDataRandomDoc(collection, data) {
+        data.userName = this.userName;
         firestore()
             .collection(collection)
             .add(data)
-            .then(() => {
-                console.log('User added!');
-            });
-    }
-    //Thêm dữ liệu lên database với document đặt tên
-    AddDataWithDoc(collection, document, data) {
-        firestore()
-            .collection(collection)
-            .doc(document)
-            .set(data)
             .then(() => {
                 console.log('User added!');
             });
