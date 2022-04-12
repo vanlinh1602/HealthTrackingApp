@@ -8,16 +8,44 @@ import {
   Alert
 } from 'react-native';
 import { Directions, TouchableOpacity } from 'react-native-gesture-handler';
-import CustomSmallButton from '../Utils/CustomSmallButton';
+import CustomButton from '../Utils/CustomButton';
 import { FirebaseManager } from '../Utils/FirebaseManager';
-import CameraFunc from '../Utils/CameraFunc';
+const ImagePicker = require('react-native-image-picker');
 
 export default function Account({navigation}) {
-  const CamRef=useRef();
+  const manager = new FirebaseManager()
+  function LogOut(){
+    manager.SignOut();
+    navigation.navigate('GetStarted')
+};
   const [imageSource, setImageSource] = useState(null);
+  const _pickImage=()=> {
+    let options = {
+      title: 'You can choose one image',
+      maxWidth: 256,
+      maxHeight: 256,
+      noData: true,
+      mediaType: 'photo',
+      storageOptions: {
+       skipBackup: true
+      }
+     };
+     ImagePicker.launchImageLibrary(options, response => {
+      if (response.didCancel) {
+       //console.log('User cancelled photo picker');
+       Alert.alert('Bạn chưa chọn ảnh');
+      } else if (response.error) {
+       //console.log('ImagePicker Error: ', response.error);
+      } else if (response.customButton) {
+       //console.log('User tapped custom button: ', response.customButton);
+      } else {
+       let source = { uri: response.uri };
+       setImageSource(source.uri);
+      }
+     });
+};
   return (
       <View style={styles.AccountBackground}>
-        <CameraFunc ref={CamRef}/>
           <View style={styles.Container}>
             {imageSource === null ? (
             <Image
@@ -38,9 +66,7 @@ export default function Account({navigation}) {
               resizeMode='contain'
             />
             )}     
-            <TouchableOpacity style={styles.CameraButton} onPress={()=>{
-              CamRef.current._pickImage()
-            }}>             
+            <TouchableOpacity style={styles.CameraButton} onPress={_pickImage}>             
               <Image style={{
                 resizeMode:"contain",
                 height:30,
@@ -86,14 +112,20 @@ export default function Account({navigation}) {
             </View>   
 
             <View>
-              <CustomSmallButton
+              <CustomButton
                 name='Đổi mật khẩu'
+                size={20}
                 style={styles.ButtonStyle}
+                width={100}
+                height={100}
               />
-              <CustomSmallButton
+              <CustomButton
                 name='Đăng xuất'
+                size={20}
                 style={styles.ButtonStyle}
-                PressButton = {LogOut}
+                onPress = {LogOut}
+                width={100}
+                height={100}
               />
             </View>  
           </View>
@@ -145,18 +177,9 @@ const styles = StyleSheet.create({
     },
     ButtonStyle:{
       marginTop:10,
-      padding:10
+      padding:10,
     }
 });
 
-const getBoolean=(value)=>{
-  switch(value){
-    case 'true':return true
-    case 'fasle':return false
-  }
-};
-const manager = new FirebaseManager()
-  function LogOut(){
-    manager.SignOut();
-    navigation.navigate('GetStarted')
-};
+
+
