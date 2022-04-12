@@ -9,7 +9,7 @@ import {
   Button,
   Alert,
 } from 'react-native';
-import SignButton from '../Utils/SignButton';
+import CustomButton from '../Utils/CustomButton';
 
 const Scale = () => {
   const [bmi, setBmi] = useState();
@@ -66,12 +66,14 @@ const Scale = () => {
         />
       </View>
 
-      <SignButton
+      <CustomButton
         content = "Enter"
         color = "#EF5DA8"
         size = {25}
         style = {styles.enter}
         onPress = {handleBmi}
+        width ={150}
+        height = {50}
       />
       {/* <Pressable
         onPress={handleBmi}

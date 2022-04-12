@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   StyleSheet,
   Text,
@@ -13,8 +13,9 @@ import Home from './Screens/Home';
 import Account from './Screens/Account'
 import HeaderBar from './Utils/HeaderBar';
 import GetStarted from './Screens/GetStarted';
-import SignUI from './Screens/SignUI'
+import SignUI from './Screens/SignUI';
 import Scale from './Screens/Scale';
+import HeaderHome from './Utils/HeaderHome';
 
 const Stack = createStackNavigator();
 
@@ -27,7 +28,7 @@ const App = () => {
           {
             header: HeaderBar
           }}
-        initialRouteName = {screenFirst}
+        initialRouteName={screenFirst}
       >
         <Stack.Screen
           options={{
@@ -44,9 +45,9 @@ const App = () => {
           component={SignUI}
         />
         <Stack.Screen
-        options={{
-          header: HeaderBar
-        }}
+          options={{
+            header: HeaderHome
+          }}
           name='Trang chủ'
           component={Home}
         />

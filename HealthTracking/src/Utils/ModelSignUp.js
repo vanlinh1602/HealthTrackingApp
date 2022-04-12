@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import { FirebaseManager } from './FirebaseManager';
-import SignButton from './SignButton';
+import CustomButton from './CustomButton';
 
 export default function ModelSignUp(props) {
     const manager = new FirebaseManager();
@@ -54,12 +54,14 @@ export default function ModelSignUp(props) {
                             onChangeText={value => setRepass(value)}
                             secureTextEntry
                         />
-                        <SignButton
-                            content = "Đăng Ký"
-                            color = '#F178B6'
-                            size = {20}
-                            style = {{marginBottom: 20}}
-                            onPress = {SignNewAccount}
+                        <CustomButton
+                            content = "Đăng Ký"             // chữ hiện trên button
+                            color = '#F178B6'               // Màu nền
+                            size = {20}                     // Cỡ chữ
+                            style = {{marginBottom: 20}}    // Style bình thường
+                            onPress = {SignNewAccount}      // Event khi nhấn
+                            width = {150}                   // Chiều rộng button
+                            height = {50}                   // Chiều cao button
                         />
                     </View>    
                 </View>
