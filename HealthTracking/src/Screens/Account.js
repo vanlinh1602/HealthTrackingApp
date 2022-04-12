@@ -3,16 +3,27 @@ import {
   StyleSheet, 
   Text, 
   View, 
-  Pressable,
   Image,
   Alert
 } from 'react-native';
-import { Directions, TouchableOpacity } from 'react-native-gesture-handler';
+import {TouchableOpacity } from 'react-native-gesture-handler';
 import CustomButton from '../Utils/CustomButton';
 import { FirebaseManager } from '../Utils/FirebaseManager';
+import { BoxShadow } from 'react-native-shadow';
 const ImagePicker = require('react-native-image-picker');
 
 export default function Account({navigation}) {
+  const shadowOpt = {
+    width: 350,
+    height: 250,
+    color: "#000",
+    border: 2,
+    radius: 20,
+    opacity: 0.2,
+    x: 5,
+    y: 15,
+    style: { marginVertical: 20 }
+};
   const manager = new FirebaseManager()
   function LogOut(){
     manager.SignOut();
@@ -20,8 +31,7 @@ export default function Account({navigation}) {
 };
   const [imageSource, setImageSource] = useState(null);
   const _pickImage=()=> {
-    let options = {
-      title: 'You can choose one image',
+    let options = {     
       maxWidth: 256,
       maxHeight: 256,
       noData: true,
@@ -40,31 +50,39 @@ export default function Account({navigation}) {
        //console.log('User tapped custom button: ', response.customButton);
       } else {
        let source = { uri: response.uri };
-       setImageSource(source.uri);
+       console.log('response',JSON.stringify(response));
+       setImageSource(source.uri);      
       }
      });
 };
   return (
       <View style={styles.AccountBackground}>
+        
           <View style={styles.Container}>
             {imageSource === null ? (
+            <View style={{borderWidth:2,borderRadius:50}}>
             <Image
               source={require('../Image/PersonImage.png')}
               style={{borderRadius:20,
                 resizeMode:"contain",
                 height:100,
-                width:100}}
+                width:100,
+                }}
               resizeMode='contain'
             />
+            </View>
             ) : (
+            <View style={{borderWidth:2,borderRadius:50}}>
             <Image
               source={{ uri: imageSource }}
               style={{borderRadius:20,
                 resizeMode:"contain",
                 height:100,
-                width:100}}
+                width:100,
+                }}
               resizeMode='contain'
             />
+            </View>
             )}     
             <TouchableOpacity style={styles.CameraButton} onPress={_pickImage}>             
               <Image style={{
@@ -76,7 +94,9 @@ export default function Account({navigation}) {
               />                  
             </TouchableOpacity>
 
-              <View style={styles.InfomationBox}>
+            <BoxShadow setting = {shadowOpt}>
+            <View style={styles.InfomationBox}>
+            
               <View style={{flex:2}}>
                 <Text style={styles.TextStyle}>
                   Họ tên: Trần Nam Khánh
@@ -109,23 +129,27 @@ export default function Account({navigation}) {
                   source={require('../Image/Line.png')}
                 />
               </View>
+            
             </View>   
+            </BoxShadow>
 
             <View>
               <CustomButton
-                name='Đổi mật khẩu'
+                content='Đổi mật khẩu'
                 size={20}
                 style={styles.ButtonStyle}
-                width={100}
-                height={100}
+                width={150}
+                height={75}
+                color='#FAA1A1'
               />
               <CustomButton
-                name='Đăng xuất'
+                content='Đăng xuất'
                 size={20}
                 style={styles.ButtonStyle}
                 onPress = {LogOut}
-                width={100}
-                height={100}
+                width={150}
+                height={75}
+                color='#FAA1A1'
               />
             </View>  
           </View>
@@ -147,24 +171,24 @@ const styles = StyleSheet.create({
       height:100,
       marginTop:25,
       width:'100%',
-      alignItems:'center'
+      alignItems:'center',
     },
     CameraButton:{
       padding:10,
       margintop:50,
       height:40,
       width:100,
-      alignItems:'center'
+      alignItems:'center',
     },
     InfomationBox:{
       backgroundColor:'#FCD0D0',    
       height:250,
-      width:'90%',
+      width:'100%',
       padding:10,
       borderRadius:20,
       marginTop:10,
       justifyContent:'space-around',
-      flexDirection:'column'
+      flexDirection:'column',
     },
     TextStyle:{
       fontSize:20,
