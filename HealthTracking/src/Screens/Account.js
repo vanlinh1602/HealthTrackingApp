@@ -19,10 +19,10 @@ export default function Account({navigation}) {
     color: "#000",
     border: 2,
     radius: 20,
-    opacity: 0.2,
+    opacity: 0.15,
     x: 5,
     y: 15,
-    style: { marginVertical: 20 }
+    style: { marginVertical: 10 }
 };
   const manager = new FirebaseManager()
   function LogOut(){
