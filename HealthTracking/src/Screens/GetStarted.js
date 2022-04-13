@@ -12,14 +12,14 @@ import auth from '@react-native-firebase/auth';
 import { FirebaseManager } from "../Utils/FirebaseManager";
 
 
-function GetStarted({ navigation }) {
+export default function GetStarted({ navigation }) {
   const manager = new FirebaseManager();
   const image = require('../Image/Background.png');
   function PressGetStarted() {
     navigation.navigate("Sign");
   }
   if (manager.checkLogin()) {
-    navigation.navigate('Trang chủ')
+    navigation.navigate('Calendar')
   }
   return (
     <View style={styles.container}>
@@ -84,4 +84,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default GetStarted;
+
