@@ -1,4 +1,4 @@
-import React, {useState,useRef} from 'react';
+import React, {useState,useRef,useEffect} from 'react';
 import { 
   StyleSheet, 
   Text, 
@@ -10,54 +10,32 @@ import {TouchableOpacity } from 'react-native-gesture-handler';
 import CustomButton from '../Utils/CustomButton';
 import { FirebaseManager } from '../Utils/FirebaseManager';
 import { BoxShadow } from 'react-native-shadow';
-const ImagePicker = require('react-native-image-picker');
+import { CameraFunc } from '../Utils/CameraFunc';
+import { ImagePickerResponse } from 'react-native-image-picker';
 
 export default function Account({navigation}) {
-  const shadowOpt = {
-    width: 350,
-    height: 250,
-    color: "#000",
-    border: 2,
-    radius: 20,
-    opacity: 0.15,
-    x: 5,
-    y: 15,
-    style: { marginVertical: 10 }
-};
-  const manager = new FirebaseManager()
+  const Camera=new CameraFunc();
+  const [imageSource, setImageSource] = useState(null);
+  const [data, setData]=useState(manager.dataInformation);
   function LogOut(){
     manager.SignOut();
     navigation.navigate('GetStarted')
-};
-  const [imageSource, setImageSource] = useState(null);
-  const _pickImage=()=> {
-    let options = {     
-      maxWidth: 256,
-      maxHeight: 256,
-      noData: true,
-      mediaType: 'photo',
-      storageOptions: {
-       skipBackup: true
-      }
-     };
-     ImagePicker.launchImageLibrary(options, response => {
-      if (response.didCancel) {
-       //console.log('User cancelled photo picker');
-       Alert.alert('Bạn chưa chọn ảnh');
-      } else if (response.error) {
-       //console.log('ImagePicker Error: ', response.error);
-      } else if (response.customButton) {
-       //console.log('User tapped custom button: ', response.customButton);
-      } else {
-       let source = { uri: response.uri };
-       console.log('response',JSON.stringify(response));
-       setImageSource(source.uri);      
-      }
-     });
-};
+  };
+  async function GetData(){
+    var getdata = await manager.getDataWithCollection("Information");
+    getdata.forEach((value => {setData()}))
+  }
+  useEffect(()=>{
+    GetData();
+  },[]);
+  async function pickImage(){
+    const result = { uri:" "};
+    result.uri = await Camera._pickImage();
+    console.log("result",result);
+    //setImageSource(result.uri);
+  }
   return (
       <View style={styles.AccountBackground}>
-        
           <View style={styles.Container}>
             {imageSource === null ? (
             <View style={{borderWidth:2,borderRadius:50}}>
@@ -84,7 +62,7 @@ export default function Account({navigation}) {
             />
             </View>
             )}     
-            <TouchableOpacity style={styles.CameraButton} onPress={_pickImage}>             
+            <TouchableOpacity style={styles.CameraButton} onPress={pickImage}>             
               <Image style={{
                 resizeMode:"contain",
                 height:30,
@@ -99,7 +77,7 @@ export default function Account({navigation}) {
             
               <View style={{flex:2}}>
                 <Text style={styles.TextStyle}>
-                  Họ tên: Trần Nam Khánh
+                  {data.userName}
                 </Text>
                 <Image style={styles.Line}
                   source={require('../Image/Line.png')}
@@ -107,7 +85,7 @@ export default function Account({navigation}) {
               </View>
               <View style={{flex:2}}>
                 <Text style={styles.TextStyle}>
-                  Giới tính: Nam
+                  {data.mail}
                 </Text>
                 <Image style={styles.Line}
                   source={require('../Image/Line.png')}
@@ -205,5 +183,18 @@ const styles = StyleSheet.create({
     }
 });
 
+const manager = new FirebaseManager();
+
+const shadowOpt = {
+  width: 350,
+  height: 250,
+  color: "#000",
+  border: 2,
+  radius: 20,
+  opacity: 0.15,
+  x: 5,
+  y: 15,
+  style: { marginVertical: 10 }
+};
 
 
