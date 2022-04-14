@@ -41,6 +41,11 @@ export default function ModelSignUp(props) {
                         <TextInput 
                             style={styles.Input}
                             placeholder="Tài khoản"
+                            onChangeText={value => setUserName(value)}
+                        />
+                        <TextInput 
+                            style={styles.Input}
+                            placeholder="Mail"
                             onChangeText={value => setMail(value)}
                         />
                         <TextInput 

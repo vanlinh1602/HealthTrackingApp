@@ -23,7 +23,7 @@ export default function Account({navigation}) {
   };
   async function GetData(){
     var getdata = await manager.getDataWithCollection("Information");
-    getdata.forEach((value => {setData()}))
+    getdata.forEach((value => {setData(value)}))
   }
   useEffect(()=>{
     GetData();

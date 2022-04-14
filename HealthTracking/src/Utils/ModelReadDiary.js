@@ -6,11 +6,12 @@ import {
     Modal,
     Pressable,
     Image,
-
+    Dimensions,
 } from 'react-native';
 import { ScrollView, TextInput } from 'react-native-gesture-handler';
 import CustomButton from './CustomButton';
 import { FirebaseManager } from './FirebaseManager';
+import ModelAddDiary from './ModelAddDiary'
 
 export default function ModelReadDiary(props) {
     const manager = new FirebaseManager();
@@ -65,38 +66,13 @@ export default function ModelReadDiary(props) {
                                 </View>
                             </ScrollView>
                         ) : (
-                            <View>
-                                {/* <View>
-                                    <Text style={styles.day}>Ngày {props.day}</Text>
-                                    <TextInput
-                                        style={styles.title}
-                                        multiline
-                                    >{props.title}</TextInput>
-                                    <View style={{ alignItems: 'flex-end' }}>
-                                        <Image
-                                            resizeMode="stretch"
-                                            source={require('../Image/imagenice.jpg')}
-                                            style={{ width: 200, height: 200 }}
-                                        />
-                                        <TextInput
-                                            style={styles.content}
-                                            multiline
-                                        >{props.status}</TextInput>
-                                    </View>
-                                </View> */}
-                                <CustomButton
-                                    content="Xong"
-                                    color='#F9476C99'
-                                    style={styles.btnSubmit}
-                                    size={20}
-                                    onPress={() => {
-                                        setIsFix(false);
-                                        //props.close()
-                                    }}
-                                    width={150}
-                                    height={50}
-                                />
-                            </View>
+                            <ModelAddDiary
+                                fixTitle = {props.title}
+                                fixStatus = {props.status}
+                                day = {props.day}
+                                visible = {isFix}
+                                close = {()=> setIsFix(false)}
+                            />
                         )}
                     </View>
                 </View>
@@ -114,7 +90,7 @@ const styles = StyleSheet.create({
     },
     mainView: {
         backgroundColor: '#FDE7E7',
-        with: 300,
+        with: Dimensions.get("window").width,
         maxHeight: 700,
         borderRadius: 20,
 

@@ -4,8 +4,12 @@ import {Alert} from 'react-native';
 const ImagePicker = require('react-native-image-picker');
 
 export class CameraFunc extends Component {
+
+  uri;
+
   constructor(props){
     super(props)
+    this.uri = "";
   };
   async _pickImage(){
         let options = {
@@ -25,11 +29,12 @@ export class CameraFunc extends Component {
            //console.log('User tapped custom button: ', response.customButton);
           } else {
            const source = { uri : response.assets[0].uri };
-           console.log("response",response.assets[0].uri);
-           console.log("source",source);
-           return source.uri;
+           //console.log("response",response.assets[0].uri);
+           //console.log("source",source);
+           this.uri = source.uri;
+           //return source.uri;
            // ADD THIS
-           setImageSource(source.uri);
+           //setImageSource(source.uri);
           }
          });
       };    

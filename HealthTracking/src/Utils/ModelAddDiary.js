@@ -25,6 +25,10 @@ export default function ModelReadDiary(props) {
         props.close();
     }
 
+    function UpdateData(){
+
+    }
+
     return (
         <View style={{ ...props.style, justifyContent: 'center' }}>
             <Modal
@@ -48,20 +52,20 @@ export default function ModelReadDiary(props) {
                             <Text style={styles.write}>Viết</Text>
                         </View>
                         <View >
-                            <Text style={styles.title}>Tiêu đề {props.day}</Text>
+                            <Text style={styles.title}>Tiêu đề</Text>
                             <TextInput
                                 style = {styles.inputTitle}
                                 placeholder = "Cảm nhận của bạn về ngày hôm nay"
                                 multiline
                                 onChangeText={value => data.title = value}
-                            />
+                            >{props.fixTitle}</TextInput>
                             <Text style={styles.story}>Nhật ký</Text>
                             <TextInput
                                 style = {styles.inputStory}
                                 placeholder = "Hãy viết một vài điều gì đó mà bạn thấy ấn tượng trong ngày hôm nay"
                                 multiline
                                 onChangeText={value => data.status = value}
-                            />
+                            >{props.fixStatus}</TextInput>
                         </View>
                         <ScrollView 
                             horizontal={true}
@@ -91,7 +95,7 @@ export default function ModelReadDiary(props) {
                                 color='#F9476C99'
                                 style={styles.btnSubmit}
                                 size={20}
-                                onPress={PushDataToDataBase}
+                                onPress={props.fixTitle ? UpdateData : PushDataToDataBase}
                                 width={150}
                                 height={50}
                             />
@@ -128,9 +132,9 @@ const styles = StyleSheet.create({
     },
 
     title: {
-        fontFamily: 'Mulish-Regular',
-        //fontFamily: 'Playball-Regular',
-        fontSize: 30,
+        //fontFamily: 'Mulish-Regular',
+        fontFamily: 'Playball-Regular',
+        fontSize: 40,
         paddingTop: 10,
         paddingLeft: 10,
         color: '#000'
@@ -143,8 +147,9 @@ const styles = StyleSheet.create({
 
     },
     story: {
-        fontFamily: 'Mulish-Regular',
-        fontSize: 30,
+        //fontFamily: 'Mulish-Regular',
+        fontFamily: 'Playball-Regular',
+        fontSize: 40,
         paddingTop: 10,
         paddingLeft: 10,
         color: "#000",
