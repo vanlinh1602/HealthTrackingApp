@@ -15,7 +15,7 @@ import ModalAlert from '../Utils/ModelAlert';
 
 export default function Account({navigation}) {
   const Camera = new CameraFunc();
-  const [imageSource, setImageSource] = useState("");
+  const [imageSource, setImageSource] = useState("null");
   const [data, setData]=useState(manager.dataInformation);
   const [isChangePassVisible, setChangePassVisible]=useState(false);
   const [isAlertVisible, setAlertVisible]=useState(false);
@@ -24,7 +24,7 @@ export default function Account({navigation}) {
     navigation.navigate('GetStarted')
   };
   function ChangePassword(){
-    setVisible(true);
+    setChangePassVisible(true);
   }
   async function GetData(){
     var getdata = await manager.getDataWithCollection("Information");
@@ -52,7 +52,7 @@ export default function Account({navigation}) {
             close={() => setChangePassVisible(false)}
           />
           <View style={styles.Container}>
-            {imageSource === null ? (
+            {imageSource === "null" ? (
             <View>
             <Image
               source={require('../Image/PersonImage.png')}
