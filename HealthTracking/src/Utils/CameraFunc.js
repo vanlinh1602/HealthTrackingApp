@@ -1,17 +1,20 @@
-import React, { Component } from 'react';
-import {Alert} from 'react-native';
+import React, { Component, useState,state } from 'react';
 
 const ImagePicker = require('react-native-image-picker');
 
 export class CameraFunc extends Component {
 
   uri;
-
+  
   constructor(props){
     super(props)
     this.uri = "";
+    this.state={
+      isVisible:'false'
+    }
   };
   async _pickImage(){
+        
         let options = {
           mediaType: 'photo',
           storageOptions: {
@@ -22,7 +25,7 @@ export class CameraFunc extends Component {
         await ImagePicker.launchImageLibrary(options, response => {
           if (response.didCancel) {
            //console.log('User cancelled photo picker');
-           Alert.alert('Bạn chưa chọn ảnh');
+           this.uri="null";
           } else if (response.error) {
            //console.log('ImagePicker Error: ', response.error);
           } else if (response.customButton) {
@@ -37,5 +40,5 @@ export class CameraFunc extends Component {
            //setImageSource(source.uri);
           }
          });
-      };    
+      };
 };

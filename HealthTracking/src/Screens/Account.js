@@ -4,23 +4,28 @@ import {
   Text, 
   View, 
   Image,
-  Alert
 } from 'react-native';
 import {TouchableOpacity } from 'react-native-gesture-handler';
 import CustomButton from '../Utils/CustomButton';
 import { FirebaseManager } from '../Utils/FirebaseManager';
 import { BoxShadow } from 'react-native-shadow';
 import { CameraFunc } from '../Utils/CameraFunc';
-import { ImagePickerResponse } from 'react-native-image-picker';
+import ModelChangePass from '../Utils/ModelChangePass';
+import ModalAlert from '../Utils/ModelAlert';
 
 export default function Account({navigation}) {
-  const Camera=new CameraFunc();
-  const [imageSource, setImageSource] = useState(null);
+  const Camera = new CameraFunc();
+  const [imageSource, setImageSource] = useState("");
   const [data, setData]=useState(manager.dataInformation);
+  const [isChangePassVisible, setChangePassVisible]=useState(false);
+  const [isAlertVisible, setAlertVisible]=useState(false);
   function LogOut(){
     manager.SignOut();
     navigation.navigate('GetStarted')
   };
+  function ChangePassword(){
+    setVisible(true);
+  }
   async function GetData(){
     var getdata = await manager.getDataWithCollection("Information");
     getdata.forEach((value => {setData(value)}))
@@ -29,42 +34,42 @@ export default function Account({navigation}) {
     GetData();
   },[]);
   async function pickImage(){
-    const result = { uri:" "};
-    result.uri = await Camera._pickImage();
-    console.log("result",result);
-    //setImageSource(result.uri);
+    await Camera._pickImage();
+    if(Camera.uri=="null"){
+      setAlertVisible(true);
+    }
+    setImageSource(Camera.uri);
   }
   return (
       <View style={styles.AccountBackground}>
+          <ModalAlert
+            visible={isAlertVisible}
+            close={()=>setAlertVisible(false)}
+            content='Bạn chưa chọn ảnh!'
+          />
+          <ModelChangePass
+            visible={isChangePassVisible}
+            close={() => setChangePassVisible(false)}
+          />
           <View style={styles.Container}>
             {imageSource === null ? (
-            <View style={{borderWidth:2,borderRadius:50}}>
+            <View>
             <Image
               source={require('../Image/PersonImage.png')}
-              style={{borderRadius:20,
-                resizeMode:"contain",
-                height:100,
-                width:100,
-                }}
-              resizeMode='contain'
+              style={styles.ImageStyle}            
             />
             </View>
             ) : (
-            <View style={{borderWidth:2,borderRadius:50}}>
+            <View>
             <Image
               source={{ uri: imageSource }}
-              style={{borderRadius:20,
-                resizeMode:"contain",
-                height:100,
-                width:100,
-                }}
-              resizeMode='contain'
+              style={styles.ImageStyle}
             />
             </View>
             )}     
             <TouchableOpacity style={styles.CameraButton} onPress={pickImage}>             
               <Image style={{
-                resizeMode:"contain",
+                resizeMode:"cover",
                 height:30,
                 width:30,
               }}
@@ -77,7 +82,7 @@ export default function Account({navigation}) {
             
               <View style={{flex:2}}>
                 <Text style={styles.TextStyle}>
-                  {data.userName}
+                  Họ tên: {data.name}
                 </Text>
                 <Image style={styles.Line}
                   source={require('../Image/Line.png')}
@@ -85,7 +90,7 @@ export default function Account({navigation}) {
               </View>
               <View style={{flex:2}}>
                 <Text style={styles.TextStyle}>
-                  {data.mail}
+                  Giới tính: {data.gender}
                 </Text>
                 <Image style={styles.Line}
                   source={require('../Image/Line.png')}
@@ -93,7 +98,7 @@ export default function Account({navigation}) {
               </View>
               <View style={{flex:2}}>
                 <Text style={styles.TextStyle}>
-                  Tuổi: 19
+                  Tuổi: {data.yearold}
                 </Text> 
                 <Image style={styles.Line}
                   source={require('../Image/Line.png')}
@@ -101,7 +106,7 @@ export default function Account({navigation}) {
               </View>
               <View style={{flex:2}}>
                 <Text style={styles.TextStyle}>
-                  Email: Demo@gmail.com
+                  Email: {data.mail}
                 </Text> 
                 <Image style={styles.Line}
                   source={require('../Image/Line.png')}
@@ -116,8 +121,9 @@ export default function Account({navigation}) {
                 content='Đổi mật khẩu'
                 size={20}
                 style={styles.ButtonStyle}
+                onPress={ChangePassword}
                 width={150}
-                height={75}
+                height={50}
                 color='#FAA1A1'
               />
               <CustomButton
@@ -126,7 +132,7 @@ export default function Account({navigation}) {
                 style={styles.ButtonStyle}
                 onPress = {LogOut}
                 width={150}
-                height={75}
+                height={50}
                 color='#FAA1A1'
               />
             </View>  
@@ -160,7 +166,7 @@ const styles = StyleSheet.create({
     },
     InfomationBox:{
       backgroundColor:'#FCD0D0',    
-      height:250,
+      height:'100%',
       width:'100%',
       padding:10,
       borderRadius:20,
@@ -180,14 +186,22 @@ const styles = StyleSheet.create({
     ButtonStyle:{
       marginTop:10,
       padding:10,
+    },
+    ImageStyle:{
+      borderRadius:50,
+                resizeMode:"cover",
+                height:100,
+                width:100,
+                borderWidth:2,
+                borderColor:"black"  
     }
 });
 
 const manager = new FirebaseManager();
 
 const shadowOpt = {
-  width: 350,
-  height: 250,
+  width: 360,
+  height: 300,
   color: "#000",
   border: 2,
   radius: 20,

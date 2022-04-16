@@ -26,6 +26,8 @@ export class FirebaseManager extends Component {
         userName: "",
         phone: "",
         name: "",
+        gender:"",
+        yearold:"",
     }
     // Data của bảng thống kê
     dataStatistical = {
@@ -103,6 +105,17 @@ export class FirebaseManager extends Component {
             .then(() => {
                 console.log("Update succesed");
                 this.SignOut();
+            })
+            .catch(error => {
+                console.log(error)
+            })
+    }
+    //Thay đổi password của user hiện tại
+    ChangeUserPassword(newPassword){
+        const user=auth().currentUser;
+        user.updatePassword(newPassword)
+            .then(() => {
+                console.log("Update succesed");
             })
             .catch(error => {
                 console.log(error)
