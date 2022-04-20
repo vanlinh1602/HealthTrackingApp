@@ -9,7 +9,7 @@ export class FirebaseManager extends Component {
     dataDiary = {
         userName: "",
         status: "",
-        image: "",
+        image: [],
         day: "",
         title: "",
     }

@@ -7,6 +7,7 @@ import {
     Pressable,
     Image,
     Dimensions,
+    FlatList,
 } from 'react-native';
 import { ScrollView, TextInput } from 'react-native-gesture-handler';
 import CustomButton from './CustomButton';
@@ -16,12 +17,31 @@ import ModelAddDiary from './ModelAddDiary'
 export default function ModelReadDiary(props) {
     const manager = new FirebaseManager();
     const [isFix, setIsFix] = useState(false);
-    var data = manager.dataDiary;
     function FixData() {
         setIsFix(true)
     }
+
+    const RenderImage = () => (
+        <View>
+        <FlatList
+            showsHorizontalScrollIndicator = {false}
+            horizontal = {true}
+            data={props.image}
+            renderItem = {({item}) => (
+                    <View>
+                        <Image
+                            resizeMode='stretch'
+                            style = {{height : 200, width : 200, marginLeft: 5, marginRight : 5}}
+                            source  = {{uri : item}}
+                        />
+                    </View>
+            )}
+        />
+        </View>
+    )
+
     return (
-        <View style={{ ...props.style, justifyContent: 'center' }}>
+        <View style={{ ...props.style}}>
             <Modal
                 visible={props.visible}
                 transparent
@@ -29,7 +49,7 @@ export default function ModelReadDiary(props) {
             >
                 <View style={styles.container}>
                     <View style={styles.mainView} >
-                        <View style={{ backgroundColor: "#FCD0D0", alignItems: 'center', borderRadius: 20 }}>
+                        <View style={{ backgroundColor: "#FCD0D0", alignItems: 'center', borderRadius: 20}}>
                             <Pressable
                                 style={{ marginLeft: '80%', marginTop: 15, }}
                                 onPress={FixData}
@@ -53,23 +73,20 @@ export default function ModelReadDiary(props) {
                             <Text style={styles.diary}>Nhật kí</Text>
                         </View>
                         {!isFix ? (
-                            <ScrollView>
+                            <ScrollView
+                                showsVerticalScrollIndicator = {false}
+                            >
                                 <Text style={styles.day}>Ngày {props.day}</Text>
                                 <Text style={styles.title}>{props.title}</Text>
-                                <View style={{ alignItems: 'flex-end' }}>
-                                    <Image
-                                        resizeMode="stretch"
-                                        source={require('../Image/imagenice.jpg')}
-                                        style={{ width: 200, height: 200 }}
-                                    />
-                                    <Text style={styles.content}>{props.status}</Text>
-                                </View>
+                                {RenderImage()}
+                                <Text style={styles.content}>{props.status}</Text>
                             </ScrollView>
                         ) : (
                             <ModelAddDiary
                                 fixTitle = {props.title}
                                 fixStatus = {props.status}
                                 day = {props.day}
+                                image = {props.image}
                                 visible = {isFix}
                                 close = {()=> setIsFix(false)}
                             />
@@ -86,7 +103,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#00000099',
         flex: 1,
         justifyContent: 'center',
-        alignItems: 'center',
+        //alignItems: 'center',
     },
     mainView: {
         backgroundColor: '#FDE7E7',
@@ -113,17 +130,18 @@ const styles = StyleSheet.create({
         fontStyle: 'italic'
     },
     title: {
-        fontFamily: 'Mulish-Regular',
-        //fontFamily: 'Playball-Regular',
+        //fontFamily: 'Mulish-Regular',
+        fontFamily: 'Playball-Regular',
         fontSize: 35,
         textAlign: 'center',
         padding: 10,
         color: '#F178B6'
     },
     content: {
+        textAlign : 'center',
         fontFamily: 'Mulish-Regular',
         fontSize: 20,
-        //padding: 20,
+        padding: 10,
     },
     btnSubmit:{
         //marginTop: -60,
