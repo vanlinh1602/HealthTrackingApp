@@ -27,7 +27,7 @@ export default function ModelReadDiary(props) {
         data.day = date.getDate() + '/' + (date.getMonth()+1) + '/' + date.getFullYear();
         data.image = dataImage;
         manager.AddDataRandomDoc("Diary", data);
-        props.loadScreen();
+        props.loadScreen(data);
         props.close();
     }
 
@@ -58,7 +58,19 @@ export default function ModelReadDiary(props) {
     }
 
     function UpdateData(){
+        const query = ["day", '==', data.day]
+        manager.UpdateData("Diary", data, query);
+    }
 
+    function LoadData(){
+        data.status = props.fixStatus;
+        data.image = props.image;
+        data.title = props.fixTitle;
+        data.day = props.day;
+    }
+
+    if(props.fixTitle){
+        LoadData();
     }
 
     return (

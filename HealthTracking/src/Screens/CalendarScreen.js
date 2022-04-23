@@ -106,7 +106,7 @@ export default function CalendarScreen() {
       <ModelAddDiary
         visible = {showAddDiary}
         close = {()=>setShowAddDiary(false)}
-        loadScreen = {LoadingDiary}
+        loadScreen = {(data) => {setDataDiary(value => [...value, data])}}
       />
       <View style={{ alignItems: 'center' }}>
         <Calendar

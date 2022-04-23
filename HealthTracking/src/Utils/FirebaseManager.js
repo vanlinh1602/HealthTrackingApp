@@ -26,8 +26,8 @@ export class FirebaseManager extends Component {
         userName: "",
         phone: "",
         name: "",
-        gender:"",
-        yearold:"",
+        gender: "",
+        yearold: "",
     }
     // Data của bảng thống kê
     dataStatistical = {
@@ -111,8 +111,8 @@ export class FirebaseManager extends Component {
             })
     }
     //Thay đổi password của user hiện tại
-    ChangeUserPassword(newPassword){
-        const user=auth().currentUser;
+    ChangeUserPassword(newPassword) {
+        const user = auth().currentUser;
         user.updatePassword(newPassword)
             .then(() => {
                 console.log("Update succesed");
@@ -122,9 +122,9 @@ export class FirebaseManager extends Component {
             })
     }
     //Lấy user name
-    GetUserName(){
+    GetUserName() {
         const user = auth().currentUser;
-        if(user)
+        if (user)
             return user.displayName;
     }
     //Log out
@@ -132,7 +132,7 @@ export class FirebaseManager extends Component {
         auth().signOut().then(() => { console.log("Log out succesed") })
     };
     // Lấy data với query return List data
-    async getDataWithQuery(collection,field, operators, value) {
+    async getDataWithQuery(collection, field, operators, value) {
         let temp = []
         const data = await firestore()
             .collectionGroup(collection)
@@ -170,10 +170,12 @@ export class FirebaseManager extends Component {
     // Cập nhập dữ liệu lên database
     // Query là 1 mảng (có thể có hoặc ko) VD: ["name", "==", "Firebase"]
     async UpdateData(collection, data, query?) {
-        const db = await firestore().collection(collection).where("User", '==', userName);
+        data.userName = this.userName;
+        const db = await firestore().collection(collection);
         var docID = "";
         if (query) {
             await db
+                .where("userName", '==', this.userName)
                 .where(query[0], query[1], query[2])
                 .get()
                 .then((querySnapshot) => {
@@ -184,6 +186,7 @@ export class FirebaseManager extends Component {
         }
         else {
             await db
+                .where("userName", '==', this.userName)
                 .get()
                 .then((querySnapshot) => {
                     querySnapshot.forEach((doc) => {
