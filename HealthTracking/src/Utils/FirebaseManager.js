@@ -155,10 +155,30 @@ export class FirebaseManager extends Component {
             });
     }
     // Cập nhập dữ liệu lên database
-    UpdateData(collection, document, data) {
-        firestore()
-            .collection(collection)
-            .doc(document)
+    // Query là 1 mảng (có thể có hoặc ko) VD: ["name", "==", "Firebase"]
+    async UpdateData(collection, data, query?) {
+        const db = await firestore().collection(collection).where("User", '==', userName);
+        var docID = "";
+        if (query) {
+            await db
+                .where(query[0], query[1], query[2])
+                .get()
+                .then((querySnapshot) => {
+                    querySnapshot.forEach((doc) => {
+                        docID = doc.id;
+                    });
+                })
+        }
+        else {
+            await db
+                .get()
+                .then((querySnapshot) => {
+                    querySnapshot.forEach((doc) => {
+                        docID = doc.id;
+                    });
+                })
+        }
+        await db.doc(docID)
             .update(data)
             .then(() => {
                 console.log('User updated!');
