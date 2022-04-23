@@ -64,11 +64,13 @@ export default function CalendarScreen() {
       setDataDiary(doc => [...doc, value])
     }));
   }
-  useEffect(()=>{
+
+  function LoadingDiary(){
     var date = new Date(Date.now());
     var day = date.getDate() + '/' + (date.getMonth()+1) + '/' + date.getFullYear();
     GetDataFromDatabase(day);
-  },[]);
+  }
+  useEffect(LoadingDiary,[]);
   const RenderDiary = ({ item }) => (
     <Pressable
       onPress={async()=>{
@@ -100,10 +102,11 @@ export default function CalendarScreen() {
         day={data.day}
         image={data.image}
         status={data.status}
-      />
+        />
       <ModelAddDiary
         visible = {showAddDiary}
         close = {()=>setShowAddDiary(false)}
+        loadScreen = {LoadingDiary}
       />
       <View style={{ alignItems: 'center' }}>
         <Calendar

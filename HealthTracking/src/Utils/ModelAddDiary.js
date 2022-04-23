@@ -9,20 +9,52 @@ import {
     Dimensions,
     TextInput
 } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
+import { FlatList, ScrollView } from 'react-native-gesture-handler';
 import CustomButton from './CustomButton';
 import { FirebaseManager } from './FirebaseManager';
+import { CameraFunc } from './CameraFunc'
 
 export default function ModelReadDiary(props) {
     const manager = new FirebaseManager();
+    const imagePick = new CameraFunc();
     const [data, setData] = useState(manager.dataDiary);
+    const [isImage, setIsImage] = useState(false);
+    const [dataImage, setDataImage] = useState([]);
+
 
     function PushDataToDataBase(){
         var date = new Date(Date.now());
         data.day = date.getDate() + '/' + (date.getMonth()+1) + '/' + date.getFullYear();
-        data.image = '../Image/imagenice.jpg';
+        data.image = dataImage;
         manager.AddDataRandomDoc("Diary", data);
+        props.loadScreen();
         props.close();
+    }
+
+    const RenderImage = (data) => (
+        <View>
+        <FlatList
+            showsHorizontalScrollIndicator = {false}
+            horizontal = {true}
+            data={data}
+            renderItem = {({item}) => (
+                    <View>
+                        <Image
+                            style = {{height : 100, width : 100, marginLeft: 5, marginRight : 5}}
+                            source  = {{uri : item}}
+                        />
+                    </View>
+            )}
+        />
+        </View>
+    )
+
+    async function GetImage(){
+        await imagePick._pickImage();
+        if(imagePick.uri != ""){
+            setDataImage(value => [...value, imagePick.uri]);
+            setIsImage(true);
+        }
     }
 
     function UpdateData(){
@@ -67,13 +99,17 @@ export default function ModelReadDiary(props) {
                                 onChangeText={value => data.status = value}
                             >{props.fixStatus}</TextInput>
                         </View>
+                        {(isImage) ? RenderImage(dataImage) : null}
+                        {(props.image) ? RenderImage(props.image) : null}
                         <ScrollView 
                             horizontal={true}
                             style = {{marginLeft: "25%", marginBottom: 10}}
+                            showsHorizontalScrollIndicator = {false}
                         >
 
                             <Pressable
                                 style = {styles.image}
+                                onPress = {GetImage}
                             >
                                 <Image
                                     resizeMode="stretch"
@@ -157,7 +193,7 @@ const styles = StyleSheet.create({
     inputStory:{
         fontSize : 20,
         paddingLeft: 20,
-        height: 370,
+        height: 320,
         textAlignVertical: 'top',
         fontFamily: 'Mulish-Regular',
 
