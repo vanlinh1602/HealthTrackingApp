@@ -1,4 +1,4 @@
-import React, {useState,useRef,useEffect} from 'react';
+import React, {useState,useEffect} from 'react';
 import { 
   StyleSheet, 
   Text, 
@@ -29,16 +29,22 @@ export default function Account({navigation}) {
   async function GetData(){
     var getdata = await manager.getDataWithCollection("Information");
     getdata.forEach((value => {setData(value)}))
+    setImageSource(data.imageUri);
   }
+
   useEffect(()=>{
     GetData();
-  },[]);
+  },[imageSource]);
   async function pickImage(){
     await Camera._pickImage();
     if(Camera.uri=="null"){
       setAlertVisible(true);
     }
+    else{
     setImageSource(Camera.uri);
+    data.imageUri=Camera.uri;
+    manager.UpdateData("Information",data);
+    }
   }
   return (
       <View style={styles.AccountBackground}>

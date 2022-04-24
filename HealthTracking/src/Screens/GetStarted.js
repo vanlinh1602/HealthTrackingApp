@@ -10,16 +10,31 @@ import {
 import CustomButton from "../Utils/CustomButton";
 import auth from '@react-native-firebase/auth';
 import { FirebaseManager } from "../Utils/FirebaseManager";
-
+import PushNotification from "react-native-push-notification";
 
 export default function GetStarted({ navigation }) {
   const manager = new FirebaseManager();
   const image = require('../Image/Background.png');
+
+  useEffect(() => {
+    createChannels();
+  },[]);
+
+  const createChannels = () => {
+    PushNotification.createChannel(
+      {
+        channelId: "Test-channel",
+        channelName: "HealthTracking"
+      }
+    )
+  }
+
   function PressGetStarted() {
     navigation.navigate("Sign");
   }
   if (manager.checkLogin()) {
-    navigation.replace('Trang chủ')
+    //navigation.navigate('Calendar')
+    navigation.navigate('Setting')
   }
   return (
     <View style={styles.container}>

@@ -28,6 +28,7 @@ export class FirebaseManager extends Component {
         name: "",
         gender: "",
         yearold: "",
+        imageUri:"",
     }
     // Data của bảng thống kê
     dataStatistical = {
