@@ -19,7 +19,7 @@ export default function GetStarted({ navigation }) {
     navigation.navigate("Sign");
   }
   if (manager.checkLogin()) {
-    navigation.navigate('Calendar')
+    navigation.replace('Trang chủ')
   }
   return (
     <View style={styles.container}>
