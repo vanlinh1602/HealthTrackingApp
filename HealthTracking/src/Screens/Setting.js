@@ -12,8 +12,8 @@ export default function Setting() {
     function GetPushNotification(date) {
         PushNotification.localNotificationSchedule({
             channelId: "Test-channel",
-            title: "Chân lí loli",
-            message: "Loli super cute",
+            title: "HealthTracking ",
+            message: "Info",
             date: date
         })
     }
@@ -35,13 +35,10 @@ export default function Setting() {
     //     >
     //     </Button>
     // </View>
-    <ListItem>
-            
+    <ListItem>           
         <ListItem.Content>
             <ListItem.Title style = {styles.AlarmTittle}>{item.hour}</ListItem.Title>                    
-            <ListItem.Subtitle style={styles.AlarmSubTittle}>{item.day}</ListItem.Subtitle>
-                    {/* <ListItem.Title style = {styles.titleStyle}>2:32 PM</ListItem.Title>                    
-                    <ListItem.Subtitle>31/3/2022 </ListItem.Subtitle> */}
+            <ListItem.Subtitle style={styles.AlarmSubTittle}>{item.day}</ListItem.Subtitle>                 
         </ListItem.Content>
             <Button
                 title ="Remove"

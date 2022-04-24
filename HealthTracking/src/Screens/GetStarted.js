@@ -19,12 +19,12 @@ export default function GetStarted({ navigation }) {
   useEffect(() => {
     createChannels();
   },[]);
-  
+
   const createChannels = () => {
     PushNotification.createChannel(
       {
         channelId: "Test-channel",
-        channelName: "Test-channel"
+        channelName: "HealthTracking"
       }
     )
   }

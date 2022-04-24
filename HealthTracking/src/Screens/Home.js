@@ -56,10 +56,10 @@ export default function Home({ navigation }) {
           srcImage={require('../Image/AccountIcon.png')}
         />
         <ButtonHomeUI
-          name='Cài đặt'
+          name='Nhắc nhở'
           style={styles.SettingStyle}
           PressButton={MoveToSetting}
-          srcImage={require('../Image/SettingIcon.png')}
+          srcImage={require('../Image/AlarmIcon.png')}
         />
       </ImageBackground>
     </View>
