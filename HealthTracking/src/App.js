@@ -16,6 +16,7 @@ import GetStarted from './Screens/GetStarted';
 import SignUI from './Screens/SignUI';
 import Scale from './Screens/Scale';
 import HeaderHome from './Utils/HeaderHome';
+import Setting from './Screens/Setting';
 
 const Stack = createStackNavigator();
 
@@ -66,6 +67,10 @@ const App = () => {
         <Stack.Screen
           name='Scale'
           component={Scale}
+        />
+        <Stack.Screen
+          name='Setting'
+          component={Setting}
         />
       </Stack.Navigator>
     </NavigationContainer>
