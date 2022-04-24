@@ -21,6 +21,9 @@ export default function Home({ navigation }) {
   function MoveToScale(){
     navigation.navigate('Scale')
   }
+  function MoveToSetting(){
+    navigation.navigate('Setting')
+  }
   return (
     <View style={styles.container}>
       <ImageBackground
@@ -55,7 +58,7 @@ export default function Home({ navigation }) {
         <ButtonHomeUI
           name='Cài đặt'
           style={styles.SettingStyle}
-          PressButton={MoveToStatistical}
+          PressButton={MoveToSetting}
           srcImage={require('../Image/SettingIcon.png')}
         />
       </ImageBackground>
