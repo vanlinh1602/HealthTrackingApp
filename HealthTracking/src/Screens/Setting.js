@@ -1,14 +1,30 @@
-import React, { useState } from "react";
-import { Button, View, FlatList, Text, StyleSheet, TouchableOpacity,Image } from "react-native";
+import React, { useState, useEffect } from "react";
+import { Button, View, FlatList, Text, StyleSheet, TouchableOpacity,Image, Modal } from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import PushNotification from "react-native-push-notification";
 import { ListItem } from 'react-native-elements';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { TextInput } from "react-native-gesture-handler";
 
 export default function Setting() {
     const [index, setIndex] = useState(1);
     const [isDateTimePickerVisible,setIsDateTimePickerVisible] = useState(false);
-    //const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-    
+    const [Modalvisible,setModalVisible] = useState(false);
+    const [modalLabel,setModalLabel] = useState('Alarm');
+
+    useEffect(() => {
+        getData();
+    },[]);
+
+        const getData = async () =>{
+            AsyncStorage.getItem("storeAlarm").then(data => {
+                if(data !== null) {
+                    setDATA(JSON.parse(data))
+                    console.log('Loaded Alarm')
+                }
+            }).catch((error) => console.log(error));
+        }
+
     function GetPushNotification(date) {
         PushNotification.localNotificationSchedule({
             channelId: "Test-channel",
@@ -17,26 +33,23 @@ export default function Setting() {
             date: date
         })
     }
+
     const [DATA, setDATA] = useState([
 
     ]);
 
     const handleRemoveItem = (id) => {
         setDATA(DATA.filter(item => item.id !== id));
+        
+        AsyncStorage.removeItem("storeAlarm", JSON.stringify(setDATA)).then(() =>{
+            console.log('Deleted Alarm');
+        }).catch(error => console.log(error));
     };
 
     const renderItem = ({ item }) => (
-    //     <View style={styles.Alarmcontainer}>
-    //     <Text style={styles.title}>{item.hour}</Text>
-    //     <Text style={styles.title}>{item.day}</Text>
-    //     <Button
-    //         title='Remove'
-    //         onPress={() => handleRemoveItem(item.id)}
-    //     >
-    //     </Button>
-    // </View>
     <ListItem>           
         <ListItem.Content>
+        <ListItem.Subtitle style={{fontSize:20,color:'purple',fontWeight:'bold'}}>{modalLabel}</ListItem.Subtitle>
             <ListItem.Title style = {styles.AlarmTittle}>{item.hour}</ListItem.Title>                    
             <ListItem.Subtitle style={styles.AlarmSubTittle}>{item.day}</ListItem.Subtitle>                 
         </ListItem.Content>
@@ -47,31 +60,81 @@ export default function Setting() {
             />
     </ListItem>      
     );
+
     function AddDay(date) {
-        setDATA([...DATA, {
+        var newdate={
             id: index,
             hour: date.getHours() + ":" + date.getMinutes(),
             day: date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear(),
-        }])
+        }
+            const newAlarm = [...DATA, newdate]
         setIndex(index + 1);
+        
+        AsyncStorage.setItem("storeAlarm", JSON.stringify(newAlarm)).then(() =>{
+            setDATA(newAlarm);
+            console.log('okay');
+        }).catch(error => console.log(error));
     }
+
     const showDateTimePicker = () => {
         setIsDateTimePickerVisible(true)
-        console.log('yes')
+        OnpressCloseModal();
+        console.log('Shown DatePicker')
     };
 
     const hideDateTimePicker = () => {
        setIsDateTimePickerVisible(false)
     };
 
+    const OnpressOpenModal =() =>{
+        setModalVisible(true);
+    };
+
+    const OnpressCloseModal =()=>{
+        setModalVisible(false);
+    };
+
     const handleConfirm = (date) => {
         AddDay(date);
+        //storeData();
         GetPushNotification(date);
         hideDateTimePicker();
     };
 
     return (
         <View style={styles.container}>
+            <Modal 
+            visible= {Modalvisible} 
+            transparent
+            >
+                <View style={styles.ModalBackground}>
+                <View style={styles.ModalContainer}>
+                    <View style={{marginLeft:'85%',marginTop:'-4%'}}>
+                        <TouchableOpacity onPress = {OnpressCloseModal}>
+                        <Image
+                            source={require('../Image/X.png')}
+                            style={{height:30,width:30}}
+                        />
+                        </TouchableOpacity>
+                    </View>
+                    <Text style ={{fontSize:30,color:'black'}}>Alarm Label: </Text>
+                    <TextInput
+                        style={{fontSize:20}}
+                        onChangeText={value => setModalLabel(value)}
+                        placeholder="kg"
+                        keyboardType='default'
+                    />
+                    <View style={{marginLeft:'85%'}}>
+                        <TouchableOpacity onPress = {showDateTimePicker}>
+                            <Image
+                                source={require('../Image/OK.png')}
+                                style={{height:30,width:30}}
+                            />
+                        </TouchableOpacity>
+                    </View>
+                </View>
+                </View>
+            </Modal>
             <FlatList
                 data={DATA}
                 renderItem={renderItem}
@@ -82,7 +145,7 @@ export default function Setting() {
             color='red'
             /> */}
             <TouchableOpacity
-            onPress={showDateTimePicker}
+            onPress={OnpressOpenModal}
             >
             <Image
                 source={require('../Image/AlarmAdd.png')}
@@ -94,15 +157,34 @@ export default function Setting() {
                 mode="datetime"
                 onConfirm={handleConfirm}
                 onCancel={hideDateTimePicker}
+                
             />
         </View>
     );
 };
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor:'white',
         //justifyContent: 'center',
         //alignItems: 'center',
+    },
+    ModalBackground: {
+        flex:1,
+        alignContent:'center',
+        justifyContent:'center',
+        //backgroundColor:'grey'
+        
+    },
+    ModalContainer: {
+        width: '80%',
+        backgroundColor:'pink',
+        paddingHorizontal: 20,
+        paddingVertical: 30 ,
+        borderRadius:20,
+        elevation:20,
+        marginLeft:'10%'
     },
     Alarmcontainer: {
      backgroundColor: '#FCD0D0', 
@@ -116,53 +198,6 @@ const styles = StyleSheet.create({
     AlarmSubTittle:{
         fontSize:15,
     },
-    item: {
-        backgroundColor: '#f9c2ff',
-        padding: 20,
-        marginVertical: 8,
-        marginHorizontal: 16,
-    },
-    title: {
-        fontSize: 32,
-    },
-    view: {
-        width: 350,
-        //height: 450,
-        backgroundColor: '#ffffff',
-        borderRadius: 20,
-        alignItems: 'center',
-    },
-    header: {
-        backgroundColor: '#FAA1A1',
-        //height : 100,
-        width: '100%',
-        borderRadius: 20,
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginBottom: 10,
-    },
-    content: {
-        margin: 10,
-        fontSize: 25,
-        color: '#000000',
-        //backgroundColor : '#FAA1A1'
-        //fontWeight : 'bold',
-
-    },
-    Input: {
-        paddingLeft: 20,
-        width: 300,
-        height: 50,
-        borderColor: '#FCD0D0',
-        borderWidth: 2,
-        borderRadius: 20,
-        margin: 10,
-    },
-    forgotPass: {
-        marginBottom: 10,
-        marginLeft: '50%',
-        color: 'blue',
-        fontStyle: 'italic'
-    },
+    
 });
 

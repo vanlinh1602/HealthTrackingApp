@@ -7,8 +7,8 @@ import {
   ImageBackground,
 } from 'react-native';
 import ButtonHomeUI from '../Utils/ButtonHomeUI';
-
 export default function Home({ navigation }) {
+  
   function MoveToCanlender() {
     navigation.navigate('Calendar')
   }
