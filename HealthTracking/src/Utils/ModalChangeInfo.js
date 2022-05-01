@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import {
     StyleSheet,
     Text,
@@ -12,20 +12,30 @@ import ModalAlert from './ModelAlert';
 
 export default function ModelChangePass(props) {
     const manager = new FirebaseManager()
-    const [newpass, setnewPass] = useState();
-    const [newpassagain, setnewPassagain] = useState();
+    const [data, setData]=useState(manager.dataInformation);
+    const [name, setName]=useState();
+    const [age, setAge]=useState();
     const [isVisible,setVisible]=useState(false);
     const [ModalContent, setModalContent]=useState("");
-    function changePassword(){
-        if(newpass==""||newpassagain==""){
-            setModalContent("Bạn chưa nhập mật khẩu!")
+    async function GetData(){
+        var getdata = await manager.getDataWithCollection("Information");
+        getdata.forEach((value => {setData(value)}))
+      }
+    
+      useEffect(()=>{
+        GetData();
+      },[]);
+    function changeInfo(){
+        if(name==""||age==""){
+            setModalContent("Bạn chưa nhập thông tin!")
             setVisible(true);
         }
-        else if(newpass!=newpassagain){
-            setModalContent("Mật khẩu không đúng")
-            setVisible(true);
+        else {
+            data.name=name;
+            data.yearold=age;
+            manager.UpdateData("Information",data);
+            props.close();
         }
-        else manager.ChangeUserPassword(newpass);
     }
     return (
         <View style = {{...props.style, justifyContent: 'center'}}>
@@ -44,26 +54,24 @@ export default function ModelChangePass(props) {
                     <View style = {styles.view}>
                     <View style = {styles.header}>
                         
-                        <Text style = {styles.content}>Đổi mật khẩu</Text>
+                        <Text style = {styles.content}>Đổi thông tin</Text>
                     </View>
                         <TextInput 
                             style={styles.Input}
-                            placeholder="Mật khẩu mới"
-                            onChangeText={value => setnewPass(value)}
-                            secureTextEntry
+                            placeholder="Tên"
+                            onChangeText={value => setName(value)}
                         />
                         <TextInput 
                             style={styles.Input}
-                            placeholder="Nhập lại mật khẩu mới"
-                            onChangeText={value => setnewPassagain(value)}
-                            secureTextEntry
+                            placeholder="Tuổi"
+                            onChangeText={value => setAge(value)}
                         />
                         <CustomButton
                             content = "Xác nhận"
                             color = '#F178B6'
                             size = {20}
                             style = {{marginBottom: 20}}
-                            onPress = {changePassword}
+                            onPress = {changeInfo}
                             width = {150}
                             height = {50}
                         />

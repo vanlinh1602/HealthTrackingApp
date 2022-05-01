@@ -1,4 +1,4 @@
-import React, {useState,useEffect} from 'react';
+import React, {useState,useEffect, useCallback} from 'react';
 import { 
   StyleSheet, 
   Text, 
@@ -12,6 +12,7 @@ import { BoxShadow } from 'react-native-shadow';
 import { CameraFunc } from '../Utils/CameraFunc';
 import ModelChangePass from '../Utils/ModelChangePass';
 import ModalAlert from '../Utils/ModelAlert';
+import ModalChangeInfo from '../Utils/ModalChangeInfo'
 
 export default function Account({navigation}) {
   const Camera = new CameraFunc();
@@ -19,13 +20,11 @@ export default function Account({navigation}) {
   const [data, setData]=useState(manager.dataInformation);
   const [isChangePassVisible, setChangePassVisible]=useState(false);
   const [isAlertVisible, setAlertVisible]=useState(false);
+  const [isChangeInfoVisible, setChangeInfoVisible]=useState(false);
   function LogOut(){
     manager.SignOut();
     navigation.navigate('GetStarted')
   };
-  function ChangePassword(){
-    setChangePassVisible(true);
-  }
   async function GetData(){
     var getdata = await manager.getDataWithCollection("Information");
     getdata.forEach((value => {setData(value)}))
@@ -34,7 +33,7 @@ export default function Account({navigation}) {
 
   useEffect(()=>{
     GetData();
-  },[imageSource]);
+  },[imageSource,isChangeInfoVisible]);
   async function pickImage(){
     await Camera._pickImage();
     if(Camera.uri=="null"){
@@ -48,6 +47,10 @@ export default function Account({navigation}) {
   }
   return (
       <View style={styles.AccountBackground}>
+          <ModalChangeInfo
+            visible={isChangeInfoVisible}
+            close={()=>setChangeInfoVisible(false)}
+          />
           <ModalAlert
             visible={isAlertVisible}
             close={()=>setAlertVisible(false)}
@@ -58,7 +61,7 @@ export default function Account({navigation}) {
             close={() => setChangePassVisible(false)}
           />
           <View style={styles.Container}>
-            {imageSource === "null" ? (
+            {imageSource === "" ? (
             <View>
             <Image
               source={require('../Image/PersonImage.png')}
@@ -72,7 +75,7 @@ export default function Account({navigation}) {
               style={styles.ImageStyle}
             />
             </View>
-            )}     
+            )}   
             <TouchableOpacity style={styles.CameraButton} onPress={pickImage}>             
               <Image style={{
                 resizeMode:"cover",
@@ -81,8 +84,10 @@ export default function Account({navigation}) {
               }}
               source={require('../Image/camera.png')}
               />                  
-            </TouchableOpacity>
+            </TouchableOpacity>  
+          </View>
 
+          <View style={styles.Container}>
             <BoxShadow setting = {shadowOpt}>
             <View style={styles.InfomationBox}>
             
@@ -118,16 +123,32 @@ export default function Account({navigation}) {
                   source={require('../Image/Line.png')}
                 />
               </View>
-            
+              <View style={{flex:2}}>
+                <Text style={styles.TextStyle}>
+                  SDT: {data.phone}
+                </Text> 
+                <Image style={styles.Line}
+                  source={require('../Image/Line.png')}
+                />
+              </View>
             </View>   
             </BoxShadow>
 
             <View>
               <CustomButton
+                content='Chỉnh sửa'
+                size={20}
+                style={styles.ButtonStyle}
+                onPress={()=>setChangeInfoVisible(true)}
+                width={150}
+                height={50}
+                color='#FAA1A1'
+              />
+              <CustomButton
                 content='Đổi mật khẩu'
                 size={20}
                 style={styles.ButtonStyle}
-                onPress={ChangePassword}
+                onPress={()=>setChangePassVisible(true)}
                 width={150}
                 height={50}
                 color='#FAA1A1'
@@ -157,8 +178,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     Container:{
-      flex:1,
-      height:100,
+      height:'15%',
       marginTop:25,
       width:'100%',
       alignItems:'center',
@@ -190,16 +210,15 @@ const styles = StyleSheet.create({
       marginTop:15
     },
     ButtonStyle:{
-      marginTop:10,
-      padding:10,
+      marginTop:15
     },
     ImageStyle:{
       borderRadius:50,
-                resizeMode:"cover",
-                height:100,
-                width:100,
-                borderWidth:2,
-                borderColor:"black"  
+      resizeMode:"cover",
+      height:100,
+      width:100,
+      borderWidth:2,
+      borderColor:"black"  
     }
 });
 
