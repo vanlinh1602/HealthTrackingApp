@@ -33,7 +33,7 @@ export default function Account({navigation}) {
 
   useEffect(()=>{
     GetData();
-  },[imageSource,isChangeInfoVisible]);
+  },[imageSource]);
   async function pickImage(){
     await Camera._pickImage();
     if(Camera.uri=="null"){
@@ -45,11 +45,15 @@ export default function Account({navigation}) {
     manager.UpdateData("Information",data);
     }
   }
+  async function TurnOff(){
+    await GetData();
+    setChangeInfoVisible(false);
+  }
   return (
       <View style={styles.AccountBackground}>
           <ModalChangeInfo
             visible={isChangeInfoVisible}
-            close={()=>setChangeInfoVisible(false)}
+            close={TurnOff}
           />
           <ModalAlert
             visible={isAlertVisible}
