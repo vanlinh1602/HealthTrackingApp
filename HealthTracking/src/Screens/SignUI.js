@@ -28,7 +28,7 @@ function SignUI({ navigation }) {
     setIsSignUp(true);
   }
   if (manager.checkLogin()) {
-    navigation.replace('Trang chủ')
+    navigation.replace('Home')
   }
   return (
     <View style={styles.container}>

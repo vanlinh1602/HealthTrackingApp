@@ -49,7 +49,7 @@ const App = () => {
           options={{
             header: HeaderHome
           }}
-          name='Trang chủ'
+          name='Home'
           component={Home}
         />
         <Stack.Screen
