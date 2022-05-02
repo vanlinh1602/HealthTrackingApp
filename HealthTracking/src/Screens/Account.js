@@ -26,9 +26,8 @@ export default function Account({navigation}) {
     navigation.navigate('GetStarted')
   };
   async function GetData(){
-    var getdata = await manager.getDataWithCollection("Information");
-    getdata.forEach((value => {setData(value)}))
-    setImageSource(data.imageUri);
+    var source = await manager.getImage("Information", "Avatar")
+    setImageSource(source);
   }
 
   useEffect(()=>{
