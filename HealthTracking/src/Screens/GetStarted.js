@@ -34,7 +34,7 @@ export default function GetStarted({ navigation }) {
   }
   if (manager.checkLogin()) {
     //navigation.navigate('Calendar')
-    navigation.navigate('Setting')
+    navigation.replace('Home')
   }
   return (
     <View style={styles.container}>

@@ -2,8 +2,10 @@ import React, { Component, useEffect, useState } from 'react';
 import auth, { firebase } from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import { getActionFromState } from '@react-navigation/native';
+import storage from '@react-native-firebase/storage';
 
 export class FirebaseManager extends Component {
+    //#region data
     userName;
     // Data của Nhật ký
     dataDiary = {
@@ -37,12 +39,13 @@ export class FirebaseManager extends Component {
         status: "",
         type: "",
     }
+    //#endregion
 
     constructor(props) {
         super(props)
         this.userName = this.GetUserName();
     }
-
+    //#region user account method
     checkLogin() {
         const [initializing, setInitializing] = useState(true);
         const [user, setUser] = useState();
@@ -122,6 +125,13 @@ export class FirebaseManager extends Component {
                 console.log(error)
             })
     }
+
+    // Reset password
+
+    async ResetPass(mail){
+        await auth().sendPasswordResetEmail(mail);
+    }
+
     //Lấy user name
     GetUserName() {
         const user = auth().currentUser;
@@ -132,6 +142,9 @@ export class FirebaseManager extends Component {
     SignOut() {
         auth().signOut().then(() => { console.log("Log out succesed") })
     };
+    //#endregion
+    
+    //#region upload and get file firebase
     // Lấy data với query return List data
     async getDataWithQuery(collection, field, operators, value) {
         let temp = []
@@ -211,4 +224,17 @@ export class FirebaseManager extends Component {
                 console.log('User deleted!');
             });
     }
+    async getImage(collection, imageName){
+        const file = this.userName + '/' + collection + '/' + imageName + ".png";
+        const url = await storage().ref(file).getDownloadURL();
+        return url;
+    }
+    async uploadImage(collection, imageName, imagePath){
+        const file = this.userName + '/' + collection + '/' + imageName + ".png"
+        const reference = storage().ref(file);
+        await reference.putFile(imagePath).then(()=>{
+            console.log("success!")
+        });
+    }
+    //#endregion
 };

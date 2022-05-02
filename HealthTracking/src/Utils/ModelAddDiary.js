@@ -52,14 +52,21 @@ export default function ModelReadDiary(props) {
     async function GetImage(){
         await imagePick._pickImage();
         if(imagePick.uri != ""){
-            setDataImage(value => [...value, imagePick.uri]);
-            setIsImage(true);
+            if(props.fixTitle){
+                data.image.push(imagePick.uri);
+                setDataImage(data.image);
+            }
+            else{
+                setDataImage(value => [...value, imagePick.uri]);
+                setIsImage(true);
+            }
         }
     }
 
     function UpdateData(){
         const query = ["day", '==', data.day]
         manager.UpdateData("Diary", data, query);
+        props.close();
     }
 
     function LoadData(){
@@ -67,6 +74,9 @@ export default function ModelReadDiary(props) {
         data.image = props.image;
         data.title = props.fixTitle;
         data.day = props.day;
+        setDataImage(data.image);
+        setIsImage(true);
+
     }
 
     if(props.fixTitle){
@@ -112,7 +122,6 @@ export default function ModelReadDiary(props) {
                             >{props.fixStatus}</TextInput>
                         </View>
                         {(isImage) ? RenderImage(dataImage) : null}
-                        {(props.image) ? RenderImage(props.image) : null}
                         <ScrollView 
                             horizontal={true}
                             style = {{marginLeft: "25%", marginBottom: 10}}
