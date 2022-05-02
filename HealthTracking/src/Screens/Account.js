@@ -26,6 +26,8 @@ export default function Account({navigation}) {
     navigation.navigate('GetStarted')
   };
   async function GetData(){
+    var getdata = await manager.getDataWithCollection("Information");
+    getdata.forEach((value => {setData(value)}))
     var source = await manager.getImage("Information", "Avatar")
     setImageSource(source);
   }
@@ -40,8 +42,7 @@ export default function Account({navigation}) {
     }
     else{
     setImageSource(Camera.uri);
-    data.imageUri=Camera.uri;
-    manager.UpdateData("Information",data);
+    manager.uploadImage("Information","Avatar",Camera.uri)
     }
   }
   async function TurnOff(){
@@ -64,7 +65,7 @@ export default function Account({navigation}) {
             close={() => setChangePassVisible(false)}
           />
           <View style={styles.Container}>
-            {imageSource === "" ? (
+            {imageSource === "null" ? (
             <View>
             <Image
               source={require('../Image/PersonImage.png')}
@@ -176,30 +177,30 @@ export default function Account({navigation}) {
 
 const styles = StyleSheet.create({
     AccountBackground:{
-        flex:1,
-        backgroundColor:'#FDE7E7',
-        alignItems: 'center',
+      flex:1,
+      backgroundColor:'#FDE7E7',
+      alignItems: 'center',
     },
     Container:{
       height:'15%',
-      marginTop:25,
+      marginTop:'5%',
       width:'100%',
       alignItems:'center',
     },
     CameraButton:{
-      padding:10,
-      margintop:50,
-      height:40,
-      width:100,
+      padding:'1%',
+      margintop:'10%',
+      height:'100%',
+      width:'100%',
       alignItems:'center',
     },
     InfomationBox:{
       backgroundColor:'#FCD0D0',    
       height:'100%',
       width:'100%',
-      padding:10,
+      padding:'3%',
       borderRadius:20,
-      marginTop:10,
+      marginTop:'5%',
       justifyContent:'space-around',
       flexDirection:'column',
     },
@@ -208,17 +209,17 @@ const styles = StyleSheet.create({
       textAlign:'left',
     },
     Line:{
-      height:5,
+      height:'5%',
       width:'80%',
-      marginTop:15
+      marginTop:'5%'
     },
     ButtonStyle:{
-      marginTop:15
+      marginTop:'5%'
     },
     ImageStyle:{
       borderRadius:50,
       resizeMode:"cover",
-      height:100,
+      height:'100%',
       width:100,
       borderWidth:2,
       borderColor:"black"  
@@ -235,7 +236,7 @@ const shadowOpt = {
   radius: 20,
   opacity: 0.15,
   x: 5,
-  y: 15,
+  y: 22.5,
   style: { marginVertical: 10 }
 };
 
