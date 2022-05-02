@@ -224,13 +224,14 @@ export class FirebaseManager extends Component {
                 console.log('User deleted!');
             });
     }
-    async getImage(){
-        const url = await storage().ref('211976717_812441456142659_4610373297828278001_n.jpg').getDownloadURL();
+    async getImage(collection, imageName){
+        const file = this.userName + '/' + collection + '/' + imageName + ".png";
+        const url = await storage().ref(file).getDownloadURL();
         return url;
     }
     async uploadImage(collection, imageName, imagePath){
-        const folder = this.userName + '/' + collection + '/' + imageName + ".png"
-        const reference = storage().ref(folder);
+        const file = this.userName + '/' + collection + '/' + imageName + ".png"
+        const reference = storage().ref(file);
         await reference.putFile(imagePath).then(()=>{
             console.log("success!")
         });

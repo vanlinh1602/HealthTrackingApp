@@ -18,6 +18,7 @@ import Scale from './Screens/Scale';
 import HeaderHome from './Utils/HeaderHome';
 import Setting from './Screens/Setting';
 
+
 const Stack = createStackNavigator();
 
 const App = () => {
