@@ -11,22 +11,8 @@ export default function HeaderBar({ navigation }) {
     function GoBackSreen() {
         navigation.goBack()
     }
-    var isGoback = true;
-    const shadowOpt = {
-        width: 434,
-        height: 60,
-        color: "#000",
-        border: 2,
-        radius: 20,
-        opacity: 0.2,
-        x: 0,
-        y: 4,
-        style: { marginVertical: 0 }
-    }
     return (
         <View style={{ backgroundColor: '#FDE7E7' }}>
-            <BoxShadow setting={shadowOpt}>
-
                 <View style={styles.viewHeader}>
                     <View style={{ alignItems: 'center' }}>
                         <Image
@@ -35,7 +21,6 @@ export default function HeaderBar({ navigation }) {
                             resizeMode = "stretch"
                         />
                     </View>
-                    {isGoback ? (
                         <Pressable
                             style={styles.BackButton}
                             onPress={GoBackSreen}
@@ -45,9 +30,7 @@ export default function HeaderBar({ navigation }) {
                                 source={require('../Image/icons8-back-50.png')}
                             />
                         </Pressable>
-                    ) : (null)}
                 </View>
-            </BoxShadow>
         </View>
     );
 
@@ -57,11 +40,14 @@ export default function HeaderBar({ navigation }) {
 const styles = StyleSheet.create({
     viewHeader: {
         height: 60,
+        justifyContent: 'center',
         backgroundColor: '#FCD0D0',
         borderBottomRightRadius: 20,
         borderBottomLeftRadius: 20,
-
-        justifyContent: 'center',
+        borderColor: '#00000050',
+        borderBottomWidth: 4,
+        borderLeftWidth: 0.01,
+        borderRightWidth: 0.01,
     },
     image: {
         height: 40,

@@ -9,20 +9,8 @@ import { BoxShadow } from 'react-native-shadow'
 
 
 export default function CustomButton(props) {
-    const shadowOpt = {
-        width: props.width,
-        height: props.height,
-        color: "#000",
-        border: 2,
-        radius: 20,
-        opacity: 0.2,
-        x: 2,
-        y: 4,
-        style: { marginVertical: 0 }
-    }
     return (
         <View style={{ ...props.style, justifyContent: 'center' }}>
-            <BoxShadow setting={shadowOpt}>
                 <Pressable
                     style={[styles.button, { 
                         backgroundColor: props.color, 
@@ -37,9 +25,7 @@ export default function CustomButton(props) {
                         {props.content}
                     </Text>
                 </Pressable>
-            </BoxShadow>
         </View>
-
     )
 };
 
@@ -48,6 +34,10 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 20,
+        borderBottomWidth : 3,
+        borderRightWidth: 3,
+        borderLeftWidth: 0.01,
+        borderColor: '#00000050'
     },
     content: {
         fontFamily: 'Mulish-Regular',

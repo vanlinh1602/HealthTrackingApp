@@ -11,20 +11,9 @@ export default function HeaderHome({ navigation }) {
     function GoBackSreen() {
         navigation.goBack()
     }
-    const shadowOpt = {
-        width: 434,
-        height: 60,
-        color: "#000",
-        border: 2,
-        radius: 20,
-        opacity: 0.2,
-        x: 0,
-        y: 4,
-        style: { marginVertical: 0 }
-    }
+
     return (
         <View style={{ backgroundColor: '#FDE7E7' }}>
-            <BoxShadow setting={shadowOpt}>
                 <View style={styles.viewHeader}>
                     <View style={{ alignItems: 'center' }}>
                         <Image
@@ -34,7 +23,6 @@ export default function HeaderHome({ navigation }) {
                         />
                     </View>
                 </View>
-            </BoxShadow>
         </View>
     );
 };
@@ -43,10 +31,13 @@ const styles = StyleSheet.create({
     viewHeader: {
         height: 60,
         backgroundColor: '#FCD0D0',
+        justifyContent: 'center',
         borderBottomRightRadius: 20,
         borderBottomLeftRadius: 20,
-
-        justifyContent: 'center',
+        borderColor: '#00000050',
+        borderBottomWidth: 4,
+        borderLeftWidth: 0.01,
+        borderRightWidth: 0.01,
     },
     image: {
         height: 40,

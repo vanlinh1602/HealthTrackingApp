@@ -28,11 +28,13 @@ export default function ModelReadDiary(props) {
         data.image = dataImage;
         manager.AddDataRandomDoc("Diary", data);
         props.loadScreen(data);
+        setIsImage(false);
+        setDataImage([])
         props.close();
     }
 
     const RenderImage = (data) => (
-        <View>
+        <View style = {{marginTop : "-25%"}}>
         <FlatList
             showsHorizontalScrollIndicator = {false}
             horizontal = {true}
@@ -95,7 +97,11 @@ export default function ModelReadDiary(props) {
                         <View style={{ backgroundColor: "#FCD0D0", alignItems: 'center', borderRadius: 20 }}>
                             <Pressable
                                 style={{ marginLeft: '80%', marginTop: 20, }}
-                                onPress = {props.close}
+                                onPress = {()=>{
+                                    setIsImage(false)
+                                    setDataImage([]),
+                                    props.close()
+                                }}
                             >
                                 <Image
                                     resizeMode="stretch"
@@ -115,13 +121,15 @@ export default function ModelReadDiary(props) {
                             >{props.fixTitle}</TextInput>
                             <Text style={styles.story}>Nhật ký</Text>
                             <TextInput
-                                style = {styles.inputStory}
+                                style = {[styles.inputStory, {height: 320}]}
                                 placeholder = "Hãy viết một vài điều gì đó mà bạn thấy ấn tượng trong ngày hôm nay"
                                 multiline
                                 onChangeText={value => data.status = value}
                             >{props.fixStatus}</TextInput>
                         </View>
+                        <View>
                         {(isImage) ? RenderImage(dataImage) : null}
+                        </View>
                         <ScrollView 
                             horizontal={true}
                             style = {{marginLeft: "25%", marginBottom: 10}}
@@ -174,7 +182,7 @@ const styles = StyleSheet.create({
     mainView: {
         backgroundColor: '#FDE7E7',
         with: Dimensions.get("window").width,
-        //maxHeight: 700,
+        maxHeight: Dimensions.get("window").height * 0.9,
         borderRadius: 20,
 
     },
@@ -214,7 +222,7 @@ const styles = StyleSheet.create({
     inputStory:{
         fontSize : 20,
         paddingLeft: 20,
-        height: 320,
+        //height: 320,
         textAlignVertical: 'top',
         fontFamily: 'Mulish-Regular',
 

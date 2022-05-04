@@ -38,34 +38,36 @@ export default function GetStarted({ navigation }) {
   }
   return (
     <View style={styles.container}>
-      <ImageBackground source={image} resizeMode="cover" style={styles.image}>
+      <ImageBackground 
+        source={image} 
+        resizeMode="cover" 
+        style={styles.image}
+      >
         <View style={styles.header}>
-
           <Text style={styles.text}>Theo dõi</Text>
           <Text style={[styles.text, { fontSize: 70 }]}>Sức Khỏe</Text>
         </View>
 
-        <View style={{ alignItems: 'center' }}>
+        <View style={{ alignItems: 'center', flex : 2, }}>
           <Image
             source={require('../Image/LOGO.png')}
             style={styles.logo}
             resizeMode='stretch'
           />
-
+        </View>
+        <View style={{ alignItems: 'center', flex : 1, }}>
           <CustomButton
             content="Bắt đầu"
             color='#FAA1A1'
             style={styles.button}
             onPress={PressGetStarted}
             size={20}
-            width = {150}
+            width = {125}
             height = {50}
           />
         </View>
       </ImageBackground>
     </View>
-
-
   );
 };
 
@@ -79,6 +81,7 @@ const styles = StyleSheet.create({
   },
   header: {
     margin: 50,
+    flex : 1,
   },
   logo: {
     width: 200,
@@ -93,8 +96,8 @@ const styles = StyleSheet.create({
     fontFamily: 'Playball-Regular',
   },
   button: {
-    marginTop: '50%',
-    marginBottom: 10,
+    marginTop: '10%',
+    //marginBottom: 10,
     //marginLeft: '50%',
   },
 });
