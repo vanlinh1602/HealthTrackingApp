@@ -49,6 +49,7 @@ const App = () => {
         <Stack.Screen
           options={{
             header: HeaderHome
+            //header: ()=> null
           }}
           name='Home'
           component={Home}

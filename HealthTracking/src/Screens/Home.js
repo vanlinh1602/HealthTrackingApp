@@ -5,6 +5,7 @@ import {
   View,
   Pressable,
   ImageBackground,
+  Dimensions
 } from 'react-native';
 import ButtonHomeUI from '../Utils/ButtonHomeUI';
 
@@ -71,9 +72,10 @@ const styles = StyleSheet.create({
   background: {
     flex: 1,
   },
-    container: {
+  container: {
     backgroundColor: '#FDE7E7',
     flex: 1,
+    height: Dimensions.get("window").height,
   },
   CalenderStyle: {
     width: "40%",

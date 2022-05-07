@@ -1,4 +1,5 @@
 import React, { Component, useEffect, useState } from 'react';
+import {Alert } from "react-native";
 import auth, { firebase } from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import { getActionFromState } from '@react-navigation/native';
@@ -70,15 +71,13 @@ export class FirebaseManager extends Component {
                 console.log("Sign in succesed");
             })
             .catch(error => {
-                if (error.code === 'auth/email-already-in-use') {
-                    console.log('That email address is already in use!');
+                console.log(error)
+                if (error.code === 'auth/wrong-password') {
+                    Alert.alert("Health Trangking ","Sai mật khẩu");
                 }
-
-                if (error.code === 'auth/invalid-email') {
-                    console.log('That email address is invalid!');
+                if (error.code === 'auth/user-not-found') {
+                    Alert.alert("Health Trangking ","Mail chưa được đăng kí");
                 }
-
-                console.error(error);
             });
     };
     // Đăng kí tài khoảng với mail và pass
@@ -89,15 +88,14 @@ export class FirebaseManager extends Component {
                 return user.updateProfile({
                     displayName: userName
                 })
-                console.log('User account created & signed in!');
+                Alert.alert("Health Trangking ","Đăng kí thành công");
             })
             .catch(error => {
                 if (error.code === 'auth/email-already-in-use') {
-                    console.log('That email address is already in use!');
+                    Alert.alert("Health Trangking ","Mail đã có người sử dụng");
                 }
-
                 if (error.code === 'auth/invalid-email') {
-                    console.log('That email address is invalid!');
+                    Alert.alert("Health Trangking ","Mail không hợp lệ");
                 }
             })
     }
@@ -129,7 +127,19 @@ export class FirebaseManager extends Component {
     // Reset password
 
     async ResetPass(mail){
-        await auth().sendPasswordResetEmail(mail);
+        await auth().sendPasswordResetEmail(mail)
+        .then(()=>{
+            Alert.alert("Health Trangking ","Vui lòng kiểm tra hòm thư");
+        })
+        .catch(error =>{
+            console.log(error);
+            if (error.code === 'auth/user-not-found') {
+                Alert.alert("Health Trangking ","Mail chưa đăng ký");
+            }
+            if (error.code === 'auth/invalid-email') {
+                Alert.alert("Health Trangking ","Mail không hợp lệ");
+            }
+        });
     }
 
     //Lấy user name
