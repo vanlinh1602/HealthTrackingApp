@@ -15,6 +15,8 @@ export default function ModelChangePass(props) {
     const [data, setData]=useState(manager.dataInformation);
     const [name, setName]=useState();
     const [age, setAge]=useState();
+    const [gender, setGender]=useState();
+    const [phoneNumber, setPhoneNumber]=useState();
     const [isVisible,setVisible]=useState(false);
     const [ModalContent, setModalContent]=useState("");
     async function GetData(){
@@ -25,15 +27,17 @@ export default function ModelChangePass(props) {
       useEffect(()=>{
         GetData();
       },[]);
-    function changeInfo(){
-        if(name==""||age==""){
+    async function changeInfo(){
+        if(name==""||age==""||gender==""||phoneNumber==""){
             setModalContent("Bạn chưa nhập thông tin!")
             setVisible(true);
         }
         else {
             data.name=name;
             data.yearold=age;
-            manager.UpdateData("Information",data);
+            data.gender=gender;
+            data.phone=phoneNumber;
+            await manager.UpdateData("Information",data);
             props.close();
         }
     }
@@ -65,6 +69,16 @@ export default function ModelChangePass(props) {
                             style={styles.Input}
                             placeholder="Tuổi"
                             onChangeText={value => setAge(value)}
+                        />
+                        <TextInput 
+                            style={styles.Input}
+                            placeholder="Giới tính"
+                            onChangeText={value => setGender(value)}
+                        />
+                        <TextInput 
+                            style={styles.Input}
+                            placeholder="SDT"
+                            onChangeText={value => setPhoneNumber(value)}
                         />
                         <CustomButton
                             content = "Xác nhận"
