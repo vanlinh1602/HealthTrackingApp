@@ -16,8 +16,8 @@ export class FirebaseManager extends Component {
     // Data của chỉ số sức khỏe
     dataHealthInfor = {
         day: "",
-        height: 0,
-        weight: 0,
+        Height: 0,
+        Weight: 0,
         userName: "",
     }
     // Data của thông tin người dùng

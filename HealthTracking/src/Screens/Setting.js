@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Button, View, FlatList, Text, StyleSheet, TouchableOpacity,Image, Modal } from "react-native";
+import { Button, View, FlatList,Alert, Text, StyleSheet, TouchableOpacity,Image, Modal } from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import PushNotification from "react-native-push-notification";
 import { ListItem } from 'react-native-elements';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { TextInput } from "react-native-gesture-handler";
+//import { FirebaseManager } from "../Utils/FirebaseManager";
 
 export default function Setting() {
     const [index, setIndex] = useState(1);
@@ -29,8 +30,8 @@ export default function Setting() {
         PushNotification.localNotificationSchedule({
             channelId: "Test-channel",
             title: "HealthTracking ",
-            message: "Info",
-            date: date
+            message: "Có lời nhắc nhở, hãy mở app để xem",
+            date: date,
         })
     }
 
@@ -49,7 +50,7 @@ export default function Setting() {
     const renderItem = ({ item }) => (
     <ListItem>           
         <ListItem.Content>
-        <ListItem.Subtitle style={{fontSize:20,color:'purple',fontWeight:'bold'}}>{modalLabel}</ListItem.Subtitle>
+        <ListItem.Subtitle style={{fontSize:20,color:'purple',fontWeight:'bold'}}>{item.modalLabel}</ListItem.Subtitle>
             <ListItem.Title style = {styles.AlarmTittle}>{item.hour}</ListItem.Title>                    
             <ListItem.Subtitle style={styles.AlarmSubTittle}>{item.day}</ListItem.Subtitle>                 
         </ListItem.Content>
@@ -62,8 +63,10 @@ export default function Setting() {
     );
 
     function AddDay(date) {
+        
         var newdate={
             id: index,
+            modalLabel:modalLabel,
             hour: date.getHours() + ":" + date.getMinutes(),
             day: date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear(),
         }
@@ -74,7 +77,10 @@ export default function Setting() {
             setDATA(newAlarm);
             console.log('okay');
         }).catch(error => console.log(error));
+        
+        
     }
+
 
     const showDateTimePicker = () => {
         setIsDateTimePickerVisible(true)
@@ -95,10 +101,17 @@ export default function Setting() {
     };
 
     const handleConfirm = (date) => {
-        AddDay(date);
-        //storeData();
+        //let Day = new Date(Date.now());
+        //if(Day <= date){
+        AddDay(date);   
         GetPushNotification(date);
         hideDateTimePicker();
+    //} else {
+        //Alert.alert('Warning','Vui lòng nhập thời gian tương lai. ',[
+           // {text:'OK'}
+        //]);
+        //handleConfirm();
+    //}
     };
 
     return (
@@ -107,6 +120,7 @@ export default function Setting() {
             visible= {Modalvisible} 
             transparent
             >
+                
                 <View style={styles.ModalBackground}>
                 <View style={styles.ModalContainer}>
                     <View style={{marginLeft:'85%',marginTop:'-4%'}}>
@@ -135,6 +149,7 @@ export default function Setting() {
                 </View>
                 </View>
             </Modal>
+            
             <FlatList
                 data={DATA}
                 renderItem={renderItem}
