@@ -16,7 +16,8 @@ export default function ModalAlert(props) {
             <Modal 
                 visible = {props.visible}
                 transparent
-                onRequestClose={props.close}>
+                onRequestClose={props.close}
+                animationType='fade'>
                 <View style = {styles.container}>
                     <View style = {styles.view}>
                     <View style = {styles.header}>
@@ -29,7 +30,7 @@ export default function ModalAlert(props) {
                         </Text>
                         <Image 
                             style={styles.ImageStyle}
-                            source={require('../Image/Alert.png')}                    
+                            source={require('../Image/warning.png')}                    
                         />
                     </View>  
                     </View>    
@@ -72,7 +73,7 @@ const styles = StyleSheet.create({
     },
     text:{
         margin: 10,
-        fontSize : 25,
+        fontSize : 22.5,
         color: '#000000',
         fontFamily: 'Mulish-Regular',
     },

@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
     },
     title: {
         //fontFamily: 'Mulish-Regular',
-        fontFamily: 'Playball-Regular',
+        fontFamily: 'DancingScript-Regular',
         fontSize: 35,
         textAlign: 'center',
         padding: 10,

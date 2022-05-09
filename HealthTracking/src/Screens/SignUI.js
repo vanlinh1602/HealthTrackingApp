@@ -28,7 +28,7 @@ function SignUI({ navigation }) {
     setIsSignUp(true);
   }
   if (manager.checkLogin()) {
-    navigation.navigate('Trang chủ')
+    navigation.replace('Home')
   }
   return (
     <View style={styles.container}>
@@ -47,12 +47,14 @@ function SignUI({ navigation }) {
           <Text style={styles.text}>tài khoản chưa?</Text>
         </View>
 
-        <View style={{ alignItems: 'center' }}>
+        <View style={{ alignItems: 'center', flex : 2 }}>
           <Image
             source={require('../Image/LOGO.png')}
             style={styles.logo}
             resizeMode='stretch'
           />
+        </View>
+        <View style={{ alignItems: 'center', flex: 1 }}>
           <CustomButton
             content="Đã có"
             color='#FAA1A1'
@@ -88,6 +90,7 @@ const styles = StyleSheet.create({
   },
   header: {
     margin: 50,
+    flex : 1,
   },
   logo: {
     width: 200,
@@ -104,7 +107,7 @@ const styles = StyleSheet.create({
   },
 
   buttonSignIn: {
-    marginTop: '35%',
+    //marginTop: '35%',
   },
   buttonSignUp: {
     marginTop: 20,

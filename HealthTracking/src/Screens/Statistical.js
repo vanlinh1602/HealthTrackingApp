@@ -62,11 +62,10 @@ export default function Statistical() {
         visible={showOption}
         close={() => setShowOption(false)}
       />
-      <View style={{ marginBottom: 20, alignItems: 'center' }}>
-        <Text style={styles.Header}>Thống Kê </Text>
-        {/* <View style={styles.Option}> */}
+      <View style={{ marginBottom: 20, alignItems: 'center', flex: 1 }}>
+          <Text style={styles.Header}>Thống Kê </Text>
           <InforCheck
-            style={{ marginBottom: 30, }}
+            style={{ marginBottom: 20, }}
             infor={valueScale}
             onPress={() => {
               setTitle("Chỉ số")
@@ -80,9 +79,8 @@ export default function Statistical() {
               setShowOption(true)
             }}
           />
-
       </View>
-
+      <View style = {{marginTop : 20, flex: 2}}>
       <LineChart
         data={{
           labels: ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"],
@@ -100,7 +98,7 @@ export default function Statistical() {
             }
           ]
         }}
-        width={Dimensions.get("window").width} // from react-native
+        width={Dimensions.get("window").width *0.95} // from react-native
         height={300}
         //yAxisLabel="$"
         //yAxisSuffix="k"
@@ -127,8 +125,8 @@ export default function Statistical() {
           borderRadius: 16
         }}
       />
-
-      <View style={{ alignItems: 'center', marginTop: 35 }} >
+      </View>
+      <View style={{ alignItems: 'center', marginTop: 35, flex: 1, }} >
         <Text
           style={{
             fontFamily: 'Mulish-Regular',
@@ -153,7 +151,7 @@ export default function Statistical() {
 
 const styles = StyleSheet.create({
   Header: {
-    marginTop: 20,
+    marginTop: 10,
     fontSize: 50,
     color: '#000',
     marginBottom: 10,

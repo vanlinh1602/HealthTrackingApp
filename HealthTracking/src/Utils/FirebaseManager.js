@@ -1,9 +1,12 @@
 import React, { Component, useEffect, useState } from 'react';
+import {Alert } from "react-native";
 import auth, { firebase } from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import { getActionFromState } from '@react-navigation/native';
+import storage from '@react-native-firebase/storage';
 
 export class FirebaseManager extends Component {
+    //#region data
     userName;
     // Data của Nhật ký
     dataDiary = {
@@ -37,12 +40,13 @@ export class FirebaseManager extends Component {
         status: "",
         type: "",
     }
+    //#endregion
 
     constructor(props) {
         super(props)
         this.userName = this.GetUserName();
     }
-
+    //#region user account method
     checkLogin() {
         const [initializing, setInitializing] = useState(true);
         const [user, setUser] = useState();
@@ -67,15 +71,13 @@ export class FirebaseManager extends Component {
                 console.log("Sign in succesed");
             })
             .catch(error => {
-                if (error.code === 'auth/email-already-in-use') {
-                    console.log('That email address is already in use!');
+                console.log(error)
+                if (error.code === 'auth/wrong-password') {
+                    Alert.alert("Health Trangking ","Sai mật khẩu");
                 }
-
-                if (error.code === 'auth/invalid-email') {
-                    console.log('That email address is invalid!');
+                if (error.code === 'auth/user-not-found') {
+                    Alert.alert("Health Trangking ","Mail chưa được đăng kí");
                 }
-
-                console.error(error);
             });
     };
     // Đăng kí tài khoảng với mail và pass
@@ -86,15 +88,14 @@ export class FirebaseManager extends Component {
                 return user.updateProfile({
                     displayName: userName
                 })
-                console.log('User account created & signed in!');
+                Alert.alert("Health Trangking ","Đăng kí thành công");
             })
             .catch(error => {
                 if (error.code === 'auth/email-already-in-use') {
-                    console.log('That email address is already in use!');
+                    Alert.alert("Health Trangking ","Mail đã có người sử dụng");
                 }
-
                 if (error.code === 'auth/invalid-email') {
-                    console.log('That email address is invalid!');
+                    Alert.alert("Health Trangking ","Mail không hợp lệ");
                 }
             })
     }
@@ -122,6 +123,25 @@ export class FirebaseManager extends Component {
                 console.log(error)
             })
     }
+
+    // Reset password
+
+    async ResetPass(mail){
+        await auth().sendPasswordResetEmail(mail)
+        .then(()=>{
+            Alert.alert("Health Trangking ","Vui lòng kiểm tra hòm thư");
+        })
+        .catch(error =>{
+            console.log(error);
+            if (error.code === 'auth/user-not-found') {
+                Alert.alert("Health Trangking ","Mail chưa đăng ký");
+            }
+            if (error.code === 'auth/invalid-email') {
+                Alert.alert("Health Trangking ","Mail không hợp lệ");
+            }
+        });
+    }
+
     //Lấy user name
     GetUserName() {
         const user = auth().currentUser;
@@ -132,6 +152,9 @@ export class FirebaseManager extends Component {
     SignOut() {
         auth().signOut().then(() => { console.log("Log out succesed") })
     };
+    //#endregion
+    
+    //#region upload and get file firebase
     // Lấy data với query return List data
     async getDataWithQuery(collection, field, operators, value) {
         let temp = []
@@ -211,4 +234,17 @@ export class FirebaseManager extends Component {
                 console.log('User deleted!');
             });
     }
+    async getImage(collection, imageName){
+        const file = this.userName + '/' + collection + '/' + imageName + ".png";
+        const url = await storage().ref(file).getDownloadURL();
+        return url;
+    }
+    async uploadImage(collection, imageName, imagePath){
+        const file = this.userName + '/' + collection + '/' + imageName + ".png"
+        const reference = storage().ref(file);
+        await reference.putFile(imagePath).then(()=>{
+            console.log("success!")
+        });
+    }
+    //#endregion
 };

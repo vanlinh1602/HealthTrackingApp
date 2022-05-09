@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     StyleSheet,
     Text,
@@ -7,7 +7,8 @@ import {
     Pressable,
     Image,
     Dimensions,
-    TextInput
+    TextInput,
+    Alert
 } from 'react-native';
 import { FlatList, ScrollView } from 'react-native-gesture-handler';
 import CustomButton from './CustomButton';
@@ -21,18 +22,9 @@ export default function ModelReadDiary(props) {
     const [isImage, setIsImage] = useState(false);
     const [dataImage, setDataImage] = useState([]);
 
-
-    function PushDataToDataBase(){
-        var date = new Date(Date.now());
-        data.day = date.getDate() + '/' + (date.getMonth()+1) + '/' + date.getFullYear();
-        data.image = dataImage;
-        manager.AddDataRandomDoc("Diary", data);
-        props.loadScreen(data);
-        props.close();
-    }
-
+    //#region Method
     const RenderImage = (data) => (
-        <View>
+        <View style = {{marginTop : "-25%"}}>
         <FlatList
             showsHorizontalScrollIndicator = {false}
             horizontal = {true}
@@ -49,30 +41,81 @@ export default function ModelReadDiary(props) {
         </View>
     )
 
+    
+    //#endregion
+
+    //#region Write new Diary
     async function GetImage(){
         await imagePick._pickImage();
         if(imagePick.uri != ""){
-            setDataImage(value => [...value, imagePick.uri]);
-            setIsImage(true);
+            if(props.fixTitle){
+                data.image.push(imagePick.uri);
+                setDataImage(data.image);
+            }
+            else{
+                setDataImage(value => [...value, imagePick.uri]);
+                setIsImage(true);
+            }
         }
     }
 
-    function UpdateData(){
-        const query = ["day", '==', data.day]
-        manager.UpdateData("Diary", data, query);
+    function imageProcessing(date){
+        day = date.getDate() + '-' + (date.getMonth()+1) + '-' + date.getFullYear();
+        const dataSource = [];
+        var count = 1;
+        dataImage.forEach(async (item) => {
+            var name = day + "_" + count;
+            count = count + 1;
+            await manager.uploadImage("Diary",name,item);
+            var url = await manager.getImage("Diary", name);
+            dataSource.push(url);
+        })
+        return dataSource;
     }
+    function PushDataToDataBase(){
+        var date = new Date(Date.now());
+        data.day = date.getDate() + '/' + (date.getMonth()+1) + '/' + date.getFullYear();
+        data.image = imageProcessing(date);
+        if(data.status != "" && data.title != "" && dataImage.length > 0){
+            manager.AddDataRandomDoc("Diary", data);
+            props.loadScreen(data);
+            setIsImage(false);
+            setDataImage([])
+            props.close();
+        }
+        else{
+            if(data.image.length == 0){
+                Alert.alert("Health Tracking", "Hãy cùng chọn ít nhất 1 bức ảnh để kỉ niệm ngày hôm nay nào <3")
+            }
+            else{
+                Alert.alert("Health Tracking", "Hãy miêu tả ngày hôm nay của bạn đi!!!")
+            }
+        }
+    }
+    //#endregion
 
+    //#region Fix Diary
     function LoadData(){
         data.status = props.fixStatus;
         data.image = props.image;
         data.title = props.fixTitle;
         data.day = props.day;
-    }
+        setDataImage(data.image);
+        setIsImage(true);
 
-    if(props.fixTitle){
-        LoadData();
     }
+    function UpdateData(){
+        const query = ["day", '==', data.day]
+        manager.UpdateData("Diary", data, query);
+        props.close();
+    }
+    useEffect(()=>{
+        if(props.fixTitle){
+            LoadData();
+        }
+    },[])
 
+    //#endregion
     return (
         <View style={{ ...props.style, justifyContent: 'center' }}>
             <Modal
@@ -85,7 +128,11 @@ export default function ModelReadDiary(props) {
                         <View style={{ backgroundColor: "#FCD0D0", alignItems: 'center', borderRadius: 20 }}>
                             <Pressable
                                 style={{ marginLeft: '80%', marginTop: 20, }}
-                                onPress = {props.close}
+                                onPress = {()=>{
+                                    setIsImage(false)
+                                    setDataImage([]),
+                                    props.close()
+                                }}
                             >
                                 <Image
                                     resizeMode="stretch"
@@ -105,14 +152,15 @@ export default function ModelReadDiary(props) {
                             >{props.fixTitle}</TextInput>
                             <Text style={styles.story}>Nhật ký</Text>
                             <TextInput
-                                style = {styles.inputStory}
+                                style = {[styles.inputStory, {height: 320}]}
                                 placeholder = "Hãy viết một vài điều gì đó mà bạn thấy ấn tượng trong ngày hôm nay"
                                 multiline
                                 onChangeText={value => data.status = value}
                             >{props.fixStatus}</TextInput>
                         </View>
+                        <View>
                         {(isImage) ? RenderImage(dataImage) : null}
-                        {(props.image) ? RenderImage(props.image) : null}
+                        </View>
                         <ScrollView 
                             horizontal={true}
                             style = {{marginLeft: "25%", marginBottom: 10}}
@@ -165,7 +213,7 @@ const styles = StyleSheet.create({
     mainView: {
         backgroundColor: '#FDE7E7',
         with: Dimensions.get("window").width,
-        //maxHeight: 700,
+        maxHeight: Dimensions.get("window").height * 0.9,
         borderRadius: 20,
 
     },
@@ -205,7 +253,7 @@ const styles = StyleSheet.create({
     inputStory:{
         fontSize : 20,
         paddingLeft: 20,
-        height: 320,
+        //height: 320,
         textAlignVertical: 'top',
         fontFamily: 'Mulish-Regular',
 

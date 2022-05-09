@@ -19,6 +19,9 @@ export default function ModelSignIn(props) {
     function LogIn(){
         manager.signIn(mail, pass);
     }
+    function ResetPass(){
+        manager.ResetPass(mail);
+    }
     return (
         <View style = {{...props.style, justifyContent: 'center'}}>
             <Modal
@@ -34,7 +37,7 @@ export default function ModelSignIn(props) {
                     </View>
                         <TextInput 
                             style={styles.Input}
-                            placeholder="Tài khoản"
+                            placeholder="Mail"
                             onChangeText={value => setMail(value)}
                         />
                         <TextInput 
@@ -43,7 +46,11 @@ export default function ModelSignIn(props) {
                             onChangeText={value => setPass(value)}
                             secureTextEntry
                         />
-                        <Text style = {styles.forgotPass}>Quên mật khẩu?</Text>
+                        <Pressable
+                            onPress={ResetPass}
+                        >
+                            <Text style = {styles.forgotPass}>Quên mật khẩu?</Text>
+                        </Pressable>
                         <CustomButton
                             content = "Đăng nhập"
                             color = '#F178B6'

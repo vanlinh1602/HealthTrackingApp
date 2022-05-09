@@ -5,6 +5,7 @@ import {
     View,
     Modal,
     Pressable,
+    Alert
 } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import { FirebaseManager } from './FirebaseManager';
@@ -12,16 +13,16 @@ import CustomButton from './CustomButton';
 
 export default function ModelSignUp(props) {
     const manager = new FirebaseManager();
-    const [userName, setUserName] = useState();
-    const [mail, setMail] = useState();
-    const [pass, setPass] = useState();
-    const [repass, setRepass] = useState();
+    const [userName, setUserName] = useState("");
+    const [mail, setMail] = useState("");
+    const [pass, setPass] = useState("");
+    const [repass, setRepass] = useState("");
     function SignNewAccount(){
-        if (pass == repass){
+        if (pass == repass && pass.length >= 6){
             manager.singUp(userName, mail, pass)
         }
         else{
-            alert("Mật khẩu không trùng khớp");
+            Alert.alert("Health Trangking ","Mật khẩu không trùng khớp hoặc bé hơn 6 kí tự");
         }
     }
     return (

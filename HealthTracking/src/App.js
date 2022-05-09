@@ -18,6 +18,7 @@ import Scale from './Screens/Scale';
 import HeaderHome from './Utils/HeaderHome';
 import Setting from './Screens/Setting';
 
+
 const Stack = createStackNavigator();
 
 const App = () => {
@@ -48,8 +49,9 @@ const App = () => {
         <Stack.Screen
           options={{
             header: HeaderHome
+            //header: ()=> null
           }}
-          name='Trang chủ'
+          name='Home'
           component={Home}
         />
         <Stack.Screen

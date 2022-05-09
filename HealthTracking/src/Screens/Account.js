@@ -1,4 +1,4 @@
-import React, {useState,useEffect} from 'react';
+import React, {useState,useEffect, useCallback} from 'react';
 import { 
   StyleSheet, 
   Text, 
@@ -12,6 +12,7 @@ import { BoxShadow } from 'react-native-shadow';
 import { CameraFunc } from '../Utils/CameraFunc';
 import ModelChangePass from '../Utils/ModelChangePass';
 import ModalAlert from '../Utils/ModelAlert';
+import ModalChangeInfo from '../Utils/ModalChangeInfo'
 
 export default function Account({navigation}) {
   const Camera = new CameraFunc();
@@ -19,17 +20,16 @@ export default function Account({navigation}) {
   const [data, setData]=useState(manager.dataInformation);
   const [isChangePassVisible, setChangePassVisible]=useState(false);
   const [isAlertVisible, setAlertVisible]=useState(false);
+  const [isChangeInfoVisible, setChangeInfoVisible]=useState(false);
   function LogOut(){
     manager.SignOut();
     navigation.navigate('GetStarted')
   };
-  function ChangePassword(){
-    setChangePassVisible(true);
-  }
   async function GetData(){
     var getdata = await manager.getDataWithCollection("Information");
     getdata.forEach((value => {setData(value)}))
-    setImageSource(data.imageUri);
+    var source = await manager.getImage("Information", "Avatar")
+    setImageSource(source);
   }
 
   useEffect(()=>{
@@ -42,12 +42,19 @@ export default function Account({navigation}) {
     }
     else{
     setImageSource(Camera.uri);
-    data.imageUri=Camera.uri;
-    manager.UpdateData("Information",data);
+    manager.uploadImage("Information","Avatar",Camera.uri)
     }
+  }
+  async function TurnOff(){
+    await GetData();
+    setChangeInfoVisible(false);
   }
   return (
       <View style={styles.AccountBackground}>
+          <ModalChangeInfo
+            visible={isChangeInfoVisible}
+            close={TurnOff}
+          />
           <ModalAlert
             visible={isAlertVisible}
             close={()=>setAlertVisible(false)}
@@ -72,7 +79,7 @@ export default function Account({navigation}) {
               style={styles.ImageStyle}
             />
             </View>
-            )}     
+            )}   
             <TouchableOpacity style={styles.CameraButton} onPress={pickImage}>             
               <Image style={{
                 resizeMode:"cover",
@@ -81,8 +88,10 @@ export default function Account({navigation}) {
               }}
               source={require('../Image/camera.png')}
               />                  
-            </TouchableOpacity>
+            </TouchableOpacity>  
+          </View>
 
+          <View style={styles.Container}>
             <BoxShadow setting = {shadowOpt}>
             <View style={styles.InfomationBox}>
             
@@ -118,16 +127,32 @@ export default function Account({navigation}) {
                   source={require('../Image/Line.png')}
                 />
               </View>
-            
+              <View style={{flex:2}}>
+                <Text style={styles.TextStyle}>
+                  SDT: {data.phone}
+                </Text> 
+                <Image style={styles.Line}
+                  source={require('../Image/Line.png')}
+                />
+              </View>
             </View>   
             </BoxShadow>
 
             <View>
               <CustomButton
+                content='Chỉnh sửa'
+                size={20}
+                style={styles.ButtonStyle}
+                onPress={()=>setChangeInfoVisible(true)}
+                width={150}
+                height={50}
+                color='#FAA1A1'
+              />
+              <CustomButton
                 content='Đổi mật khẩu'
                 size={20}
                 style={styles.ButtonStyle}
-                onPress={ChangePassword}
+                onPress={()=>setChangePassVisible(true)}
                 width={150}
                 height={50}
                 color='#FAA1A1'
@@ -152,31 +177,30 @@ export default function Account({navigation}) {
 
 const styles = StyleSheet.create({
     AccountBackground:{
-        flex:1,
-        backgroundColor:'#FDE7E7',
-        alignItems: 'center',
+      flex:1,
+      backgroundColor:'#FDE7E7',
+      alignItems: 'center',
     },
     Container:{
-      flex:1,
-      height:100,
-      marginTop:25,
+      height:'15%',
+      marginTop:'5%',
       width:'100%',
       alignItems:'center',
     },
     CameraButton:{
-      padding:10,
-      margintop:50,
-      height:40,
-      width:100,
+      padding:'1%',
+      margintop:'10%',
+      height:'100%',
+      width:'100%',
       alignItems:'center',
     },
     InfomationBox:{
       backgroundColor:'#FCD0D0',    
       height:'100%',
       width:'100%',
-      padding:10,
+      padding:'3%',
       borderRadius:20,
-      marginTop:10,
+      marginTop:'5%',
       justifyContent:'space-around',
       flexDirection:'column',
     },
@@ -185,21 +209,20 @@ const styles = StyleSheet.create({
       textAlign:'left',
     },
     Line:{
-      height:5,
+      height:'5%',
       width:'80%',
-      marginTop:15
+      marginTop:'5%'
     },
     ButtonStyle:{
-      marginTop:10,
-      padding:10,
+      marginTop:'5%'
     },
     ImageStyle:{
       borderRadius:50,
-                resizeMode:"cover",
-                height:100,
-                width:100,
-                borderWidth:2,
-                borderColor:"black"  
+      resizeMode:"cover",
+      height:'100%',
+      width:100,
+      borderWidth:2,
+      borderColor:"black"  
     }
 });
 
@@ -213,7 +236,7 @@ const shadowOpt = {
   radius: 20,
   opacity: 0.15,
   x: 5,
-  y: 15,
+  y: 22.5,
   style: { marginVertical: 10 }
 };
 
