@@ -32,7 +32,6 @@ const getDay = () => {
 
 const INITIAL_DATE = getDay();
 
-
 export default function CalendarScreen() {
   const manager = new FirebaseManager();
   const [selected, setSelected] = useState(INITIAL_DATE);
@@ -40,7 +39,8 @@ export default function CalendarScreen() {
   const [showAddDiary, setShowAddDiary] = useState(false);
   const [dataDiary, setDataDiary] = useState([])
   const [data, setData] = useState(manager.dataDiary);
-
+  const [sourceImage,setSourceImage] = useState([])
+  const [countImage, setCountImage] = useState(0);
   const onDayPress: CalendarProps['onDayPress'] = useCallback(day => {
     setSelected(day.dateString);
     var stringDay = day.day + '/'+ day.month + '/' + day.year;
@@ -58,13 +58,17 @@ export default function CalendarScreen() {
     };
   }, [selected]);
   async function GetDataFromDatabase(day){
+    var count = 0;
     setDataDiary([])
     var getdata = await manager.getDataWithQuery("Diary" ,'day', '==', day);
     getdata.forEach((value => {
       setDataDiary(doc => [...doc, value])
+      value.image.forEach(()=>{
+        count = count + 1;
+      })
     }));
+    setCountImage(count);
   }
-
   function LoadingDiary(){
     var date = new Date(Date.now());
     var day = date.getDate() + '/' + (date.getMonth()+1) + '/' + date.getFullYear();
@@ -104,6 +108,7 @@ export default function CalendarScreen() {
         status={data.status}
         />
       <ModelAddDiary
+        count = {countImage}
         visible = {showAddDiary}
         close = {()=>setShowAddDiary(false)}
         loadScreen = {(data) => {setDataDiary(value => [...value, data])}}

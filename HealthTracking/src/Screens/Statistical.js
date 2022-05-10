@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
   Text,
@@ -17,6 +17,7 @@ import {
 } from "react-native-chart-kit";
 import { ScrollView } from 'react-native-gesture-handler';
 import OptionsStatistical from '../Utils/OptionsStatistical'
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 
 function InforCheck(props) {
   return (
@@ -43,8 +44,34 @@ function InforCheck(props) {
 export default function Statistical() {
   const [title, setTitle] = useState("");
   const [valueScale, setValueScale] = useState("Cân nặng")
-  const [valueTime, setValueTime] = useState("Tuần 1 Tháng 1")
+  const [valueTime, setValueTime] = useState(new Date(Date.now()).toDateString())
+  const [isDateTimePickerVisible, setIsDateTimePickerVisible] = useState(false);
+  const [labels, setLabels] = useState();
+  const weekDay = [ "SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
   const [showOption, setShowOption] = useState(false);
+  const hideDateTimePicker = () => {
+    setIsDateTimePickerVisible(false)
+  };
+
+  useEffect(()=>{
+    getDataForTable(new Date(Date.now()))
+  },[])
+
+
+  const getDataForTable = (date) => {
+    const data = []
+    for (var i = 0; i < 7; i++){
+      var name = weekDay[date.getDay()];
+      data.push(name);
+      date.setHours(date.getHours() - 24);
+    }
+    setLabels(data.reverse());
+  }
+  const handleConfirm = (date) => {
+    getDataForTable(date)
+    setValueTime(date.toDateString());
+    setIsDateTimePickerVisible(false)
+  };
   return (
     <View style={{ alignItems: 'center', backgroundColor: '#FDE7E7', flex: 1 }}>
       <OptionsStatistical
@@ -63,68 +90,69 @@ export default function Statistical() {
         close={() => setShowOption(false)}
       />
       <View style={{ marginBottom: 20, alignItems: 'center', flex: 1 }}>
-          <Text style={styles.Header}>Thống Kê </Text>
-          <InforCheck
-            style={{ marginBottom: 20, }}
-            infor={valueScale}
-            onPress={() => {
-              setTitle("Chỉ số")
-              setShowOption(true)
-            }}
-          />
-          <InforCheck
-            infor={valueTime}
-            onPress={() => {
-              setTitle("Thời gian")
-              setShowOption(true)
-            }}
-          />
+        <Text style={styles.Header}>Thống Kê </Text>
+        <InforCheck
+          style={{ marginBottom: 20, }}
+          infor={valueScale}
+          onPress={() => {
+            setTitle("Chỉ số")
+            setShowOption(true)
+          }}
+        />
+        <InforCheck
+          infor={valueTime}
+          onPress={() => {
+            //setTitle("Thời gian")
+            setIsDateTimePickerVisible(true)
+            console.log("yes")
+          }}
+        />
       </View>
-      <View style = {{marginTop : 20, flex: 2}}>
-      <LineChart
-        data={{
-          labels: ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"],
-          datasets: [
-            {
-              data: [
-                Math.random() * 100,
-                Math.random() * 100,
-                Math.random() * 100,
-                Math.random() * 100,
-                Math.random() * 100,
-                Math.random() * 100,
-                Math.random() * 100
-              ]
+      <View style={{ marginTop: 20, flex: 2 }}>
+        <LineChart
+          data={{
+            labels: labels,
+            datasets: [
+              {
+                data: [
+                  Math.random() * 100,
+                  Math.random() * 100,
+                  Math.random() * 100,
+                  Math.random() * 100,
+                  Math.random() * 100,
+                  Math.random() * 100,
+                  Math.random() * 100
+                ]
+              }
+            ]
+          }}
+          width={Dimensions.get("window").width * 0.95} // from react-native
+          height={300}
+          //yAxisLabel="$"
+          //yAxisSuffix="k"
+          yAxisInterval={1} // optional, defaults to 1
+          chartConfig={{
+            backgroundColor: "#e26a00",
+            backgroundGradientFrom: "#F178B6",
+            backgroundGradientTo: "#EF5DA8",
+            decimalPlaces: 2, // optional, defaults to 2dp
+            color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+            labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+            style: {
+              borderRadius: 16
+            },
+            propsForDots: {
+              r: "6",
+              strokeWidth: "2",
+              stroke: "#FAA1A1"
             }
-          ]
-        }}
-        width={Dimensions.get("window").width *0.95} // from react-native
-        height={300}
-        //yAxisLabel="$"
-        //yAxisSuffix="k"
-        yAxisInterval={1} // optional, defaults to 1
-        chartConfig={{
-          backgroundColor: "#e26a00",
-          backgroundGradientFrom: "#F178B6",
-          backgroundGradientTo: "#EF5DA8",
-          decimalPlaces: 2, // optional, defaults to 2dp
-          color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-          labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-          style: {
+          }}
+          bezier
+          style={{
+            marginVertical: 8,
             borderRadius: 16
-          },
-          propsForDots: {
-            r: "6",
-            strokeWidth: "2",
-            stroke: "#FAA1A1"
-          }
-        }}
-        bezier
-        style={{
-          marginVertical: 8,
-          borderRadius: 16
-        }}
-      />
+          }}
+        />
       </View>
       <View style={{ alignItems: 'center', marginTop: 35, flex: 1, }} >
         <Text
@@ -132,7 +160,7 @@ export default function Statistical() {
             fontFamily: 'Mulish-Regular',
             fontSize: 25,
             borderBottomWidth: 1,
-            color : "#000"
+            color: "#000"
           }}
         >Tips :</Text>
         <Text
@@ -144,6 +172,12 @@ export default function Statistical() {
           }}
         >Ăn uống đều độ mỗi ngày sẽ giúp cơ thể khỏe mạnh hơn</Text>
       </View>
+      <DateTimePickerModal
+        isVisible={isDateTimePickerVisible}
+        mode="date"
+        onConfirm={handleConfirm}
+        onCancel={hideDateTimePicker}
+      />
     </View>
 
   );
