@@ -193,20 +193,34 @@ export class FirebaseManager extends Component {
     }
     // Cập nhập dữ liệu lên database
     // Query là 1 mảng (có thể có hoặc ko) VD: ["name", "==", "Firebase"]
-    async UpdateData(collection, data, query?) {
+    async UpdateData(collection, data, query?, option?) {
         data.userName = this.userName;
         const db = await firestore().collection(collection);
         var docID = "";
         if (query) {
-            await db
+            if(option){
+                await db
                 .where("userName", '==', this.userName)
                 .where(query[0], query[1], query[2])
                 .get()
                 .then((querySnapshot) => {
                     querySnapshot.forEach((doc) => {
-                        docID = doc.id;
+                        if(doc.data().title == option)
+                            docID = doc.id;
                     });
                 })
+            }
+            else{
+                await db
+                    .where("userName", '==', this.userName)
+                    .where(query[0], query[1], query[2])
+                    .get()
+                    .then((querySnapshot) => {
+                        querySnapshot.forEach((doc) => {
+                            docID = doc.id;
+                        });
+                    })
+            }
         }
         else {
             await db

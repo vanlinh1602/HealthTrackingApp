@@ -21,6 +21,7 @@ export default function ModelReadDiary(props) {
     const [data, setData] = useState(manager.dataDiary);
     const [isImage, setIsImage] = useState(false);
     const [dataImage, setDataImage] = useState([]);
+    var countImage = props.count;
 
     //#region Method
     const RenderImage = (data) => (
@@ -40,8 +41,6 @@ export default function ModelReadDiary(props) {
         />
         </View>
     )
-
-    
     //#endregion
 
     //#region Write new Diary
@@ -59,23 +58,22 @@ export default function ModelReadDiary(props) {
         }
     }
 
-    function imageProcessing(date){
+    async function imageProcessing(date){
         day = date.getDate() + '-' + (date.getMonth()+1) + '-' + date.getFullYear();
         const dataSource = [];
-        var count = 1;
-        dataImage.forEach(async (item) => {
-            var name = day + "_" + count;
-            count = count + 1;
-            await manager.uploadImage("Diary",name,item);
-            var url = await manager.getImage("Diary", name);
-            dataSource.push(url);
+        dataImage.forEach((item) => {
+            var name = day + "/" + (countImage + 1);
+            manager.uploadImage("Diary",name,item);
+            dataSource.push(name);
+            countImage = countImage + 1;
         })
-        return dataSource;
+        data.image = dataSource;
+        //return dataSource;
     }
-    function PushDataToDataBase(){
+    async function PushDataToDataBase(){
         var date = new Date(Date.now());
         data.day = date.getDate() + '/' + (date.getMonth()+1) + '/' + date.getFullYear();
-        data.image = imageProcessing(date);
+        await imageProcessing(date);
         if(data.status != "" && data.title != "" && dataImage.length > 0){
             manager.AddDataRandomDoc("Diary", data);
             props.loadScreen(data);
@@ -104,9 +102,10 @@ export default function ModelReadDiary(props) {
         setIsImage(true);
 
     }
-    function UpdateData(){
+    async function UpdateData(){
         const query = ["day", '==', data.day]
-        manager.UpdateData("Diary", data, query);
+        const option = props.fixTitle;
+        await manager.UpdateData("Diary", data, query, option);
         props.close();
     }
     useEffect(()=>{
