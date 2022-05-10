@@ -5,7 +5,8 @@ import {
   View,
   Pressable,
   Dimensions,
-  Image
+  Image,
+  Button
 } from 'react-native';
 import {
   LineChart,
@@ -18,6 +19,7 @@ import {
 import { ScrollView } from 'react-native-gesture-handler';
 import OptionsStatistical from '../Utils/OptionsStatistical'
 import DateTimePickerModal from "react-native-modal-datetime-picker";
+import { FirebaseManager } from '../Utils/FirebaseManager';
 
 function InforCheck(props) {
   return (
@@ -42,33 +44,63 @@ function InforCheck(props) {
 }
 
 export default function Statistical() {
+  const manager = new FirebaseManager();
   const [title, setTitle] = useState("");
   const [valueScale, setValueScale] = useState("Cân nặng")
   const [valueTime, setValueTime] = useState(new Date(Date.now()).toDateString())
   const [isDateTimePickerVisible, setIsDateTimePickerVisible] = useState(false);
   const [labels, setLabels] = useState();
-  const weekDay = [ "SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
+  const [dataHealth, setDataHealth] = useState([0, 0, 0, 0, 0, 0, 0]);
+  const weekDay = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
   const [showOption, setShowOption] = useState(false);
   const hideDateTimePicker = () => {
     setIsDateTimePickerVisible(false)
   };
 
-  useEffect(()=>{
-    getDataForTable(new Date(Date.now()))
-  },[])
+  useEffect(() => {
+    getDataForTable(new Date(Date.now()),valueScale)
+  }, [])
 
 
-  const getDataForTable = (date) => {
-    const data = []
-    for (var i = 0; i < 7; i++){
+  async function getDataForTable(date,value) {
+    const data = [];
+    var index = [];
+    for (var i = 0; i < 7; i++) {
+      //Get lable
       var name = weekDay[date.getDay()];
       data.push(name);
+      //Get Data user
+      var dateGet = date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear();
+      var info = await manager.getDataWithQuery("HealthInfo", "day", '==', dateGet)
+      if (info.length == 0) {
+        index.push(0);
+      }
+      else {
+        if (value == "Cân nặng") {
+          info.forEach(doc => {
+            index.push(doc.weight);
+          })
+        }
+        if (value == "Chiều cao") {
+          info.forEach(doc => {
+            index.push(doc.height);
+          })
+        }
+        if (value == "BMI") {
+          info.forEach(doc => {
+            index.push(doc.BMI);
+          })
+        }
+      }
       date.setHours(date.getHours() - 24);
     }
+    setDataHealth(index.reverse());
     setLabels(data.reverse());
   }
+
+
   const handleConfirm = (date) => {
-    getDataForTable(date)
+    getDataForTable(date, valueScale)
     setValueTime(date.toDateString());
     setIsDateTimePickerVisible(false)
   };
@@ -77,14 +109,10 @@ export default function Statistical() {
       <OptionsStatistical
         title={title}
         onPress={(value) => {
-          if (title == "Chỉ số") {
-            setValueScale(value);
-            setShowOption(false);
-          }
-          else {
-            setValueTime(value);
-            setShowOption(false);
-          }
+          setValueScale(value);
+          setShowOption(false);
+          //console.log(new Date(valueTime));
+          getDataForTable(new Date(valueTime), value);
         }}
         visible={showOption}
         close={() => setShowOption(false)}
@@ -102,9 +130,7 @@ export default function Statistical() {
         <InforCheck
           infor={valueTime}
           onPress={() => {
-            //setTitle("Thời gian")
             setIsDateTimePickerVisible(true)
-            console.log("yes")
           }}
         />
       </View>
@@ -114,15 +140,7 @@ export default function Statistical() {
             labels: labels,
             datasets: [
               {
-                data: [
-                  Math.random() * 100,
-                  Math.random() * 100,
-                  Math.random() * 100,
-                  Math.random() * 100,
-                  Math.random() * 100,
-                  Math.random() * 100,
-                  Math.random() * 100
-                ]
+                data: dataHealth
               }
             ]
           }}
