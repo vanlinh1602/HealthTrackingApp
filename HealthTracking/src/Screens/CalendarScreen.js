@@ -102,7 +102,8 @@ export default function CalendarScreen() {
       <ModelReadDiary
         visible = {showDiary}
         close = {()=>setShowDiary(false)}
-        title={data.title.toUpperCase()}
+        reload = {LoadingDiary}
+        title={data.title}
         day={data.day}
         image={data.image}
         status={data.status}

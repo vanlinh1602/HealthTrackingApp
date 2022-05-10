@@ -102,7 +102,11 @@ export default function ModelReadDiary(props) {
                                 day = {props.day}
                                 image = {urlImage}
                                 visible = {isFix}
-                                close = {()=> setIsFix(false)}
+                                close = {()=> {
+                                    setIsFix(false)
+                                    props.reload();
+                                    props.close();
+                                }}
                             />
                         )}
                     </View>

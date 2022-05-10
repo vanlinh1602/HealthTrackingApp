@@ -41,8 +41,6 @@ export default function ModelReadDiary(props) {
         />
         </View>
     )
-
-    
     //#endregion
 
     //#region Write new Diary
@@ -104,9 +102,10 @@ export default function ModelReadDiary(props) {
         setIsImage(true);
 
     }
-    function UpdateData(){
+    async function UpdateData(){
         const query = ["day", '==', data.day]
-        manager.UpdateData("Diary", data, query);
+        const option = props.fixTitle;
+        await manager.UpdateData("Diary", data, query, option);
         props.close();
     }
     useEffect(()=>{
