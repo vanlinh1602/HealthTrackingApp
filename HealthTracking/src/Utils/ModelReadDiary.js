@@ -17,50 +17,48 @@ import ModelAddDiary from './ModelAddDiary'
 export default function ModelReadDiary(props) {
     const manager = new FirebaseManager();
     const [isFix, setIsFix] = useState(false);
-    const [urlImage,setUrlImage] = useState([]);
+    const [urlImage, setUrlImage] = useState([]);
     function FixData() {
         setIsFix(true)
     }
-    //console.log(props.image)
-    // useEffect(Test,[urlImage])
-    async function GetImageFromDatabase(){
-        for(var i = 0; i < props.image.length; i++){
+    useEffect(() => {
+        GetImageFromDatabase()
+    }, [])
+    async function GetImageFromDatabase() {
+        for (var i = 0; i < props.image.length; i++) {
             var source = await manager.getImage("Diary", props.image[i]);
             setUrlImage(value => [...value, source]);
         }
     }
-    if(props.image && urlImage.length == 0){
-        GetImageFromDatabase()
-    }
     const RenderImage = () => (
         <View>
-        <FlatList
-            showsHorizontalScrollIndicator = {false}
-            horizontal = {true}
-            data={urlImage}
-            renderItem = {({item}) => (
+            <FlatList
+                showsHorizontalScrollIndicator={false}
+                horizontal={true}
+                data={urlImage}
+                renderItem={({ item }) => (
                     <View>
                         <Image
                             resizeMode='stretch'
-                            style = {{height : 200, width : 200, marginLeft: 5, marginRight : 5}}
-                            source  = {{uri : item}}
+                            style={{ height: 200, width: 200, marginLeft: 5, marginRight: 5 }}
+                            source={{ uri: item }}
                         />
                     </View>
-            )}
-        />
+                )}
+            />
         </View>
     )
 
     return (
-        <View style={{ ...props.style}}>
+        <View style={{ ...props.style }}>
             <Modal
                 visible={props.visible}
                 transparent
                 onRequestClose={props.close}
             >
                 <View style={styles.container}>
-                    <View style={styles.mainView} > 
-                        <View style={{ backgroundColor: "#FCD0D0", alignItems: 'center', borderRadius: 20}}>
+                    <View style={styles.mainView} >
+                        <View style={{ backgroundColor: "#FCD0D0", alignItems: 'center', borderRadius: 20 }}>
                             <Pressable
                                 style={{ marginLeft: '80%', marginTop: 15, }}
                                 onPress={FixData}
@@ -73,7 +71,7 @@ export default function ModelReadDiary(props) {
                             </Pressable>
                             <Pressable
                                 style={{ marginLeft: '-85%', marginTop: -35, }}
-                                onPress={()=>{
+                                onPress={() => {
                                     setUrlImage([]);
                                     props.close();
                                 }}
@@ -88,7 +86,7 @@ export default function ModelReadDiary(props) {
                         </View>
                         {!isFix ? (
                             <ScrollView
-                                showsVerticalScrollIndicator = {false}
+                                showsVerticalScrollIndicator={false}
                             >
                                 <Text style={styles.day}>Ngày {props.day}</Text>
                                 <Text style={styles.title}>{props.title}</Text>
@@ -97,16 +95,18 @@ export default function ModelReadDiary(props) {
                             </ScrollView>
                         ) : (
                             <ModelAddDiary
-                                fixTitle = {props.title}
-                                fixStatus = {props.status}
-                                day = {props.day}
-                                image = {urlImage}
-                                visible = {isFix}
-                                close = {()=> {
+                                fixTitle={props.title}
+                                fixStatus={props.status}
+                                day={props.day}
+                                image={urlImage}
+                                imageName={props.image}
+                                visible={isFix}
+                                close={() => {
                                     setIsFix(false)
                                     props.reload();
                                     props.close();
                                 }}
+                                count={props.count}
                             />
                         )}
                     </View>
@@ -156,13 +156,13 @@ const styles = StyleSheet.create({
         color: '#F178B6'
     },
     content: {
-        textAlign : 'center',
+        textAlign: 'center',
         fontFamily: 'Mulish-Regular',
         fontSize: 20,
         padding: 10,
     },
-    btnSubmit:{
+    btnSubmit: {
         //marginTop: -60,
-    },  
+    },
 });
 

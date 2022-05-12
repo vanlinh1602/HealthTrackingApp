@@ -1,5 +1,5 @@
 import React, { Component, useEffect, useState } from 'react';
-import {Alert } from "react-native";
+import { Alert } from "react-native";
 import auth, { firebase } from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import { getActionFromState } from '@react-navigation/native';
@@ -31,7 +31,7 @@ export class FirebaseManager extends Component {
         name: "",
         gender: "",
         yearold: "",
-        imageUri:"",
+        imageUri: "",
     }
     // Data của bảng thống kê
     dataStatistical = {
@@ -73,10 +73,10 @@ export class FirebaseManager extends Component {
             .catch(error => {
                 console.log(error)
                 if (error.code === 'auth/wrong-password') {
-                    Alert.alert("Health Trangking ","Sai mật khẩu");
+                    Alert.alert("Health Trangking ", "Sai mật khẩu");
                 }
                 if (error.code === 'auth/user-not-found') {
-                    Alert.alert("Health Trangking ","Mail chưa được đăng kí");
+                    Alert.alert("Health Trangking ", "Mail chưa được đăng kí");
                 }
             });
     };
@@ -88,14 +88,14 @@ export class FirebaseManager extends Component {
                 return user.updateProfile({
                     displayName: userName
                 })
-                Alert.alert("Health Trangking ","Đăng kí thành công");
+                Alert.alert("Health Trangking ", "Đăng kí thành công");
             })
             .catch(error => {
                 if (error.code === 'auth/email-already-in-use') {
-                    Alert.alert("Health Trangking ","Mail đã có người sử dụng");
+                    Alert.alert("Health Trangking ", "Mail đã có người sử dụng");
                 }
                 if (error.code === 'auth/invalid-email') {
-                    Alert.alert("Health Trangking ","Mail không hợp lệ");
+                    Alert.alert("Health Trangking ", "Mail không hợp lệ");
                 }
             })
     }
@@ -126,20 +126,20 @@ export class FirebaseManager extends Component {
 
     // Reset password
 
-    async ResetPass(mail){
+    async ResetPass(mail) {
         await auth().sendPasswordResetEmail(mail)
-        .then(()=>{
-            Alert.alert("Health Trangking ","Vui lòng kiểm tra hòm thư");
-        })
-        .catch(error =>{
-            console.log(error);
-            if (error.code === 'auth/user-not-found') {
-                Alert.alert("Health Trangking ","Mail chưa đăng ký");
-            }
-            if (error.code === 'auth/invalid-email') {
-                Alert.alert("Health Trangking ","Mail không hợp lệ");
-            }
-        });
+            .then(() => {
+                Alert.alert("Health Trangking ", "Vui lòng kiểm tra hòm thư");
+            })
+            .catch(error => {
+                console.log(error);
+                if (error.code === 'auth/user-not-found') {
+                    Alert.alert("Health Trangking ", "Mail chưa đăng ký");
+                }
+                if (error.code === 'auth/invalid-email') {
+                    Alert.alert("Health Trangking ", "Mail không hợp lệ");
+                }
+            });
     }
 
     //Lấy user name
@@ -153,7 +153,7 @@ export class FirebaseManager extends Component {
         auth().signOut().then(() => { console.log("Log out succesed") })
     };
     //#endregion
-    
+
     //#region upload and get file firebase
     // Lấy data với query return List data
     async getDataWithQuery(collection, field, operators, value) {
@@ -198,19 +198,19 @@ export class FirebaseManager extends Component {
         const db = await firestore().collection(collection);
         var docID = "";
         if (query) {
-            if(option){
+            if (option) {
                 await db
-                .where("userName", '==', this.userName)
-                .where(query[0], query[1], query[2])
-                .get()
-                .then((querySnapshot) => {
-                    querySnapshot.forEach((doc) => {
-                        if(doc.data().title == option)
-                            docID = doc.id;
-                    });
-                })
+                    .where("userName", '==', this.userName)
+                    .where(query[0], query[1], query[2])
+                    .get()
+                    .then((querySnapshot) => {
+                        querySnapshot.forEach((doc) => {
+                            if (doc.data().title == option)
+                                docID = doc.id;
+                        });
+                    })
             }
-            else{
+            else {
                 await db
                     .where("userName", '==', this.userName)
                     .where(query[0], query[1], query[2])
@@ -248,17 +248,21 @@ export class FirebaseManager extends Component {
                 console.log('User deleted!');
             });
     }
-    async getImage(collection, imageName){
+    async getImage(collection, imageName) {
         const file = this.userName + '/' + collection + '/' + imageName + ".png";
         const url = await storage().ref(file).getDownloadURL();
         return url;
     }
-    async uploadImage(collection, imageName, imagePath){
+    async uploadImage(collection, imageName, imagePath) {
         const file = this.userName + '/' + collection + '/' + imageName + ".png"
         const reference = storage().ref(file);
-        await reference.putFile(imagePath).then(()=>{
+        await reference.putFile(imagePath).then(() => {
             console.log("success!")
         });
+    }
+    async deleteImage(collection, imageName) {
+        const file = this.userName + '/' + collection + '/' + imageName + ".png";
+        const url = await storage().ref(file).delete();
     }
     //#endregion
 };

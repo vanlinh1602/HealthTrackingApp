@@ -21,10 +21,10 @@ const getDay = () => {
   var dd = DayNow.getDate();
   var mm = DayNow.getMonth() + 1;
   var yy = DayNow.getFullYear().toString();
-  if (DayNow.getDate() < 10){
-    dd =  '0' + DayNow.getDate();
+  if (DayNow.getDate() < 10) {
+    dd = '0' + DayNow.getDate();
   }
-  if ((DayNow.getMonth() + 1) < 10){
+  if ((DayNow.getMonth() + 1) < 10) {
     mm = '0' + (DayNow.getMonth() + 1).toString();
   }
   return yy + '-' + mm + '-' + dd;
@@ -39,11 +39,11 @@ export default function CalendarScreen() {
   const [showAddDiary, setShowAddDiary] = useState(false);
   const [dataDiary, setDataDiary] = useState([])
   const [data, setData] = useState(manager.dataDiary);
-  const [sourceImage,setSourceImage] = useState([])
+  const [sourceImage, setSourceImage] = useState([])
   const [countImage, setCountImage] = useState(0);
   const onDayPress: CalendarProps['onDayPress'] = useCallback(day => {
     setSelected(day.dateString);
-    var stringDay = day.day + '/'+ day.month + '/' + day.year;
+    var stringDay = day.day + '/' + day.month + '/' + day.year;
     GetDataFromDatabase(stringDay)
   }, []);
 
@@ -57,63 +57,72 @@ export default function CalendarScreen() {
       }
     };
   }, [selected]);
-  async function GetDataFromDatabase(day){
+  async function GetDataFromDatabase(day) {
     var count = 0;
     setDataDiary([])
-    var getdata = await manager.getDataWithQuery("Diary" ,'day', '==', day);
+    var getdata = await manager.getDataWithQuery("Diary", 'day', '==', day);
     getdata.forEach((value => {
       setDataDiary(doc => [...doc, value])
-      value.image.forEach(()=>{
+      value.image.forEach(() => {
         count = count + 1;
       })
     }));
     setCountImage(count);
   }
-  function LoadingDiary(){
+  function LoadingDiary() {
     var date = new Date(Date.now());
-    var day = date.getDate() + '/' + (date.getMonth()+1) + '/' + date.getFullYear();
+    var day = date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear();
     GetDataFromDatabase(day);
   }
-  useEffect(LoadingDiary,[]);
+  useEffect(LoadingDiary, []);
   const RenderDiary = ({ item }) => (
     <Pressable
-      onPress={async()=>{
+      onPress={async () => {
         var temp = dataDiary;
         temp.forEach((value => {
           if (value.title == item.title)
-          setData(value);
+            setData(value);
         }))
         setShowDiary(true);
       }}
     >
-    <View style={styles.StatusToday}>
-      <Text
-        style={styles.ContentStatusDay}
+      <View style={styles.StatusToday}>
+        <Text
+          style={styles.ContentStatusDay}
         >{item.day}</Text>
-      <Text
-        style={styles.ContentStatus}
+        <Text
+          style={styles.ContentStatus}
         >{item.title}</Text>
-    </View>
+      </View>
     </Pressable>
   );
-  
+
   return (
     <View style={styles.calendarBackground}>
-      <ModelReadDiary
-        visible = {showDiary}
-        close = {()=>setShowDiary(false)}
-        reload = {LoadingDiary}
-        title={data.title}
-        day={data.day}
-        image={data.image}
-        status={data.status}
+      {(showDiary) ?
+        <ModelReadDiary
+          visible={showDiary}
+          close={() => setShowDiary(false)}
+          reload={LoadingDiary}
+          title={data.title}
+          day={data.day}
+          image={data.image}
+          status={data.status}
+          count={countImage}
         />
-      <ModelAddDiary
-        count = {countImage}
-        visible = {showAddDiary}
-        close = {()=>setShowAddDiary(false)}
-        loadScreen = {(data) => {setDataDiary(value => [...value, data])}}
-      />
+        : null
+      }
+      {(showAddDiary) ?
+        <ModelAddDiary
+          count={countImage}
+          visible={showAddDiary}
+          close={() => {
+            setShowAddDiary(false)
+            LoadingDiary();
+          }}
+        />
+        : null
+      }
       <View style={{ alignItems: 'center' }}>
         <Calendar
           style={styles.Calendar}
@@ -134,7 +143,7 @@ export default function CalendarScreen() {
       <View style={{ marginBottom: 10, alignItems: 'flex-start' }}>
         <Text style={styles.TextDiary}>Diary List:</Text>
         <Pressable style={styles.AddDiary}
-          onPress = {()=>{
+          onPress={() => {
             setShowAddDiary(true)
           }}
         >
