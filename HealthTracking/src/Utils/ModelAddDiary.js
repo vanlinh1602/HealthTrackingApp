@@ -47,7 +47,6 @@ export default function ModelReadDiary(props) {
                             }}
                             onPress={() => {
                                 const temp = [];
-                                console.log(props.imageName[index]);
                                 dataImage.forEach((value) => {
                                     if (value != item)
                                         temp.push(value);

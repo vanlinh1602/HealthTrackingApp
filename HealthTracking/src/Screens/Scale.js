@@ -33,7 +33,7 @@ const Scale = () => {
         data.day = date.getDate() + '/' + (date.getMonth()+1) + '/' + date.getFullYear();        
         data.Height= height;
         data.Weight=weight;
-      var username = manager.GetUserName();
+        var username = manager.GetUserName();
         data.userName=username;
         manager.AddDataRandomDoc("HealthInfo", data);
         

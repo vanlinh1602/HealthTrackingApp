@@ -21,6 +21,7 @@ export class FirebaseManager extends Component {
         day: "",
         Height: 0,
         Weight: 0,
+        BMI: 0,
         userName: "",
     }
     // Data của thông tin người dùng
