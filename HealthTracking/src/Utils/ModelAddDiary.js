@@ -20,74 +20,98 @@ export default function ModelReadDiary(props) {
     const imagePick = new CameraFunc();
     const [data, setData] = useState(manager.dataDiary);
     const [isImage, setIsImage] = useState(false);
+    const [imageNew, setImageNew] = useState([]);
+    const [imageRemove, setImageRemove] = useState([]);
     const [dataImage, setDataImage] = useState([]);
+    var countImage = props.count;
 
     //#region Method
     const RenderImage = (data) => (
-        <View style = {{marginTop : "-25%"}}>
-        <FlatList
-            showsHorizontalScrollIndicator = {false}
-            horizontal = {true}
-            data={data}
-            renderItem = {({item}) => (
-                    <View>
+        <View style={{ marginTop: "-25%" }}>
+            <FlatList
+                showsHorizontalScrollIndicator={false}
+                horizontal={true}
+                data={data}
+                renderItem={({ item }) => (
+                    <View style={{ height: 100, marginTop: 100 }}>
                         <Image
-                            style = {{height : 100, width : 100, marginLeft: 5, marginRight : 5}}
-                            source  = {{uri : item}}
+                            style={{ height: 100, width: 100, marginLeft: 5, marginRight: 5 }}
+                            source={{ uri: item }}
                         />
+                        <Pressable
+                            style={{
+                                //backgroundColor: "#000", 
+                                width: 20, height: 20,
+                                marginLeft: 85,
+                                marginTop: -100
+                            }}
+                            onPress={() => {
+                                const temp = [];
+                                dataImage.forEach((value) => {
+                                    if (value != item)
+                                        temp.push(value);
+                                })
+                                if (temp.length == 0)
+                                    setIsImage(false);
+                                setDataImage(temp);
+                                if (props.fixTitle) {
+                                    var index = dataImage.findIndex((element) => element == item);
+                                    imageRemove.push(props.imageName[index]);
+                                }
+                            }}
+                        >
+                            <Image
+                                style={{ height: 20, width: 20 }}
+                                source={require("../Image/X.png")}
+                            />
+                        </Pressable>
                     </View>
-            )}
-        />
+                )}
+            />
         </View>
     )
-
-    
     //#endregion
 
     //#region Write new Diary
-    async function GetImage(){
+    async function GetImage() {
         await imagePick._pickImage();
-        if(imagePick.uri != ""){
-            if(props.fixTitle){
-                data.image.push(imagePick.uri);
-                setDataImage(data.image);
-            }
-            else{
-                setDataImage(value => [...value, imagePick.uri]);
-                setIsImage(true);
-            }
+        if (imagePick.uri == "null") {
+            Alert.alert("Health Tracking", "Bạn chưa chọn ảnh");
+            return;
+        }
+        setDataImage(value => [...value, imagePick.uri]);
+        if (props.fixTitle) {
+            imageNew.push(imagePick.uri);
+        }
+        else {
+            setIsImage(true);
         }
     }
 
-    function imageProcessing(date){
-        day = date.getDate() + '-' + (date.getMonth()+1) + '-' + date.getFullYear();
+    async function imageProcessing(date) {
+        day = date.getDate() + '-' + (date.getMonth() + 1) + '-' + date.getFullYear();
         const dataSource = [];
-        var count = 1;
-        dataImage.forEach(async (item) => {
-            var name = day + "_" + count;
-            count = count + 1;
-            await manager.uploadImage("Diary",name,item);
-            var url = await manager.getImage("Diary", name);
-            dataSource.push(url);
+        dataImage.forEach((item) => {
+            var name = day + "/" + (countImage + 1);
+            manager.uploadImage("Diary", name, item);
+            dataSource.push(name);
+            countImage = countImage + 1;
         })
-        return dataSource;
+        data.image = dataSource;
     }
-    function PushDataToDataBase(){
+    async function PushDataToDataBase() {
         var date = new Date(Date.now());
-        data.day = date.getDate() + '/' + (date.getMonth()+1) + '/' + date.getFullYear();
-        data.image = imageProcessing(date);
-        if(data.status != "" && data.title != "" && dataImage.length > 0){
+        data.day = date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear();
+        await imageProcessing(date);
+        if (data.status != "" && data.title != "" && dataImage.length > 0) {
             manager.AddDataRandomDoc("Diary", data);
-            props.loadScreen(data);
-            setIsImage(false);
-            setDataImage([])
             props.close();
         }
-        else{
-            if(data.image.length == 0){
+        else {
+            if (data.image.length == 0) {
                 Alert.alert("Health Tracking", "Hãy cùng chọn ít nhất 1 bức ảnh để kỉ niệm ngày hôm nay nào <3")
             }
-            else{
+            else {
                 Alert.alert("Health Tracking", "Hãy miêu tả ngày hôm nay của bạn đi!!!")
             }
         }
@@ -95,25 +119,49 @@ export default function ModelReadDiary(props) {
     //#endregion
 
     //#region Fix Diary
-    function LoadData(){
+    function LoadData() {
         data.status = props.fixStatus;
-        data.image = props.image;
+        data.image = props.imageName;
         data.title = props.fixTitle;
         data.day = props.day;
-        setDataImage(data.image);
+        setDataImage(props.image);
         setIsImage(true);
 
     }
-    function UpdateData(){
+    async function UpdateData() {
         const query = ["day", '==', data.day]
-        manager.UpdateData("Diary", data, query);
+        const option = props.fixTitle;
+        //Remove image
+        const imageExist = [];
+        props.imageName.forEach((value) => {
+            var flag = true;
+            imageRemove.forEach((item) => {
+                if (value == item)
+                    flag = false;
+            })
+            if (flag == true) {
+                imageExist.push(value);
+            }
+        })
+        imageRemove.forEach((value) => {
+            manager.deleteImage("Diary", value);
+        })
+        data.image = imageExist;
+        //Add new image
+        imageNew.forEach((item) => {
+            var name = day + "/" + (countImage + 1);
+            manager.uploadImage("Diary", name, item);
+            data.image.push(name);
+            countImage = countImage + 1;
+        })
+        await manager.UpdateData("Diary", data, query, option);
         props.close();
     }
-    useEffect(()=>{
-        if(props.fixTitle){
+    useEffect(() => {
+        if (props.fixTitle) {
             LoadData();
         }
-    },[])
+    }, [])
 
     //#endregion
     return (
@@ -128,10 +176,10 @@ export default function ModelReadDiary(props) {
                         <View style={{ backgroundColor: "#FCD0D0", alignItems: 'center', borderRadius: 20 }}>
                             <Pressable
                                 style={{ marginLeft: '80%', marginTop: 20, }}
-                                onPress = {()=>{
+                                onPress={() => {
                                     setIsImage(false)
                                     setDataImage([]),
-                                    props.close()
+                                        props.close()
                                 }}
                             >
                                 <Image
@@ -145,31 +193,31 @@ export default function ModelReadDiary(props) {
                         <View >
                             <Text style={styles.title}>Tiêu đề</Text>
                             <TextInput
-                                style = {styles.inputTitle}
-                                placeholder = "Cảm nhận của bạn về ngày hôm nay"
+                                style={styles.inputTitle}
+                                placeholder="Cảm nhận của bạn về ngày hôm nay"
                                 multiline
                                 onChangeText={value => data.title = value}
                             >{props.fixTitle}</TextInput>
                             <Text style={styles.story}>Nhật ký</Text>
                             <TextInput
-                                style = {[styles.inputStory, {height: 320}]}
-                                placeholder = "Hãy viết một vài điều gì đó mà bạn thấy ấn tượng trong ngày hôm nay"
+                                style={[styles.inputStory, { height: 320 }]}
+                                placeholder="Hãy viết một vài điều gì đó mà bạn thấy ấn tượng trong ngày hôm nay"
                                 multiline
                                 onChangeText={value => data.status = value}
                             >{props.fixStatus}</TextInput>
                         </View>
                         <View>
-                        {(isImage) ? RenderImage(dataImage) : null}
+                            {(isImage) ? RenderImage(dataImage) : null}
                         </View>
-                        <ScrollView 
+                        <ScrollView
                             horizontal={true}
-                            style = {{marginLeft: "25%", marginBottom: 10}}
-                            showsHorizontalScrollIndicator = {false}
+                            style={{ marginLeft: "40%", marginTop: (isImage) ? 0 : 90 }}
+                            showsHorizontalScrollIndicator={false}
                         >
 
                             <Pressable
-                                style = {styles.image}
-                                onPress = {GetImage}
+                                style={styles.image}
+                                onPress={GetImage}
                             >
                                 <Image
                                     resizeMode="stretch"
@@ -177,7 +225,7 @@ export default function ModelReadDiary(props) {
                                     style={{ width: 40, height: 40 }}
                                 />
                             </Pressable>
-                            <Pressable
+                            {/* <Pressable
                                 style = {styles.camera}
                             >
                                 <Image
@@ -185,7 +233,7 @@ export default function ModelReadDiary(props) {
                                     source={require('../Image/camera.png')}
                                     style={{ width: 40, height: 40 }}
                                 />
-                            </Pressable>
+                            </Pressable> */}
                             <CustomButton
                                 content="Xong"
                                 color='#F9476C99'
@@ -213,7 +261,7 @@ const styles = StyleSheet.create({
     mainView: {
         backgroundColor: '#FDE7E7',
         with: Dimensions.get("window").width,
-        maxHeight: Dimensions.get("window").height * 0.9,
+        height: Dimensions.get("window").height * 0.9,
         borderRadius: 20,
 
     },
@@ -236,9 +284,9 @@ const styles = StyleSheet.create({
         color: '#000'
     },
 
-    inputTitle:{
-        fontSize : 20,
-        paddingLeft : 20,
+    inputTitle: {
+        fontSize: 20,
+        paddingLeft: 20,
         fontFamily: 'Mulish-Regular',
 
     },
@@ -250,26 +298,30 @@ const styles = StyleSheet.create({
         paddingLeft: 10,
         color: "#000",
     },
-    inputStory:{
-        fontSize : 20,
+    inputStory: {
+        fontSize: 20,
         paddingLeft: 20,
         //height: 320,
         textAlignVertical: 'top',
         fontFamily: 'Mulish-Regular',
 
     },
-    image:{
-        margin : 10,
-        marginTop : 25,
+    image: {
+        height: 50,
+        margin: 10,
+        // backgroundColor : "#000"
     },
-    camera:{
-        margin : 10,
-        marginTop : 25,
+    camera: {
+        margin: 10,
+        marginTop: 25,
     },
     btnSubmit: {
-        margin : 20,
+        margin: 20,
+        marginTop: 10,
         fontFamily: 'Mulish-Regular',
-        color : "#000"
+        color: "#000",
+        //backgroundColor : "#fff",
+        height: 50,
     }
 });
 
