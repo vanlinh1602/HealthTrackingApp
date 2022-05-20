@@ -67,7 +67,8 @@ export default function Statistical() {
     var index = [];
     for (var i = 0; i < 7; i++) {
       //Get lable
-      var name = weekDay[date.getDay()];
+      //var name = weekDay[date.getDay()];
+      var name = date.getDate() + '/' + (date.getMonth() + 1)
       data.push(name);
       //Get Data user
       var dateGet = date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear();
@@ -78,17 +79,17 @@ export default function Statistical() {
       else {
         if (value == "Cân nặng") {
           info.forEach(doc => {
-            index.push(doc.weight);
+            index.push(parseInt(doc.Weight));
           })
         }
         if (value == "Chiều cao") {
           info.forEach(doc => {
-            index.push(doc.height);
+            index.push(parseInt(doc.Height));
           })
         }
         if (value == "BMI") {
           info.forEach(doc => {
-            index.push(doc.BMI);
+            index.push(parseInt(doc.BMI));
           })
         }
       }
