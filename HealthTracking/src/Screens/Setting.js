@@ -30,7 +30,8 @@ export default function Setting() {
         PushNotification.localNotificationSchedule({
             channelId: "Test-channel",
             title: "HealthTracking ",
-            message: "Có lời nhắc nhở, hãy mở app để xem",
+            //message: "Có lời nhắc nhở, hãy mở app để xem",
+            message: modalLabel.toUpperCase().toString(),
             date: date,
         })
     }
@@ -59,7 +60,7 @@ export default function Setting() {
                 color="red"
                 onPress={() => handleRemoveItem(item.id)}
             />
-    </ListItem>      
+    </ListItem>     
     );
 
     function AddDay(date) {

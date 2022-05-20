@@ -13,7 +13,7 @@ import ModalAlert from '../Utils/ModelAlert';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Scale = () => {
-  const [bmi, setBmi] = useState();
+  const [bmi, setBmi] = useState('');
   const [info, setInfo] = useState('');
   const [height, setHeight] = useState();
   const [weight, setWeight] = useState();
@@ -28,17 +28,21 @@ const Scale = () => {
   
   const [data,setData] = useState(manager.dataHealthInfor);
 
-    function uploadData(){
+    const uploadData = async()=> {
+      
       var date = new Date(Date.now());
         data.day = date.getDate() + '/' + (date.getMonth()+1) + '/' + date.getFullYear();        
-        data.Height= height;
-        data.Weight=weight;
+        //data.Height= height;
+        //data.Weight= weight;
+        //handleBmi();
+        //data.BMI = bmi;     
       var username = manager.GetUserName();
         data.userName=username;
         manager.AddDataRandomDoc("HealthInfo", data);
         
         console.log("Done upload Data")
     }
+    
 
     const HandleChange =async()=>{
       setInputAttemp(false);
@@ -47,11 +51,13 @@ const Scale = () => {
         data.day = date.getDate() + '/' + (date.getMonth()+1) + '/' + date.getFullYear();        
         data.Height= height;
         data.Weight=weight;
+        handleBmi();
+        data.BMI = bmi;
       var username = manager.GetUserName();
         data.userName=username;
+        
         const query = ["day",'==',data.day.toString()]
         await manager.UpdateData("HealthInfo",data,query)
-      
       
       console.log('Update Data thanh cong')
     }
@@ -106,13 +112,19 @@ const getDataSaveToday = async () => {
 
   const handleEnter =() =>{
     if(InputAttempt == true){
-      ModalAlertOn();
+      ModalAlertOn(true);
     }
     if(InputAttempt == false){
       if(height== null|| weight == null){
         ModalAlertNoInput(true);
-    }else handleBmi();
-    
+    }else {handleBmi();
+      //so lan nhap
+    if(isUpdating == false){
+      setInputAttemp(true);
+      //up data len database
+      uploadData();
+    }
+    }
     }
     
   }
@@ -140,12 +152,6 @@ const getDataSaveToday = async () => {
     setSaveToday(today);
     console.log(saveToday);
     saveDate(saveToday);
-    //so lan nhap
-    if(isUpdating == false){
-    setInputAttemp(true);
-    //up data len database
-    uploadData();
-    }
   };
 
   return (
