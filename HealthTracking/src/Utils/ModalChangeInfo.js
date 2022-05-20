@@ -60,24 +60,28 @@ export default function ModelChangePass(props) {
                         
                         <Text style = {styles.content}>Đổi thông tin</Text>
                     </View>
+                        <Text style ={styles.textStyle}>Tên:</Text>
                         <TextInput 
                             style={styles.Input}
-                            placeholder="Tên"
+                            placeholder={data.name}
                             onChangeText={value => setName(value)}
                         />
+                        <Text style ={styles.textStyle}>Tuổi:</Text>
                         <TextInput 
                             style={styles.Input}
-                            placeholder="Tuổi"
+                            placeholder={data.yearold}
                             onChangeText={value => setAge(value)}
                         />
+                        <Text style ={styles.textStyle}>Giới tính:</Text>
                         <TextInput 
                             style={styles.Input}
-                            placeholder="Giới tính"
-                            onChangeText={value => setGender(value)}
+                            placeholder={data.gender}
+                            onChangeText={value => setGender(value)}                     
                         />
+                        <Text style ={styles.textStyle}>SDT:</Text>
                         <TextInput 
                             style={styles.Input}
-                            placeholder="SDT"
+                            placeholder={data.phone}
                             onChangeText={value => setPhoneNumber(value)}
                         />
                         <CustomButton
@@ -142,5 +146,8 @@ const styles = StyleSheet.create({
         color : 'blue',
         fontStyle: 'italic'
     },
+    textStyle:{
+        alignSelf:'baseline', marginLeft:'10%'
+    }
 });
 
