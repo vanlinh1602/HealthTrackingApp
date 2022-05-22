@@ -149,7 +149,14 @@ export default function ModelReadDiary(props) {
         data.image = imageExist;
         //Add new image
         imageNew.forEach((item) => {
-            var name = data.day + "/" + (countImage + 1);
+            var date = "";
+            for (var i = 0; i < data.day.length; i++){
+                if(data.day[i] == '/')
+                    date = date + '-';
+                else
+                    date = date + data.day[i];
+            }
+            var name = date + "/" + (countImage + 1);
             manager.uploadImage("Diary", name, item);
             data.image.push(name);
             countImage = countImage + 1;

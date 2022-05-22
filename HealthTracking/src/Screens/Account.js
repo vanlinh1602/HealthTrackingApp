@@ -28,8 +28,10 @@ export default function Account({navigation}) {
   async function GetData(){
     var getdata = await manager.getDataWithCollection("Information");
     getdata.forEach((value => {setData(value)}))
-    var source = await manager.getImage("Information", "Avatar")
-    setImageSource(source);
+    try{
+      var source = await manager.getImage("Information", "Avatar")
+      setImageSource(source);
+    }catch{}
   }
 
   useEffect(()=>{
@@ -60,10 +62,13 @@ export default function Account({navigation}) {
             close={()=>setAlertVisible(false)}
             content='Bạn chưa chọn ảnh!'
           />
+          {isChangePassVisible ? 
           <ModelChangePass
             visible={isChangePassVisible}
+            mail = {data.mail}
             close={() => setChangePassVisible(false)}
-          />
+          /> : null
+          }
           <View style={styles.Container}>
             {imageSource === "null" ? (
             <View>

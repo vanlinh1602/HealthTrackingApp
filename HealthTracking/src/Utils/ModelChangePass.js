@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
     StyleSheet,
     Text,
@@ -12,6 +12,8 @@ import ModalAlert from './ModelAlert';
 
 export default function ModelChangePass(props) {
     const manager = new FirebaseManager()
+    const [mail,setMail] = useState("");
+    const [pass, setPass] = useState("");
     const [newpass, setnewPass] = useState();
     const [newpassagain, setnewPassagain] = useState();
     const [isVisible,setVisible]=useState(false);
@@ -25,8 +27,12 @@ export default function ModelChangePass(props) {
             setModalContent("Mật khẩu không đúng")
             setVisible(true);
         }
-        else manager.ChangeUserPassword(newpass);
+        else manager.ChangePassword(mail,pass,newpass);
+        props.close();
     }
+    useEffect(()=>{
+        setMail(props.mail)
+    },[])
     return (
         <View style = {{...props.style, justifyContent: 'center'}}>
             <Modal
@@ -46,6 +52,12 @@ export default function ModelChangePass(props) {
                         
                         <Text style = {styles.content}>Đổi mật khẩu</Text>
                     </View>
+                        <TextInput 
+                                style={styles.Input}
+                                placeholder="Mật khẩu cũ"
+                                onChangeText={value => setPass(value)}
+                                secureTextEntry
+                            />
                         <TextInput 
                             style={styles.Input}
                             placeholder="Mật khẩu mới"

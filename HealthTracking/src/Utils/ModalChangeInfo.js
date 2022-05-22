@@ -8,17 +8,10 @@ import {
 import { TextInput } from 'react-native-gesture-handler';
 import { FirebaseManager } from './FirebaseManager';
 import CustomButton from './CustomButton';
-import ModalAlert from './ModelAlert';
 
 export default function ModelChangePass(props) {
     const manager = new FirebaseManager()
     const [data, setData]=useState(manager.dataInformation);
-    const [name, setName]=useState();
-    const [age, setAge]=useState();
-    const [gender, setGender]=useState();
-    const [phoneNumber, setPhoneNumber]=useState();
-    const [isVisible,setVisible]=useState(false);
-    const [ModalContent, setModalContent]=useState("");
     async function GetData(){
         var getdata = await manager.getDataWithCollection("Information");
         getdata.forEach((value => {setData(value)}))
@@ -28,18 +21,8 @@ export default function ModelChangePass(props) {
         GetData();
       },[]);
     async function changeInfo(){
-        if(name==""||age==""||gender==""||phoneNumber==""){
-            setModalContent("Bạn chưa nhập thông tin!")
-            setVisible(true);
-        }
-        else {
-            data.name=name;
-            data.yearold=age;
-            data.gender=gender;
-            data.phone=phoneNumber;
-            await manager.UpdateData("Information",data);
-            props.close();
-        }
+        await manager.UpdateData("Information",data);
+        props.close();
     }
     return (
         <View style = {{...props.style, justifyContent: 'center'}}>
@@ -49,11 +32,6 @@ export default function ModelChangePass(props) {
                 onRequestClose={props.close}
                 animationType='fade'
             >
-                <ModalAlert
-                visible={isVisible}
-                close={() => setVisible(false)}
-                content={ModalContent}
-                />
                 <View style = {styles.container}>
                     <View style = {styles.view}>
                     <View style = {styles.header}>
@@ -61,29 +39,30 @@ export default function ModelChangePass(props) {
                         <Text style = {styles.content}>Đổi thông tin</Text>
                     </View>
                         <Text style ={styles.textStyle}>Tên:</Text>
-                        <TextInput 
+                        <TextInput
                             style={styles.Input}
-                            placeholder={data.name}
-                            onChangeText={value => setName(value)}
-                        />
+                            onChangeText={value => data.name = value}
+                        >{data.name}
+                        </TextInput> 
                         <Text style ={styles.textStyle}>Tuổi:</Text>
                         <TextInput 
                             style={styles.Input}
-                            placeholder={data.yearold}
-                            onChangeText={value => setAge(value)}
-                        />
+                            p
+                            onChangeText={value => data.yearold = value}
+                        >{data.yearold}
+                        </TextInput>
                         <Text style ={styles.textStyle}>Giới tính:</Text>
                         <TextInput 
                             style={styles.Input}
-                            placeholder={data.gender}
-                            onChangeText={value => setGender(value)}                     
-                        />
+                            onChangeText={value => data.gender = value}                     
+                        >{data.gender}
+                        </TextInput>
                         <Text style ={styles.textStyle}>SDT:</Text>
                         <TextInput 
                             style={styles.Input}
-                            placeholder={data.phone}
-                            onChangeText={value => setPhoneNumber(value)}
-                        />
+                            onChangeText={value => data.phone = value}
+                        >{data.phone}
+                        </TextInput>
                         <CustomButton
                             content = "Xác nhận"
                             color = '#F178B6'

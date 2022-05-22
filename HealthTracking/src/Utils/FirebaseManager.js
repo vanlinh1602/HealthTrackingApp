@@ -89,10 +89,15 @@ export class FirebaseManager extends Component {
         auth().createUserWithEmailAndPassword(mail, pass)
             .then((res) => {
                 const user = firebase.auth().currentUser;
-                return user.updateProfile({
+                user.updateProfile({
                     displayName: userName
                 })
                 Alert.alert("Health Trangking ","Đăng kí thành công");
+                const data = this.dataInformation;
+                data.mail = mail;
+                data.userName = userName;
+                this.userName = userName;
+                this.AddDataRandomDoc("Information",data);
             })
             .catch(error => {
                 if (error.code === 'auth/email-already-in-use') {
@@ -103,7 +108,7 @@ export class FirebaseManager extends Component {
                 }
             })
     }
-
+    //Thay đổi password của user hiện tại
     ChangePassword(mail, oldPassword, newPassword) {
         this.signIn(mail, oldPassword)
         const user = auth().currentUser;
@@ -116,18 +121,6 @@ export class FirebaseManager extends Component {
                 console.log(error)
             })
     }
-    //Thay đổi password của user hiện tại
-    ChangeUserPassword(newPassword) {
-        const user = auth().currentUser;
-        user.updatePassword(newPassword)
-            .then(() => {
-                console.log("Update succesed");
-            })
-            .catch(error => {
-                console.log(error)
-            })
-    }
-
     // Reset password
 
     async ResetPass(mail){
@@ -186,9 +179,9 @@ export class FirebaseManager extends Component {
         return temp;
     }
     // Thêm dữ liệu lên database với document ngẫu nhiên
-    AddDataRandomDoc(collection, data) {
+    async AddDataRandomDoc(collection, data) {
         data.userName = this.userName;
-        firestore()
+        await firestore()
             .collection(collection)
             .add(data)
             .then(() => {
