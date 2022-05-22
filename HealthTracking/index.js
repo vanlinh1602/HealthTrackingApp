@@ -7,7 +7,7 @@ import App from './src/App';
 import {name as appName} from './app.json';
 import PushNotification from "react-native-push-notification";
 
-console.disableYellowBox = true;
+//console.disableYellowBox = true;
 
 PushNotification.configure({
     onNotification: function (notification) {

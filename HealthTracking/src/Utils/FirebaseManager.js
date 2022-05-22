@@ -77,7 +77,10 @@ export class FirebaseManager extends Component {
                     Alert.alert("Health Trangking ","Sai mật khẩu");
                 }
                 if (error.code === 'auth/user-not-found') {
-                    Alert.alert("Health Trangking ","Mail chưa được đăng kí");
+                    Alert.alert("Health Trangking ","Mail sai hoặc chưa được đăng kí");
+                }
+                if(error.code === "auth/invalid-email"){
+                    Alert.alert("Health Trangking ","Mail không đúng định dạng");
                 }
             });
     };
@@ -246,6 +249,10 @@ export class FirebaseManager extends Component {
         await reference.putFile(imagePath).then(()=>{
             console.log("success!")
         });
+    }
+    async deleteImage(collection, imageName){
+        const file = this.userName + '/' + collection + '/' + imageName + ".png";
+        await storage().ref(file).delete();
     }
     //#endregion
 };

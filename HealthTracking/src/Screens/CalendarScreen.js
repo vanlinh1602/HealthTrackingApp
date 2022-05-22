@@ -58,16 +58,17 @@ export default function CalendarScreen() {
     };
   }, [selected]);
   async function GetDataFromDatabase(day) {
-    var count = 0;
+    var maxName = 1;
     setDataDiary([])
     var getdata = await manager.getDataWithQuery("Diary", 'day', '==', day);
     getdata.forEach((value => {
       setDataDiary(doc => [...doc, value])
-      value.image.forEach(() => {
-        count = count + 1;
+      value.image.forEach((item) => {
+        if (maxName  < parseInt(item[item.length - 1]))
+          maxName = parseInt(item[item.length - 1])
       })
     }));
-    setCountImage(count);
+    setCountImage(maxName);
   }
   function LoadingDiary() {
     var date = new Date(Date.now());

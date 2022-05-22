@@ -5,19 +5,26 @@ import {
     View,
     Modal,
     Pressable,
+    Alert,
 } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import { FirebaseManager } from './FirebaseManager';
 import CustomButton from './CustomButton';
+import ModelAlert from  "./ModelAlert"
 
 
 
 export default function ModelSignIn(props) {
     const manager = new FirebaseManager()
-    const [mail, setMail] = useState();
-    const [pass, setPass] = useState();
+    const [mail, setMail] = useState("");
+    const [pass, setPass] = useState("");
     function LogIn(){
-        manager.signIn(mail, pass);
+        if (mail.length == 0 || pass.length == 0){
+            Alert.alert("Health Tracking", "Vui lòng nhập tài khoảng và mật khẩu");
+        }
+        else{
+            manager.signIn(mail, pass);
+        }
     }
     function ResetPass(){
         manager.ResetPass(mail);

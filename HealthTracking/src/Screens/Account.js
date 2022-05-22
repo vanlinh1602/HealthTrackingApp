@@ -21,9 +21,9 @@ export default function Account({navigation}) {
   const [isChangePassVisible, setChangePassVisible]=useState(false);
   const [isAlertVisible, setAlertVisible]=useState(false);
   const [isChangeInfoVisible, setChangeInfoVisible]=useState(false);
-  function LogOut(){
-    manager.SignOut();
-    navigation.navigate('GetStarted')
+  async function LogOut(){
+    await manager.SignOut();
+    navigation.replace('GetStarted')
   };
   async function GetData(){
     var getdata = await manager.getDataWithCollection("Information");
