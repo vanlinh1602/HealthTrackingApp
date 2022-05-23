@@ -14,8 +14,7 @@ import { FirebaseManager } from '../Utils/FirebaseManager';
 const Scale = () => {
   const [bmi, setBmi] = useState(null);
   const [info, setInfo] = useState('');
-  const [height, setHeight] = useState();
-  const [weight, setWeight] = useState();
+  const [dataInfo, setDataInfo] = useState({height: "", weight: ""})
   const [getWater, SetgetWater] = useState();
   const [currentDate, setCurrentDate] = useState('');
   const [alertNoinput, setAlertNoinput] = useState(false);
@@ -72,14 +71,17 @@ const Scale = () => {
   }
 
   const handleBmi = () => {
+    if(dataInfo.height == "" || dataInfo.weight == ""){
+      setBmi(null);
+      return;
+    }
     let val = (
-      [Number(weight) / Number(height) / Number(height)] * 10000
+      [Number(dataInfo.weight) / Number(dataInfo.height) / Number(dataInfo.height)] * 10000
     ).toFixed(1);
     setBmi(val);
     data.BMI = val;
-    let waterInput = Number(weight) * 0.03;
+    let waterInput = Number(dataInfo.weight) * 0.03;
     SetgetWater(waterInput);
-
     if (val < 18.5) {
       setInfo('Gầy');
     } else if (val > 18.5 && val <= 24.9) {
@@ -138,7 +140,10 @@ const Scale = () => {
         <Text style={styles.text}>Chiều cao: </Text>
         <TextInput
           style={styles.textInput}
-          onChangeText={value => setHeight(value)}
+          onChangeText={(value) => {
+            dataInfo.height = value;
+            handleBmi()
+          }}
           placeholder="cm"
           keyboardType="numeric"
         />
@@ -148,23 +153,26 @@ const Scale = () => {
         <Text style={styles.text}>Cân nặng : </Text>
         <TextInput
           style={styles.textInput}
-          onChangeText={value => setWeight(value)}
+          onChangeText={(value) => {
+            dataInfo.weight = value;
+            handleBmi()
+          }}
           placeholder="kg"
           keyboardType="numeric"
         />
       </View>
       <View>
         <CustomButton
-          content="Tính"
+          content="Xác nhận"
           color="#EF5DA8"
           size={25}
           style={styles.enter}
-          onPress={handleEnter}
+          onPress={HandleChange}
           width={150}
           height={50}
         />
 
-        <TouchableOpacity onPress={HandleChange}>
+        <TouchableOpacity onPress={handleEnter}>
           <Image
             source={require('../Image/Change.png')}
             style={{ marginLeft: '38%', marginTop: '-15%', shadowColor: 'black', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.8, shadowRadius: 2 }}
